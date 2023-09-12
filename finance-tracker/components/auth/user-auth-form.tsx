@@ -57,7 +57,7 @@ export const UserAuthForm = () => {
   return (
     <div className="min-w-[350px] space-y-6">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
