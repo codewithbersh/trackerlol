@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
-interface UseTransactionModalProps {
+interface UseCategoryModalProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 }
 
-export const useTransactionModal = create<UseTransactionModalProps>((set) => ({
+export const useCategoryModal = create<UseCategoryModalProps>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
