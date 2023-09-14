@@ -3,9 +3,8 @@
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 import { Modal } from "@/components/ui/modal";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ExpenseForm } from "@/components/dashboard/transactions/expense-form";
-import { IncomeForm } from "@/components/dashboard/transactions/income-form";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ExpenseTab } from "./expense/expense-tab";
 
 export const TransactionModal = () => {
   const { isOpen, onClose } = useTransactionModal();
@@ -21,12 +20,8 @@ export const TransactionModal = () => {
             Income
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="expense">
-          <ExpenseForm />
-        </TabsContent>
-        <TabsContent value="income">
-          <IncomeForm />
-        </TabsContent>
+
+        <ExpenseTab />
       </Tabs>
     </Modal>
   );

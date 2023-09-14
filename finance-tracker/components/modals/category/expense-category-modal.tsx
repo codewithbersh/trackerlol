@@ -1,5 +1,7 @@
 "use client";
 
+import toast from "react-hot-toast";
+import { Loader2 } from "lucide-react";
 import axios, { isAxiosError } from "axios";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import * as z from "zod";
@@ -19,9 +21,6 @@ import { SelectEmoji } from "@/components/select-emoji";
 import { SelectColor } from "@/components/select-color";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import toast from "react-hot-toast";
-import { Loader2 } from "lucide-react";
-import useCategoryData from "@/hooks/use-category-data";
 
 const formSchema = z.object({
   emoji: z
@@ -33,7 +32,6 @@ const formSchema = z.object({
 
 export const ExpenseCategoryModal = () => {
   const { isOpen, onClose } = useCategoryModal();
-  const { refetch } = useCategoryData();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,7 +49,6 @@ export const ExpenseCategoryModal = () => {
     try {
       await axios.post("/api/categories", { type: "EXPENSE", ...values });
       toast.success("Category added.");
-      refetch();
       onClose();
       form.reset();
     } catch (error) {

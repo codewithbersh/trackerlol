@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TransactionModal } from "@/components/modals/transaction-modal";
+
 import { ExpenseCategoryModal } from "@/components/modals/category/expense-category-modal";
+import { TransactionModal } from "@/components/modals/transaction/transaction-modal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
