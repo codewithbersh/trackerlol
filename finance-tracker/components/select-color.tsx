@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { colors } from "@/lib/colors";

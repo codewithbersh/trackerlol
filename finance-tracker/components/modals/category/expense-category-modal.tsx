@@ -25,7 +25,7 @@ const formSchema = z.object({
   color: z.string().nonempty(),
 });
 
-export const CategoryModal = () => {
+export const ExpenseCategoryModal = () => {
   const { isOpen, onClose } = useCategoryModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,6 +41,8 @@ export const CategoryModal = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    onClose();
+    form.reset();
   }
 
   return (

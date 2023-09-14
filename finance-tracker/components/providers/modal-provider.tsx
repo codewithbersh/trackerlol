@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { TransactionModal } from "@/components/modals/transaction-modal";
-import { CategoryModal } from "@/components/modals/category/category-modal";
+import { ExpenseCategoryModal } from "@/components/modals/category/expense-category-modal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -15,7 +15,7 @@ const ModalProvider = () => {
   return (
     <>
       <TransactionModal />
-      <CategoryModal />
+      <ExpenseCategoryModal />
     </>
   );
 };

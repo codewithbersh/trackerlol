@@ -36,10 +36,10 @@ export const SelectEmoji = ({
         <div
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "w-fit h-fit absolute right-0 top-0 rounded-full p-1 -translate-y-2 translate-x-2 group-hover:bg-white"
+            "w-fit h-fit absolute right-0 top-0 rounded-full p-1 -translate-y-2 translate-x-2 group-hover:bg-primary bg-muted"
           )}
         >
-          <X className="w-3 h-3 group-hover:text-black group-hover:scale-105" />
+          <X className="w-3 h-3 group-hover:text-primary-foreground text-primary group-hover:scale-105" />
         </div>
       </Button>
     );
@@ -54,10 +54,7 @@ export const SelectEmoji = ({
           className="mx-auto border-dashed w-20 h-20 group"
           style={{ backgroundColor: currentColor }}
         >
-          <SmilePlus
-            size={60}
-            className="text-muted-foreground group-hover:text-foreground"
-          />
+          <SmilePlus size={60} className="text-foreground" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
