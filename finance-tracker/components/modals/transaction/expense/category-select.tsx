@@ -28,6 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useEditExpenseStore } from "@/hooks/use-edit-expense-store";
 
 interface CategorySelectProps {
   onChange: (value: string) => void;
@@ -37,6 +38,7 @@ interface CategorySelectProps {
 export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
   const [open, setOpen] = useState(false);
   const { onOpen } = useCategoryModal();
+  const { onOpen: openEditModal, setCategory } = useEditExpenseStore();
   const { data: categories, isLoading, isError } = useCategoryData();
 
   return (
@@ -82,7 +84,6 @@ export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
                   value={category.id}
                   key={category.id}
                   onSelect={(value) => {
-                    console.log(value);
                     onChange(value);
                     setOpen(false);
                   }}
@@ -106,7 +107,11 @@ export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
                     className="h-6 w-6 ml-auto"
                     size="icon"
                     variant="ghost"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCategory(category);
+                      openEditModal();
+                    }}
                   >
                     <Settings2 className="w-4 h-4" />
                   </Button>

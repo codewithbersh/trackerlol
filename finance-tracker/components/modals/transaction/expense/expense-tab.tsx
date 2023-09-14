@@ -17,9 +17,11 @@ import { TabsContent } from "@/components/ui/tabs";
 import { CategorySelect } from "./category-select";
 
 const FormSchema = z.object({
-  category: z.string({
-    required_error: "Please select a category.",
-  }),
+  category: z
+    .string({
+      required_error: "Please select a category.",
+    })
+    .nonempty("Please select a category"),
 });
 
 export const ExpenseTab = () => {

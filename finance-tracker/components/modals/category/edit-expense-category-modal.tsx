@@ -1,13 +1,14 @@
 "use client";
 
-import toast from "react-hot-toast";
-import { Loader2 } from "lucide-react";
+import { z } from "zod";
+import { useEffect } from "react";
 import axios, { isAxiosError } from "axios";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { useCategoryModal } from "@/hooks/use-category-modal";
-import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import useCategoryData from "@/hooks/use-category-data";
+import { useEditExpenseStore } from "@/hooks/use-edit-expense-store";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -20,20 +21,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { SelectEmoji } from "@/components/select-emoji";
 import { SelectColor } from "@/components/select-color";
-import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/ui/modal";
+import { CategoryFormSchema } from "./expense-category-modal";
 
-export const CategoryFormSchema = z.object({
-  emoji: z
-    .string({ required_error: "Choose an emoji" })
-    .nonempty("Choose an emoji"),
-  title: z.string().nonempty(),
-  color: z.string().nonempty(),
-});
-
-export const ExpenseCategoryModal = () => {
-  const { isOpen, onClose } = useCategoryModal();
+export const EditExpenseCategoryModal = () => {
   const { refetch } = useCategoryData();
+  const { isOpen, onClose, category } = useEditExpenseStore();
 
   const form = useForm<z.infer<typeof CategoryFormSchema>>({
     resolver: zodResolver(CategoryFormSchema),
@@ -44,13 +38,23 @@ export const ExpenseCategoryModal = () => {
     },
   });
 
-  const isLoading = form.formState.isSubmitting;
-  const currentColor = form.watch("color");
+  useEffect(() => {
+    if (category) {
+      form.reset(category);
+    }
+  }, [category]);
 
-  async function onSubmit(values: z.infer<typeof CategoryFormSchema>) {
+  const isLoading = form.formState.isSubmitting;
+
+  if (!category) return null;
+
+  const onSubmit = async (values: z.infer<typeof CategoryFormSchema>) => {
     try {
-      await axios.post("/api/categories", { type: "EXPENSE", ...values });
-      toast.success("Category added.");
+      await axios.patch(`/api/categories/${category.id}`, {
+        type: "EXPENSE",
+        ...values,
+      });
+      toast.success("Category updated.");
       refetch();
       onClose();
       form.reset();
@@ -63,9 +67,9 @@ export const ExpenseCategoryModal = () => {
             })
           : toast.error("An error has occured.");
       }
-      console.log("[ADD_CATEGORY_ERROR]", error);
+      console.log("[UPDATE_CATEGORY_ERROR]", error);
     }
-  }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="py-10">
@@ -80,7 +84,7 @@ export const ExpenseCategoryModal = () => {
                   <SelectEmoji
                     onChange={field.onChange}
                     value={field.value}
-                    currentColor={currentColor}
+                    currentColor={category.color}
                     isLoading={isLoading}
                   />
                 </FormControl>
@@ -124,14 +128,17 @@ export const ExpenseCategoryModal = () => {
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="w-full gap-2 items-center"
-            disabled={isLoading}
-          >
-            {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-            Add Category
-          </Button>
+          <div className="flex flex-col gap-1">
+            <Button
+              type="submit"
+              className="w-full gap-2 items-center"
+              disabled={isLoading}
+            >
+              {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+              Save Category
+            </Button>
+            <Button variant="link">Delete Category</Button>
+          </div>
         </form>
       </Form>
     </Modal>
