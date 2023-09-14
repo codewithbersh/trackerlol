@@ -56,12 +56,10 @@ export const ExpenseCategoryModal = () => {
       form.reset();
     } catch (error) {
       if (isAxiosError(error)) {
-        const err = error.response?.data;
         form.setError("emoji", {
           type: "Emoji Already Exists",
           message: "Emoji already exists",
         });
-        // toast.error(err ? err : "An error has occured");
       }
       console.log("[ADD_CATEGORY_ERROR]", error);
     }

@@ -3,7 +3,6 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { colors } from "@/lib/colors";
-import { ActionTooltip } from "./action-tooltip";
 import useCategoryData from "@/hooks/use-category-data";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +18,7 @@ export const SelectColor = ({
   isLoading,
 }: SelectColorProps) => {
   const { data: categories } = useCategoryData();
+  if (!categories) return null;
 
   return (
     <RadioGroup
@@ -28,20 +28,19 @@ export const SelectColor = ({
       disabled={isLoading}
     >
       {colors.map((color) => (
-        <ActionTooltip label={color.name} key={color.value}>
-          <RadioGroupItem
-            value={color.value}
-            className={cn(
-              "w-full h-full rounded-md border-none col-span-1",
-              categories!.some((category) => category.color === color.value) &&
-                "blur-sm"
-            )}
-            style={{ backgroundColor: color.value }}
-            disabled={categories!.some(
-              (category) => category.color === color.value
-            )}
-          />
-        </ActionTooltip>
+        <RadioGroupItem
+          key={color.value}
+          value={color.value}
+          className={cn(
+            "w-full h-full rounded-md border-none col-span-1",
+            categories!.some((category) => category.color === color.value) &&
+              "blur-sm"
+          )}
+          style={{ backgroundColor: color.value }}
+          disabled={categories.some(
+            (category) => category.color === color.value
+          )}
+        />
       ))}
     </RadioGroup>
   );
