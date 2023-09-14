@@ -70,7 +70,6 @@ model Category {
 
   @@unique([userId, color])
   @@unique([userId, emoji])
-  @@unique([userId, title])
 }
 
 enum TransactionType {

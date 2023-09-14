@@ -7,6 +7,7 @@ import "@/styles/globals.css";
 import { cn } from "@/lib/utils";
 import ModalProvider from "@/components/providers/modal-provider";
 import { Toaster } from "react-hot-toast";
+import QueryProvider from "@/components/providers/query-provider";
 
 const font = Inter({ subsets: ["latin"] });
 
@@ -28,11 +29,13 @@ export default function RootLayout({
           font.className
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          {children}
-          <ModalProvider />
-          <Toaster />
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            {children}
+            <ModalProvider />
+            <Toaster />
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

@@ -30,6 +30,7 @@
     "axios": "^1.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "cmdk": "^0.2.0",
     "emoji-mart": "^5.5.2",
     "emoji-picker-react": "^4.5.1",
     "eslint": "8.49.0",

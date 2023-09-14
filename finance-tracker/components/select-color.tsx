@@ -1,7 +1,11 @@
+"use client";
+
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { colors } from "@/lib/colors";
 import { ActionTooltip } from "./action-tooltip";
+import useCategoryData from "@/hooks/use-category-data";
+import { cn } from "@/lib/utils";
 
 interface SelectColorProps {
   value: string;
@@ -14,6 +18,8 @@ export const SelectColor = ({
   onChange,
   isLoading,
 }: SelectColorProps) => {
+  const { data: categories } = useCategoryData();
+
   return (
     <RadioGroup
       defaultValue={value}
@@ -25,9 +31,15 @@ export const SelectColor = ({
         <ActionTooltip label={color.name} key={color.value}>
           <RadioGroupItem
             value={color.value}
-            id="option-one"
-            className="w-full h-full rounded-md border-none col-span-1"
+            className={cn(
+              "w-full h-full rounded-md border-none col-span-1",
+              categories!.some((category) => category.color === color.value) &&
+                "blur-sm"
+            )}
             style={{ backgroundColor: color.value }}
+            disabled={categories!.some(
+              (category) => category.color === color.value
+            )}
           />
         </ActionTooltip>
       ))}

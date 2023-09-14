@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -22,16 +21,19 @@ import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
+import useCategoryData from "@/hooks/use-category-data";
 
 const formSchema = z.object({
-  emoji: z.string().nonempty(),
+  emoji: z
+    .string({ required_error: "Choose an emoji" })
+    .nonempty("Choose an emoji"),
   title: z.string().nonempty(),
   color: z.string().nonempty(),
 });
 
 export const ExpenseCategoryModal = () => {
   const { isOpen, onClose } = useCategoryModal();
-  const router = useRouter();
+  const { refetch } = useCategoryData();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,12 +50,19 @@ export const ExpenseCategoryModal = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await axios.post("/api/categories", { type: "EXPENSE", ...values });
-      router.refresh;
       toast.success("Category added.");
+      refetch();
       onClose();
       form.reset();
     } catch (error) {
-      toast.error("An error has occured.");
+      if (isAxiosError(error)) {
+        const err = error.response?.data;
+        form.setError("emoji", {
+          type: "Emoji Already Exists",
+          message: "Emoji already exists",
+        });
+        // toast.error(err ? err : "An error has occured");
+      }
       console.log("[ADD_CATEGORY_ERROR]", error);
     }
   }
@@ -76,6 +85,7 @@ export const ExpenseCategoryModal = () => {
                   />
                 </FormControl>
                 <FormLabel>Emoji</FormLabel>
+                <FormMessage />
               </FormItem>
             )}
           />
