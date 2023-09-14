@@ -15,12 +15,14 @@ interface SelectEmojiProps {
   onChange: (value: string) => void;
   value: string;
   currentColor: string;
+  isLoading: boolean;
 }
 
 export const SelectEmoji = ({
   onChange,
   value,
   currentColor,
+  isLoading,
 }: SelectEmojiProps) => {
   const { theme } = useTheme();
 
@@ -31,6 +33,7 @@ export const SelectEmoji = ({
         className="w-20 h-20 grid place-items-center rounded-md relative group"
         style={{ backgroundColor: currentColor }}
         onClick={() => onChange("")}
+        disabled={isLoading}
       >
         <div className=" text-[60px] leading-none w-fit">{value}</div>
         <div

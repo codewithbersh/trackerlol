@@ -6,14 +6,20 @@ import { ActionTooltip } from "./action-tooltip";
 interface SelectColorProps {
   value: string;
   onChange: (value: string) => void;
+  isLoading: boolean;
 }
 
-export const SelectColor = ({ value, onChange }: SelectColorProps) => {
+export const SelectColor = ({
+  value,
+  onChange,
+  isLoading,
+}: SelectColorProps) => {
   return (
     <RadioGroup
       defaultValue={value}
       onValueChange={onChange}
       className="grid grid-cols-10 "
+      disabled={isLoading}
     >
       {colors.map((color) => (
         <ActionTooltip label={color.name} key={color.value}>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -18,6 +20,8 @@ import { SelectEmoji } from "@/components/select-emoji";
 import { SelectColor } from "@/components/select-color";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   emoji: z.string().nonempty(),
@@ -27,6 +31,7 @@ const formSchema = z.object({
 
 export const ExpenseCategoryModal = () => {
   const { isOpen, onClose } = useCategoryModal();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,12 +42,20 @@ export const ExpenseCategoryModal = () => {
     },
   });
 
+  const isLoading = form.formState.isSubmitting;
   const currentColor = form.watch("color");
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    onClose();
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await axios.post("/api/categories", { type: "EXPENSE", ...values });
+      router.refresh;
+      toast.success("Category added.");
+      onClose();
+      form.reset();
+    } catch (error) {
+      toast.error("An error has occured.");
+      console.log("[ADD_CATEGORY_ERROR]", error);
+    }
   }
 
   return (
@@ -59,6 +72,7 @@ export const ExpenseCategoryModal = () => {
                     onChange={field.onChange}
                     value={field.value}
                     currentColor={currentColor}
+                    isLoading={isLoading}
                   />
                 </FormControl>
                 <FormLabel>Emoji</FormLabel>
@@ -73,7 +87,11 @@ export const ExpenseCategoryModal = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Category name" {...field} />
+                  <Input
+                    placeholder="Category name"
+                    {...field}
+                    disabled={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,12 +105,21 @@ export const ExpenseCategoryModal = () => {
               <FormItem>
                 <FormLabel>Color</FormLabel>
                 <FormControl>
-                  <SelectColor onChange={field.onChange} value={field.value} />
+                  <SelectColor
+                    onChange={field.onChange}
+                    value={field.value}
+                    isLoading={isLoading}
+                  />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full gap-2 items-center"
+            disabled={isLoading}
+          >
+            {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
             Add Category
           </Button>
         </form>
