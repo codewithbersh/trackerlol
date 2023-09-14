@@ -51,3 +51,33 @@ export async function PATCH(
 
   return NextResponse.json(category);
 }
+
+export async function DELETE(
+  req: Request,
+  { params: { categoryId } }: { params: { categoryId: string } }
+) {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return new NextResponse("Unauthenticated", { status: 401 });
+  }
+
+  const categoryByUserId = await prismadb.category.findFirst({
+    where: {
+      id: categoryId,
+      userId: user.id,
+    },
+  });
+
+  if (!categoryByUserId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  const category = await prismadb.category.delete({
+    where: {
+      id: categoryId,
+    },
+  });
+
+  return NextResponse.json(category);
+}

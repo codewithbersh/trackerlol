@@ -9,6 +9,7 @@ import { useEditExpenseStore } from "@/hooks/use-edit-expense-store";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useDeleteCategoryStore } from "@/hooks/use-delete-category-store";
 
 import {
   Form,
@@ -28,6 +29,7 @@ import { CategoryFormSchema } from "./expense-category-modal";
 export const EditExpenseCategoryModal = () => {
   const { refetch } = useCategoryData();
   const { isOpen, onClose, category } = useEditExpenseStore();
+  const { onOpen } = useDeleteCategoryStore();
 
   const form = useForm<z.infer<typeof CategoryFormSchema>>({
     resolver: zodResolver(CategoryFormSchema),
@@ -137,7 +139,10 @@ export const EditExpenseCategoryModal = () => {
               {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
               Save Category
             </Button>
-            <Button variant="link">Delete Category</Button>
+
+            <Button variant="link" type="button" onClick={onOpen}>
+              Delete Category
+            </Button>
           </div>
         </form>
       </Form>
