@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useCategoryData from "@/hooks/use-category-data";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import { cn } from "@/lib/utils";
