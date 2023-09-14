@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { TransactionModal } from "@/components/modals/transaction/transaction-modal";
+import { ExpenseCategoryModal } from "@/components/modals/category/expense-category-modal";
 import { EditExpenseCategoryModal } from "@/components/modals/category/edit-expense-category-modal";
 
 const ModalProvider = () => {
@@ -16,6 +17,7 @@ const ModalProvider = () => {
   return (
     <>
       <TransactionModal />
+      <ExpenseCategoryModal />
       <EditExpenseCategoryModal />
     </>
   );
