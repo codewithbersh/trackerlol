@@ -82,6 +82,7 @@ export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
                   value={category.id}
                   key={category.id}
                   onSelect={(value) => {
+                    console.log(value);
                     onChange(value);
                     setOpen(false);
                   }}

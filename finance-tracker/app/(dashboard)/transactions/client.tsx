@@ -1,10 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useCategoryModal } from "@/hooks/use-category-modal";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export const TransactionsClient = () => {
-  const { onOpen } = useCategoryModal();
-
-  return <Button onClick={onOpen}>New Category</Button>;
+  return <ModeToggle />;
 };

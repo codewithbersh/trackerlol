@@ -39,7 +39,7 @@ export const ExpenseTab = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 w-full"
+          className="space-y-6 w-full py-8"
         >
           <FormField
             control={form.control}
@@ -52,7 +52,7 @@ export const ExpenseTab = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Add Category</Button>
+          <Button type="submit">Add Transaction</Button>
         </form>
       </Form>
     </TabsContent>
