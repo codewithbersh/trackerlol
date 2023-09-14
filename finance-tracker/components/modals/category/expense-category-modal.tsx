@@ -3,10 +3,11 @@
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
 import axios, { isAxiosError } from "axios";
-import { useCategoryModal } from "@/hooks/use-category-modal";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
+import { useCategoryModal } from "@/hooks/use-category-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useCategoryData from "@/hooks/use-category-data";
 
 import {
   Form,
@@ -32,6 +33,7 @@ const formSchema = z.object({
 
 export const ExpenseCategoryModal = () => {
   const { isOpen, onClose } = useCategoryModal();
+  const { refetch } = useCategoryData();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,6 +51,7 @@ export const ExpenseCategoryModal = () => {
     try {
       await axios.post("/api/categories", { type: "EXPENSE", ...values });
       toast.success("Category added.");
+      refetch();
       onClose();
       form.reset();
     } catch (error) {

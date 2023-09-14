@@ -4,6 +4,7 @@ import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 import { Modal } from "@/components/ui/modal";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ExpenseCategoryModal } from "@/components/modals/category/expense-category-modal";
 import { ExpenseTab } from "./expense/expense-tab";
 
 export const TransactionModal = () => {
@@ -23,6 +24,9 @@ export const TransactionModal = () => {
 
         <ExpenseTab />
       </Tabs>
+
+      {/* moved category modal so that it will be only mounted when transaction modal is opened */}
+      <ExpenseCategoryModal />
     </Modal>
   );
 };

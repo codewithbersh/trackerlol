@@ -57,6 +57,9 @@ export async function GET(_req: Request) {
     where: {
       userId: user.id,
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   return NextResponse.json(categories);

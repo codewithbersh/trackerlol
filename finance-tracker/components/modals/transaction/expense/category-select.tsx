@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCategoryData from "@/hooks/use-category-data";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import { cn } from "@/lib/utils";
@@ -37,7 +37,7 @@ interface CategorySelectProps {
 export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
   const [open, setOpen] = useState(false);
   const { onOpen } = useCategoryModal();
-  const { data: categories, refetch, isLoading, isError } = useCategoryData();
+  const { data: categories, isLoading, isError } = useCategoryData();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -50,7 +50,6 @@ export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
               "w-[300px] sm:w-full justify-between",
               !value && "text-muted-foreground"
             )}
-            onClick={() => refetch()}
           >
             {value
               ? categories?.find((category) => category.id === value)?.title

@@ -12,7 +12,6 @@ const useCategoryData = () => {
     queryKey: ["categories"],
     queryFn: fetchCategories,
     staleTime: Infinity,
-    enabled: false,
   });
 };
 
