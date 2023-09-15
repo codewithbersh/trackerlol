@@ -1,10 +1,10 @@
 "use client";
 
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
 import { colors } from "@/lib/colors";
 import useCategoryData from "@/hooks/use-category-data";
 import { cn } from "@/lib/utils";
+
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface SelectColorProps {
   value: string;
@@ -33,7 +33,7 @@ export const SelectColor = ({
           value={color.value}
           className={cn(
             "w-full h-full rounded-md border-none col-span-1",
-            categories!.some((category) => category.color === color.value) &&
+            categories.some((category) => category.color === color.value) &&
               "blur-sm"
           )}
           style={{ backgroundColor: color.value }}

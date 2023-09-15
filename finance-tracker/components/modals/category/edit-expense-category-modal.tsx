@@ -86,7 +86,7 @@ export const EditExpenseCategoryModal = () => {
                   <SelectEmoji
                     onChange={field.onChange}
                     value={field.value}
-                    currentColor={category.color}
+                    currentColor={form.watch("color")}
                     isLoading={isLoading}
                   />
                 </FormControl>

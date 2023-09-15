@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+import { Toaster } from "react-hot-toast";
+import "@/styles/globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
-
-import "@/styles/globals.css";
-import { cn } from "@/lib/utils";
-import ModalProvider from "@/components/providers/modal-provider";
-import { Toaster } from "react-hot-toast";
 import QueryProvider from "@/components/providers/query-provider";
 
 const font = Inter({ subsets: ["latin"] });
@@ -32,7 +30,6 @@ export default function RootLayout({
         <QueryProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {children}
-            <ModalProvider />
             <Toaster />
           </ThemeProvider>
         </QueryProvider>
