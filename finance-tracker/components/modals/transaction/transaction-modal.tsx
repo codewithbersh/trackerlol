@@ -11,7 +11,7 @@ export const TransactionModal = () => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="py-10">
-      <Tabs defaultValue="expense">
+      <Tabs defaultValue="expense" className="!max-w-full">
         <TabsList className="w-full">
           <TabsTrigger value="expense" className="w-full">
             Expense

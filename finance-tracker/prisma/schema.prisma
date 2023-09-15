@@ -43,7 +43,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  categories Category[]
+  categories   Category[]
+  transactions Transaction[]
 }
 
 model VerificationToken {
@@ -57,19 +58,37 @@ model VerificationToken {
 model Category {
   id String @id @default(uuid())
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  type  TransactionType @default(EXPENSE)
-  title String
-  emoji String
-  color String
+  type         TransactionType
+  title        String
+  emoji        String
+  color        String
+  transactions Transaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([userId, color])
   @@unique([userId, emoji])
+}
+
+model Transaction {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  type       TransactionType
+  note       String
+  date       DateTime
+  category   Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+  amount     Decimal
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum TransactionType {

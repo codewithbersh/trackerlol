@@ -49,7 +49,7 @@ export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
             variant="outline"
             role="combobox"
             className={cn(
-              "w-[300px] sm:w-full justify-between",
+              "w-full sm:w-full justify-between",
               !value && "text-muted-foreground"
             )}
           >
