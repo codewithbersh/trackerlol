@@ -3,6 +3,7 @@
 import { useState } from "react";
 import useCategoryData from "@/hooks/use-category-data";
 import { useCategoryModal } from "@/hooks/use-category-modal";
+import { useEditExpenseStore } from "@/hooks/use-edit-expense-store";
 import { cn } from "@/lib/utils";
 import {
   Check,
@@ -28,14 +29,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEditExpenseStore } from "@/hooks/use-edit-expense-store";
 
 interface CategorySelectProps {
   onChange: (value: string) => void;
   value: string;
+  isLoading: boolean;
 }
 
-export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
+export const CategorySelect = ({
+  onChange,
+  value,
+  isLoading: isSubmitting,
+}: CategorySelectProps) => {
   const [open, setOpen] = useState(false);
   const { onOpen } = useCategoryModal();
   const { onOpen: openEditModal, setCategory } = useEditExpenseStore();
@@ -46,6 +51,7 @@ export const CategorySelect = ({ onChange, value }: CategorySelectProps) => {
       <PopoverTrigger asChild>
         <FormControl>
           <Button
+            disabled={isSubmitting}
             variant="outline"
             role="combobox"
             className={cn(
