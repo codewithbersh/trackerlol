@@ -74,6 +74,7 @@ export const ExpenseTab = () => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full pt-8 flex flex-col gap-6"
+          autoComplete="off"
         >
           <FormField
             control={form.control}
@@ -82,7 +83,7 @@ export const ExpenseTab = () => {
               <FormItem className="flex sm:col-span-full">
                 <div className="flex items-start mx-auto">
                   <FormLabel className="translate-y-3 font-bold sm:text-base">
-                    QAR
+                    USD
                   </FormLabel>
                   <FormControl>
                     <InputNumber

@@ -24,7 +24,7 @@ export const InputNumber = ({
     <NumericFormat
       placeholder="0"
       className={cn(
-        "min-w-[50px] py-0 leading-none overflow-hidden max-w-[462px] sm:text-6xl font-bold bg-background outline-none text-5xl text-center",
+        "min-w-[50px] py-0 leading-none overflow-hidden max-w-[420px] sm:text-6xl font-bold bg-background outline-none text-5xl text-center",
         className
       )}
       min={1}
