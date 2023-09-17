@@ -1,5 +1,6 @@
 import { parseISO, format } from "date-fns";
 import { GroupedTransactions as GroupedTransactionsType } from "@/lib/utils";
+import Link from "next/link";
 
 interface GroupedTransactionsProps {
   group: GroupedTransactionsType;
@@ -23,7 +24,8 @@ export const GroupedTransactions = ({
       </div>
       <div className="flex flex-col gap-4 overflow-hidden">
         {transactions.map((transaction) => (
-          <div
+          <Link
+            href={`/transactions/${transaction.id}`}
             key={transaction.id}
             className="bg-accent rounded-md flex items-center justify-between px-4 py-2 hover:bg-accent/50 cursor-pointer"
           >
@@ -43,7 +45,7 @@ export const GroupedTransactions = ({
                 $ {Number(transaction.amount).toLocaleString("en-US")}
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

@@ -29,7 +29,7 @@ const TransactionsPage = async ({
   const groupedTransactions = groupTransactionsByDate(transactions);
 
   return (
-    <div className="flex flex-col gap-8 py-24">
+    <div className="flex flex-col gap-8 py-24 z-[99999]">
       {groupedTransactions.map((group) => (
         <GroupedTransactions group={group} key={group.date} />
       ))}
