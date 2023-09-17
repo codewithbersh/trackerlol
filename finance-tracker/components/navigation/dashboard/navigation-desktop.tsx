@@ -2,6 +2,7 @@ import { Route } from "@/types/types";
 
 import { NavigationItem } from "./navigation-item";
 import { TransactionButton } from "@/components/transaction-button";
+import { ModeToggle } from "@/components/mode-toggle";
 
 interface NavigationDesktopProps {
   routes: Route[];
@@ -16,6 +17,7 @@ export const NavigationDesktop = ({ routes }: NavigationDesktopProps) => {
       {routes.map((route) => (
         <NavigationItem tooltipSide="right" route={route} key={route.href} />
       ))}
+      <ModeToggle />
     </div>
   );
 };

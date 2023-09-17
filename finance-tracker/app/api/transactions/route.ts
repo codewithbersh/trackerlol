@@ -1,6 +1,6 @@
+import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/actions/get-current-user";
 import prismadb from "@/lib/prismadb";
-import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
@@ -12,9 +12,6 @@ export async function POST(req: Request) {
   if (!type) {
     return new NextResponse("Type is required", { status: 401 });
   }
-  if (!note) {
-    return new NextResponse("Note is required", { status: 401 });
-  }
   if (!date) {
     return new NextResponse("Date is required", { status: 401 });
   }
@@ -24,7 +21,6 @@ export async function POST(req: Request) {
   if (!amount) {
     return new NextResponse("Amount is required", { status: 401 });
   }
-
   const transaction = await prismadb.transaction.create({
     data: {
       userId: user.id,

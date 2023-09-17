@@ -4,11 +4,12 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -43,6 +44,8 @@ const FormSchema = z.object({
 
 export const ExpenseTab = () => {
   const { onClose } = useTransactionModal();
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -58,10 +61,20 @@ export const ExpenseTab = () => {
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
-      await axios.post("/api/transactions", { type: "EXPENSE", ...values });
+      await axios.post("/api/transactions", {
+        ...values,
+        type: "EXPENSE",
+        date: format(values.date, "yyyy-MM-dd'T'HH:mm:ss'.000Z'"),
+      });
       toast.success("New transaction added.");
+      router.refresh();
       onClose();
-      form.reset();
+      form.reset({
+        amount: 0,
+        categoryId: undefined,
+        note: undefined,
+        date: undefined,
+      });
     } catch (error) {
       toast.error("An error has occured.");
       console.log("[ADD_TRANSACTION_ERROR]", error);
