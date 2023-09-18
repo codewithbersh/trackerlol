@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { parseISO, format } from "date-fns";
 import { GroupedTransactions as GroupedTransactionsType } from "@/lib/utils";
-import Link from "next/link";
 
 interface GroupedTransactionsProps {
   group: GroupedTransactionsType;
@@ -28,6 +28,7 @@ export const GroupedTransactions = ({
             href={`/transactions/${transaction.id}`}
             key={transaction.id}
             className="bg-accent rounded-md flex items-center justify-between px-4 py-2 hover:bg-accent/50 cursor-pointer"
+            scroll={false}
           >
             <div className="flex gap-4 w-full items-center justify-between">
               <div
