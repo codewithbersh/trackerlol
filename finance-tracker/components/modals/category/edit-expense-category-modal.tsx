@@ -44,7 +44,7 @@ export const EditExpenseCategoryModal = () => {
     if (category) {
       form.reset(category);
     }
-  }, [category]);
+  }, [category, form]);
 
   const isLoading = form.formState.isSubmitting;
 

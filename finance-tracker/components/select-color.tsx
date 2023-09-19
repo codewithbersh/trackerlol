@@ -4,7 +4,7 @@ import { colors } from "@/lib/colors";
 import useCategoryData from "@/hooks/use-category-data";
 import { cn } from "@/lib/utils";
 
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupColorItem } from "@/components/ui/radio-group";
 
 interface SelectColorProps {
   value: string;
@@ -28,7 +28,7 @@ export const SelectColor = ({
       disabled={isLoading}
     >
       {colors.map((color) => (
-        <RadioGroupItem
+        <RadioGroupColorItem
           key={color.value}
           value={color.value}
           className={cn(
