@@ -53,13 +53,18 @@ const TransactionsPage = async ({
   const groupedTransactions = groupTransactionsByDate(transactions);
 
   return (
-    <div className="flex flex-col gap-8 py-24">
+    <div className="flex flex-col gap-8 py-12">
       <FilterTransactions
         dateRangeQuery={dateRangeQuery}
         typeQuery={typeQuery}
         categoryQuery={categoryQuery}
         categories={categories}
       />
+      {groupedTransactions.length === 0 && (
+        <div className="text-sm text-muted-foreground text-center py-12">
+          No transactions found.
+        </div>
+      )}
       {groupedTransactions.map((group) => (
         <GroupedTransactions group={group} key={group.date} />
       ))}
