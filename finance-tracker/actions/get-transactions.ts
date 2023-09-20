@@ -1,6 +1,6 @@
-import { stringToDate } from "@/app/(dashboard)/transactions/page";
-import prismadb from "@/lib/prismadb";
 import { TransactionType } from "@prisma/client";
+import prismadb from "@/lib/prismadb";
+import { stringToDate } from "@/lib/utils";
 
 interface GetTransactionsProps {
   userId: string;

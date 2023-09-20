@@ -1,3 +1,4 @@
+import { TransactionType } from "@prisma/client";
 import { DateRange } from "react-day-picker";
 import { create } from "zustand";
 
@@ -7,6 +8,8 @@ interface UseFilterTransactionsState {
   onClose: () => void;
   dateQuery: DateRange | undefined;
   setDateQuery: (dateQuery: DateRange | undefined) => void;
+  typeQuery: TransactionType | undefined;
+  setTypeQuery: (typeQuery: TransactionType | undefined) => void;
 }
 
 export const useFilterTransactionsStore = create<UseFilterTransactionsState>(
@@ -16,5 +19,7 @@ export const useFilterTransactionsStore = create<UseFilterTransactionsState>(
     onClose: () => set({ isOpen: false }),
     dateQuery: undefined,
     setDateQuery: (dateQuery) => set({ dateQuery: dateQuery }),
+    typeQuery: undefined,
+    setTypeQuery: (typeQuery) => set({ typeQuery: typeQuery }),
   })
 );

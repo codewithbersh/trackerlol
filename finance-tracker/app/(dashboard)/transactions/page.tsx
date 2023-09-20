@@ -1,9 +1,12 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/actions/get-current-user";
-import { groupTransactionsByDate } from "@/lib/utils";
+import {
+  groupTransactionsByDate,
+  stringToDate,
+  validateTypeQuery,
+} from "@/lib/utils";
 import { getTransactions } from "@/actions/get-transactions";
 import { DateRange } from "react-day-picker";
-import { isValid, parseISO } from "date-fns";
 
 import { GroupedTransactions } from "@/components/transactions/grouped-transactions";
 import { FilterTransactions } from "@/components/transactions/filter/filter-transactions";
@@ -16,15 +19,6 @@ interface TransactionsPageProps {
     type: string;
   };
 }
-
-export const stringToDate = (date: string | undefined) => {
-  if (!date) return undefined;
-  const parsedDate = parseISO(date);
-  if (isValid(parsedDate)) {
-    return parsedDate;
-  }
-  return undefined;
-};
 
 const TransactionsPage = async ({
   searchParams: { categoryId, from, to, type },
@@ -47,9 +41,14 @@ const TransactionsPage = async ({
     to: stringToDate(to),
   };
 
+  const typeQuery = validateTypeQuery(type);
+
   return (
     <div className="flex flex-col gap-8 py-24">
-      <FilterTransactions dateRangeQuery={dateRangeQuery} />
+      <FilterTransactions
+        dateRangeQuery={dateRangeQuery}
+        typeQuery={typeQuery}
+      />
       {groupedTransactions.map((group) => (
         <GroupedTransactions group={group} key={group.date} />
       ))}
