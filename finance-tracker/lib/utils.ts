@@ -66,3 +66,12 @@ export const validateTypeQuery = (type: string | undefined) => {
 
   return undefined;
 };
+
+export const validateCategoryQuery = (
+  categories: Category[],
+  category: string
+): Category | undefined => {
+  if (!category) return undefined;
+
+  return categories.find((item) => item.slug === category);
+};

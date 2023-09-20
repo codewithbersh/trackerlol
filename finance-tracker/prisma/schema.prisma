@@ -63,6 +63,7 @@ model Category {
 
   type         TransactionType
   title        String
+  slug         String          @default("")
   emoji        String
   color        String
   transactions Transaction[]

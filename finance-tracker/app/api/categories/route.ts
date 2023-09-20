@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/actions/get-current-user";
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
+import slugify from "@sindresorhus/slugify";
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
@@ -40,6 +41,7 @@ export async function POST(req: Request) {
       title,
       emoji,
       color,
+      slug: slugify(title),
     },
   });
 

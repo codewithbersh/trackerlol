@@ -1,6 +1,7 @@
+import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/actions/get-current-user";
 import prismadb from "@/lib/prismadb";
-import { NextResponse } from "next/server";
+import slugify from "@sindresorhus/slugify";
 
 export async function PATCH(
   req: Request,
@@ -46,6 +47,7 @@ export async function PATCH(
       title,
       color,
       type,
+      slug: slugify(title),
     },
   });
 

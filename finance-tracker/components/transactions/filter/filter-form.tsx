@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Category } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -34,11 +35,19 @@ const formSchema = z.object({
     })
     .optional(),
   type: z.enum(["INCOME", "EXPENSE"]).optional(),
+  category: z.string().optional(),
 });
 
-export const FilterForm = () => {
-  const { onClose, dateQuery, setDateQuery, typeQuery, setTypeQuery } =
-    useFilterTransactionsStore();
+export const FilterForm = ({ categories }: { categories: Category[] }) => {
+  const {
+    onClose,
+    dateQuery,
+    setDateQuery,
+    typeQuery,
+    setTypeQuery,
+    categoryQuery,
+    setCategoryQuery,
+  } = useFilterTransactionsStore();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -47,6 +56,7 @@ export const FilterForm = () => {
     defaultValues: {
       date: dateQuery,
       type: typeQuery,
+      category: categoryQuery,
     },
   });
 
@@ -66,6 +76,7 @@ export const FilterForm = () => {
       values.date && values.date.to
         ? format(values.date.to, "yyy-MM-dd")
         : null;
+    query.category = values.category ? values.category : null;
 
     query.type = values.type ? values.type.toLowerCase() : null;
 
@@ -79,7 +90,9 @@ export const FilterForm = () => {
 
     //@ts-ignore
     setDateQuery(values.date);
+
     setTypeQuery(values.type);
+    setCategoryQuery(values.category);
 
     router.push(url);
     onClose();
@@ -109,14 +122,14 @@ export const FilterForm = () => {
                       {field.value?.from ? (
                         field.value.to ? (
                           <>
-                            {format(field.value.from, "LLL dd, y")} -{" "}
-                            {format(field.value.to, "LLL dd, y")}
+                            {format(field.value.from, "LLL dd")}—{" "}
+                            {format(field.value.to, "LLL dd")}
                           </>
                         ) : (
-                          format(field.value.from, "LLL dd, y")
+                          format(field.value.from, "LLL dd")
                         )
                       ) : (
-                        <span>Pick a date</span>
+                        <span>Select dates</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -131,6 +144,7 @@ export const FilterForm = () => {
                     disabled={(date) =>
                       date > new Date() || date < new Date("1900-01-01")
                     }
+                    numberOfMonths={2}
                     initialFocus
                   />
                 </PopoverContent>
@@ -163,6 +177,42 @@ export const FilterForm = () => {
                     </FormControl>
                     <FormLabel className="font-normal">Income</FormLabel>
                   </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>Category</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  {categories.map((category) => (
+                    <FormItem
+                      key={category.id}
+                      className="flex items-center space-x-3 space-y-0"
+                    >
+                      <FormControl>
+                        <RadioGroupItem value={category.slug} />
+                      </FormControl>
+                      <FormLabel
+                        className="flex gap-2 px-2 py-1 rounded-sm text-primary-foreground"
+                        style={{ backgroundColor: category.color }}
+                      >
+                        <span>{category.emoji}</span>
+                        <span>{category.title}</span>
+                      </FormLabel>
+                    </FormItem>
+                  ))}
                 </RadioGroup>
               </FormControl>
               <FormMessage />

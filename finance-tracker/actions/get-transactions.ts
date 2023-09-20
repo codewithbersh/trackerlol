@@ -4,23 +4,22 @@ import { stringToDate } from "@/lib/utils";
 
 interface GetTransactionsProps {
   userId: string;
-  categoryId: string;
   to?: string;
   from?: string;
   type?: string;
+  slug?: string;
 }
 
 export async function getTransactions({
   userId,
-  categoryId,
-  to = "",
-  from = "",
+  to,
+  from,
   type,
+  slug,
 }: GetTransactionsProps) {
   return await prismadb.transaction.findMany({
     where: {
       userId,
-      categoryId,
       date: {
         gte: stringToDate(from),
         lte: stringToDate(to),
@@ -30,6 +29,9 @@ export async function getTransactions({
           ? (type.toUpperCase() as TransactionType)
           : undefined
         : undefined,
+      category: {
+        slug,
+      },
     },
     orderBy: {
       date: "desc",
