@@ -12,6 +12,7 @@ import prismadb from "@/lib/prismadb";
 
 import { GroupedTransactions } from "@/components/transactions/grouped-transactions";
 import { FilterTransactions } from "@/components/transactions/filter/filter-transactions";
+import { getCategories } from "@/actions/get-categories";
 
 interface TransactionsPageProps {
   searchParams: {
@@ -24,26 +25,19 @@ interface TransactionsPageProps {
 }
 
 const TransactionsPage = async ({
-  searchParams: { categoryId, from, to, type, category },
+  searchParams: { from, to, type, category },
 }: TransactionsPageProps) => {
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
-
   const dateRangeQuery: DateRange = {
     from: stringToDate(from),
     to: stringToDate(to),
   };
-  const categories = await prismadb.category.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
+
+  const categories = await getCategories();
 
   const typeQuery = validateTypeQuery(type);
   const categoryQuery = validateCategoryQuery(categories, category);
 
   const transactions = await getTransactions({
-    userId: user.id,
     from,
     to,
     type,

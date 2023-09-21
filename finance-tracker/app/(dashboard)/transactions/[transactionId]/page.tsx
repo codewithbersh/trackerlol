@@ -1,7 +1,7 @@
-import prismadb from "@/lib/prismadb";
 import { notFound } from "next/navigation";
 
 import { ExpenseForm } from "@/components/modals/transaction/expense/expense-form";
+import { getTransaction } from "@/actions/get-transaction";
 
 interface TransactionIdPageProps {
   params: { transactionId: string };
@@ -10,11 +10,7 @@ interface TransactionIdPageProps {
 const TransactionIdPage = async ({
   params: { transactionId },
 }: TransactionIdPageProps) => {
-  const transaction = await prismadb.transaction.findUnique({
-    where: {
-      id: transactionId,
-    },
-  });
+  const transaction = await getTransaction({ transactionId });
 
   if (!transaction) notFound();
   return (
