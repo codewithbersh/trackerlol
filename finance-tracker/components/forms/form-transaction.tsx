@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/popover";
 import { InputNumber } from "@/components/input-number";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CategorySelect } from "./category-select";
+import { FieldCategory } from "./field-category";
 
 const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -52,7 +52,7 @@ interface TransactionFormProps {
   };
 }
 
-export const TransactionForm = ({
+export const FormTransaction = ({
   initialData,
   categories,
 }: TransactionFormProps) => {
@@ -66,6 +66,7 @@ export const TransactionForm = ({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: initialData || {
+      type: "EXPENSE",
       amount: 0,
       categoryId: "",
       note: "",
@@ -188,7 +189,7 @@ export const TransactionForm = ({
           render={({ field }) => (
             <FormItem className="flex flex-col w-full">
               <FormLabel className="w-fit">Category</FormLabel>
-              <CategorySelect
+              <FieldCategory
                 selectedType={form.watch("type")}
                 categories={categories}
                 onChange={field.onChange}

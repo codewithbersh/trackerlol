@@ -1,7 +1,8 @@
-import { Dialog, InterceptedDialogContent } from "@/components/ui/dialog";
 import { getTransaction } from "@/actions/get-transaction";
-import { TransactionForm } from "@/components/forms/transaction-form";
 import { getCategories } from "@/actions/get-categories";
+
+import { Dialog, InterceptedDialogContent } from "@/components/ui/dialog";
+import { FormTransaction } from "@/components/forms/form-transaction";
 
 interface TransactionIdModalProps {
   params: { transactionId: string };
@@ -15,7 +16,7 @@ const TransactionIdModal = async ({
   return (
     <Dialog open>
       <InterceptedDialogContent>
-        <TransactionForm
+        <FormTransaction
           initialData={transaction}
           categories={{ income, expense }}
         />

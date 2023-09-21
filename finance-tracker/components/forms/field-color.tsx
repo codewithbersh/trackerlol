@@ -1,24 +1,33 @@
 "use client";
 
-import { colors } from "@/lib/colors";
-import useCategoryData from "@/hooks/use-category-data";
+import { expenseColors, incomeColors } from "@/lib/colors";
 import { cn } from "@/lib/utils";
 
 import { RadioGroup, RadioGroupColorItem } from "@/components/ui/radio-group";
+import { Category } from "@prisma/client";
 
-interface SelectColorProps {
+interface FieldColorProps {
   value: string;
   onChange: (value: string) => void;
   isLoading: boolean;
+  type: "EXPENSE" | "INCOME";
+  categories: {
+    income: Category[];
+    expense: Category[];
+  };
 }
 
-export const SelectColor = ({
+export const FieldColor = ({
   value,
   onChange,
   isLoading,
-}: SelectColorProps) => {
-  const { data: categories } = useCategoryData();
-  if (!categories) return null;
+  type,
+  categories,
+}: FieldColorProps) => {
+  const selectedCategoy =
+    type === "EXPENSE" ? categories.expense : categories.income;
+
+  const colors = type === "EXPENSE" ? expenseColors : incomeColors;
 
   return (
     <RadioGroup
@@ -33,11 +42,12 @@ export const SelectColor = ({
           value={color.value}
           className={cn(
             "w-full h-full rounded-md border-none col-span-1",
-            categories.some((category) => category.color === color.value) &&
-              "blur-sm"
+            selectedCategoy.some(
+              (category) => category.color === color.value
+            ) && "blur-sm"
           )}
           style={{ backgroundColor: color.value }}
-          disabled={categories.some(
+          disabled={selectedCategoy.some(
             (category) => category.color === color.value
           )}
         />

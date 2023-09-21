@@ -11,19 +11,19 @@ import {
 } from "@/components/ui/popover";
 import { Button, buttonVariants } from "@/components/ui/button";
 
-interface SelectEmojiProps {
+interface FieldEmojiProps {
   onChange: (value: string) => void;
   value: string;
   currentColor: string;
   isLoading: boolean;
 }
 
-export const SelectEmoji = ({
+export const FieldEmoji = ({
   onChange,
   value,
   currentColor,
   isLoading,
-}: SelectEmojiProps) => {
+}: FieldEmojiProps) => {
   const { theme } = useTheme();
 
   if (value) {

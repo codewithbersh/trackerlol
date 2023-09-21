@@ -2,10 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
-import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 import { Button } from "@/components/ui/button";
 import { ActionTooltip } from "@/components/action-tooltip";
+import Link from "next/link";
 
 interface TransactionButtonProps {
   tooltipSide: "right" | "top";
@@ -16,16 +16,16 @@ export const TransactionButton = ({
   className,
   tooltipSide,
 }: TransactionButtonProps) => {
-  const { onOpen } = useTransactionModal();
-
   return (
     <ActionTooltip label="Add Transaction" side={tooltipSide} align="center">
-      <Button
-        className={cn("h-10 w-10 rounded-full", className)}
-        onClick={onOpen}
-      >
-        <Plus className="shrink-0" />
-      </Button>
+      <Link href="/transactions/new" passHref scroll={false}>
+        <Button
+          className={cn("h-10 w-10 rounded-full", className)}
+          // onClick={onOpen}
+        >
+          <Plus className="shrink-0" />
+        </Button>
+      </Link>
     </ActionTooltip>
   );
 };

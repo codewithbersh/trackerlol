@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { TransactionModal } from "@/components/modals/transaction/transaction-modal";
+// import { TransactionModal } from "@/components/modals/transaction/transaction-modal";
 import { ExpenseCategoryModal } from "@/components/modals/category/expense-category-modal";
 import { EditExpenseCategoryModal } from "@/components/modals/category/edit-expense-category-modal";
 import { DeleteCategoryModal } from "@/components/modals/category/delete-category-modal";
@@ -17,10 +17,10 @@ const ModalProvider = () => {
   if (!isMounted) return null;
   return (
     <>
-      <TransactionModal />
+      {/* <TransactionModal />
       <ExpenseCategoryModal />
       <EditExpenseCategoryModal />
-      <DeleteCategoryModal />
+      <DeleteCategoryModal /> */}
     </>
   );
 };
