@@ -32,7 +32,7 @@ const TransactionsPage = async ({
     to: stringToDate(to),
   };
 
-  const categories = await getCategories();
+  const { categories } = await getCategories();
 
   const typeQuery = validateTypeQuery(type);
   const categoryQuery = validateCategoryQuery(categories, category);

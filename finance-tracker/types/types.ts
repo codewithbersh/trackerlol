@@ -14,6 +14,6 @@ export type Route = {
 
 export type TransactionWithAmountAsNumber = Prettify<
   Omit<Transaction, "amount"> & {
-    amount: Number;
+    amount: number;
   }
 >;

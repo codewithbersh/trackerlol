@@ -11,10 +11,17 @@ export const getTransaction = async ({
   if (!user) {
     return redirect("/login");
   }
-  return await prismadb.transaction.findUnique({
+
+  const transaction = await prismadb.transaction.findUnique({
     where: {
       id,
       userId: user.id,
     },
   });
+
+  if (transaction) {
+    return { ...transaction, amount: Number(transaction.amount) };
+  }
+
+  return null;
 };

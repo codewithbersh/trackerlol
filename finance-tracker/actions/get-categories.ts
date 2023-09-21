@@ -7,9 +7,14 @@ export const getCategories = async () => {
   if (!user) {
     return redirect("/login");
   }
-  return await prismadb.category.findMany({
+  const categories = await prismadb.category.findMany({
     where: {
       userId: user.id,
     },
   });
+
+  const expense = categories.filter((category) => category.type === "EXPENSE");
+  const income = categories.filter((category) => category.type === "INCOME");
+
+  return { income, expense, categories };
 };
