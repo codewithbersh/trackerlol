@@ -5,18 +5,18 @@ import { X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
 
-interface ActiveFilterButtonProps extends React.HTMLAttributes<HTMLDivElement> {
+interface FilterActiveProps extends React.HTMLAttributes<HTMLDivElement> {
   removeQuery: "dateQuery" | "typeQuery" | "categoryQuery";
   buttonText?: string;
 }
 
-export const ActiveFilterButton = ({
+export const FilterActive = ({
   removeQuery,
   buttonText,
   className,
   children,
   ...props
-}: ActiveFilterButtonProps) => {
+}: FilterActiveProps) => {
   const { setDateQuery, setTypeQuery, setCategoryQuery } =
     useFilterTransactionsStore();
   const searchParams = useSearchParams();

@@ -11,6 +11,9 @@ export const getCategories = async () => {
     where: {
       userId: user.id,
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   const expense = categories.filter((category) => category.type === "EXPENSE");

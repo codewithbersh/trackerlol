@@ -1,7 +1,7 @@
 import { Route } from "@/types/types";
 
-import { NavigationItem } from "./navigation-item";
 import { TransactionButton } from "@/components/transaction-button";
+import { NavigationItem } from "./navigation-item";
 
 interface NavigationMobileProps {
   routes: Route[];

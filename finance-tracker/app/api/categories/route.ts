@@ -30,8 +30,19 @@ export async function POST(req: Request) {
     },
   });
 
+  const colorExists = await prismadb.category.findFirst({
+    where: {
+      userId: user.id,
+      color,
+    },
+  });
+
   if (emojiExists) {
     return new NextResponse("Emoji has been used.", { status: 401 });
+  }
+
+  if (colorExists) {
+    return new NextResponse("Color has been used.", { status: 401 });
   }
 
   const category = await prismadb.category.create({

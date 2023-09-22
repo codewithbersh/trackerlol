@@ -39,3 +39,22 @@ export async function PATCH(
   });
   return NextResponse.json(transaction);
 }
+
+export async function DELETE(
+  req: Request,
+  { params: { transactionId } }: { params: { transactionId: string } }
+) {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return new NextResponse("Unauthenticated", { status: 401 });
+  }
+
+  const transaction = await prismadb.transaction.delete({
+    where: {
+      id: transactionId,
+      userId: user.id,
+    },
+  });
+  return NextResponse.json(transaction);
+}

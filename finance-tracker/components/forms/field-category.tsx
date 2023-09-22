@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import { useEditExpenseStore } from "@/hooks/use-edit-expense-store";
 import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown, PlusCircle, Settings2 } from "lucide-react";
+import { ChevronsUpDown, Dot, PlusCircle, Settings2 } from "lucide-react";
+import { Category } from "@prisma/client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -22,8 +23,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Category } from "@prisma/client";
-import { CategoryModal } from "../modals/category-modal";
 
 interface FieldCategoryProps {
   selectedType: "INCOME" | "EXPENSE";
@@ -46,10 +45,12 @@ export const FieldCategory = ({
   const [open, setOpen] = useState(false);
   const { onOpen } = useCategoryModal();
   const { onOpen: openEditModal, setCategory } = useEditExpenseStore();
-  //   const { data: categories, isLoading, isError } = useCategoryData();
   const selectedCategories =
     selectedType === "EXPENSE" ? categories.expense : categories.income;
 
+  const selectedCategory = selectedCategories.find(
+    (category) => category.id === value
+  );
   return (
     <>
       <Popover open={open} onOpenChange={setOpen}>
@@ -64,44 +65,55 @@ export const FieldCategory = ({
                 !value && "text-muted-foreground"
               )}
             >
-              {value
-                ? selectedCategories?.find((category) => category.id === value)
-                    ?.title
-                : "Select a category"}
+              {value ? (
+                <div className="flex gap-2 items-center w-full ">
+                  <div
+                    className="p-1 rounded-full leading-none text-base"
+                    style={{
+                      backgroundColor: selectedCategory?.color,
+                    }}
+                  >
+                    {selectedCategory?.emoji}
+                  </div>
+                  <span>{selectedCategory?.title}</span>
+                </div>
+              ) : (
+                "Select a category"
+              )}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </FormControl>
         </PopoverTrigger>
 
-        <PopoverContent className="w-[300px] sm:w-[462px] p-0">
-          <Command>
+        <PopoverContent className="p-0" align="center">
+          <Command className="bg-none backdrop-blur-none ">
             <CommandList>
               <CommandInput placeholder="Search categories..." />
               <CommandEmpty>No category found.</CommandEmpty>
               <CommandGroup>
                 {selectedCategories.map((category) => (
                   <CommandItem
-                    value={category.id}
                     key={category.id}
-                    onSelect={(value) => {
-                      onChange(value);
+                    onSelect={() => {
+                      onChange(category.id);
                       setOpen(false);
                     }}
-                    className="mt-2 flex gap-2"
+                    className="flex gap-2 h-fit"
                   >
-                    <Check
+                    <Dot
+                      strokeWidth={4}
                       className={cn(
-                        "mr-2 h-4 w-4",
+                        "text-primary-foreground",
                         category.id === value ? "opacity-100" : "opacity-0"
                       )}
                     />
                     <div
-                      className="text-xl p-1 rounded-md leading-none w-7 h-7"
+                      className="flex items-center gap-2 text-neutral-950 rounded-full font-medium px-3 py-1 leading-none"
                       style={{ backgroundColor: category.color }}
                     >
-                      {category.emoji}
+                      <span>{category.emoji}</span>
+                      <span>{category.title}</span>
                     </div>
-                    <span className="leading-none">{category.title}</span>
 
                     <Button
                       className="h-6 w-6 ml-auto"
@@ -122,7 +134,14 @@ export const FieldCategory = ({
             <CommandSeparator />
             <CommandList>
               <CommandGroup>
-                <CommandItem onSelect={onOpen} className="px-4">
+                <CommandItem
+                  onSelect={onOpen}
+                  className={cn(
+                    buttonVariants({ variant: "secondary", size: "sm" }),
+                    "w-full justify-start"
+                  )}
+                >
+                  <div className="w-6 h-6" />
                   <PlusCircle className="w-4 h-4 mr-2" />
                   New Category
                 </CommandItem>
@@ -131,8 +150,6 @@ export const FieldCategory = ({
           </Command>
         </PopoverContent>
       </Popover>
-
-      <CategoryModal categories={categories} />
     </>
   );
 };

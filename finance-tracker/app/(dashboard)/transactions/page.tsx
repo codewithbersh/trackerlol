@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/actions/get-current-user";
 import {
   groupTransactionsByDate,
   stringToDate,
@@ -8,11 +6,10 @@ import {
 } from "@/lib/utils";
 import { getTransactions } from "@/actions/get-transactions";
 import { DateRange } from "react-day-picker";
-import prismadb from "@/lib/prismadb";
+import { getCategories } from "@/actions/get-categories";
 
 import { GroupedTransactions } from "@/components/transactions/grouped-transactions";
-import { FilterTransactions } from "@/components/transactions/filter/filter-transactions";
-import { getCategories } from "@/actions/get-categories";
+import { FilterButton } from "@/components/transactions/filter-button";
 
 interface TransactionsPageProps {
   searchParams: {
@@ -48,7 +45,7 @@ const TransactionsPage = async ({
 
   return (
     <div className="flex flex-col gap-8 py-12">
-      <FilterTransactions
+      <FilterButton
         dateRangeQuery={dateRangeQuery}
         typeQuery={typeQuery}
         categoryQuery={categoryQuery}

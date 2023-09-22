@@ -19,6 +19,7 @@ const TransactionIdModal = async ({
         <FormTransaction
           initialData={transaction}
           categories={{ income, expense }}
+          isModal
         />
       </InterceptedDialogContent>
     </Dialog>

@@ -15,10 +15,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { ActiveFilterButton } from "./active-filter-button";
 import { FilterForm } from "./filter-form";
+import { FilterActive } from "./filter-active";
 
-interface FilterTransactionsProps {
+interface FilterButtonProps {
   dateRangeQuery: DateRange;
   typeQuery: TransactionType | undefined;
   categories: Category[];
@@ -27,12 +27,12 @@ interface FilterTransactionsProps {
 
 const formatDate = (date?: Date) => (date ? format(date, "LLL dd") : null);
 
-export const FilterTransactions = ({
+export const FilterButton = ({
   dateRangeQuery,
   typeQuery,
   categories,
   categoryQuery,
-}: FilterTransactionsProps) => {
+}: FilterButtonProps) => {
   const {
     dateQuery,
     setDateQuery,
@@ -59,34 +59,28 @@ export const FilterTransactions = ({
   return (
     <>
       <Button
-        variant="outline"
+        variant="secondary"
         type="button"
-        className="w-fit gap-2 h-fit min-h-[43.62px] mx-auto"
+        className="w-fit gap-2 h-fit min-h-[43.62px] mx-auto border-border border rounded-full"
         onClick={onOpen}
       >
         <SlidersHorizontal className="w-4 h-4 shrink-0" />
-        Filters
+        <span className=" font-bold">Filters</span>
         {dateQuery?.from && (
-          <ActiveFilterButton
-            removeQuery="dateQuery"
-            buttonText={dateQueryText}
-          />
+          <FilterActive removeQuery="dateQuery" buttonText={dateQueryText} />
         )}
         {typeQueryState && (
-          <ActiveFilterButton
-            removeQuery="typeQuery"
-            buttonText={typeQueryState}
-          />
+          <FilterActive removeQuery="typeQuery" buttonText={typeQueryState} />
         )}
         {categoryQuery && (
-          <ActiveFilterButton
+          <FilterActive
             removeQuery="categoryQuery"
             className="flex gap-2 px-2 py-1 rounded-sm text-primary-foreground"
             style={{ backgroundColor: categoryQuery.color }}
           >
             <span>{categoryQuery.emoji}</span>
             <span>{categoryQuery.title}</span>
-          </ActiveFilterButton>
+          </FilterActive>
         )}
       </Button>
       <Sheet open={isOpen} onOpenChange={onClose}>

@@ -18,7 +18,7 @@ export const GroupedTransactions = ({
 
   return (
     <div className="space-y-2 text-sm leading-none sm:text-base">
-      <div className="flex justify-between px-2">
+      <div className="flex justify-between px-4">
         <small className="text-muted-foreground">{date}</small>
         <small className="text-muted-foreground">$ {sum}</small>
       </div>
@@ -27,23 +27,25 @@ export const GroupedTransactions = ({
           <Link
             href={`/transactions/${transaction.id}`}
             key={transaction.id}
-            className="bg-accent rounded-md flex items-center justify-between px-4 py-2 hover:bg-accent/50 cursor-pointer"
+            className="bg-accent/75 rounded-full flex items-center justify-between px-4 py-2 hover:bg-accent/50 cursor-pointer"
             scroll={false}
+            prefetch={false}
           >
             <div className="flex gap-4 w-full items-center justify-between">
               <div
-                className="flex items-center gap-2 text-neutral-950 rounded-sm font-medium px-2 py-1 leading-none"
+                className="flex items-center gap-2 text-neutral-950 rounded-full font-medium px-3 py-1 leading-none"
                 style={{ backgroundColor: transaction.category.color }}
               >
                 <span>{transaction.category.emoji}</span>
                 <span>{transaction.category.title}</span>
               </div>
-              <div className="text-muted-foreground truncate leading-none">
+              <div className="text-muted-foreground truncate leading-tight">
                 {transaction.note}
               </div>
 
-              <div className="text-primary ml-auto shrink-0">
-                $ {Number(transaction.amount).toLocaleString("en-US")}
+              <div className="text-foreground/80 font-bold ml-auto shrink-0">
+                <span>{transaction.type === "EXPENSE" ? "-" : ""} $</span>{" "}
+                {Number(transaction.amount).toLocaleString("en-US")}
               </div>
             </div>
           </Link>

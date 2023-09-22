@@ -13,7 +13,7 @@ interface InputNumberProps extends NumericFormatProps {
   className?: string;
 }
 
-export const InputNumber = ({
+export const FieldAmount = ({
   maxLength = 9_999_999,
   onValueChange,
   value,
@@ -22,13 +22,13 @@ export const InputNumber = ({
 }: InputNumberProps) => {
   return (
     <NumericFormat
-      placeholder="0"
+      placeholder="$  0.00"
+      prefix="$  "
       className={cn(
-        "min-w-[50px] py-0 leading-none overflow-hidden max-w-[420px] sm:text-6xl font-bold bg-background outline-none text-5xl text-center",
+        "flex h-10 w-full rounded-full border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       min={1}
-      style={{ width: `${value.toString().length + 0.5}ch` }}
       allowNegative={false}
       thousandSeparator
       decimalScale={decimalScale}

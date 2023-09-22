@@ -20,9 +20,9 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FieldEmoji } from "./field-emoji";
-import { FieldColor } from "./field-color";
+import { FieldColorTest } from "./field-color-test";
+import { FieldType } from "./field-type";
 
 export const CategoryFormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -54,7 +54,6 @@ export const FormCategory = () => {
     try {
       await axios.post("/api/categories", values);
       toast.success("Category added.");
-      //   refetch();
       onClose();
       form.reset();
     } catch (error) {
@@ -64,7 +63,10 @@ export const FormCategory = () => {
               type: "Emoji Already Exists",
               message: "Emoji already exists",
             })
+          : error.response?.data === "Color has been used."
+          ? form.setError("color", { message: "Color already exists." })
           : toast.error("An error has occured.");
+        console.log(error.response?.data);
       }
       console.log("[ADD_CATEGORY_ERROR]", error);
     }
@@ -82,26 +84,15 @@ export const FormCategory = () => {
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem className="space-y-3 mx-auto">
+            <FormItem>
               <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex gap-4"
-                >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="EXPENSE" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Expense</FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="INCOME" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Income</FormLabel>
-                  </FormItem>
-                </RadioGroup>
+                <FieldType
+                  value={field.value}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    form.setValue("color", "");
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -151,17 +142,22 @@ export const FormCategory = () => {
             <FormItem>
               <FormLabel>Color</FormLabel>
               <FormControl>
-                <FieldColor
-                  categories={categories}
-                  type={form.watch("type")}
+                <FieldColorTest
+                  categories={
+                    form.watch("type") === "EXPENSE"
+                      ? categories.expense
+                      : categories.income
+                  }
                   onChange={field.onChange}
                   value={field.value}
-                  isLoading={isLoading}
+                  type={form.watch("type")}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
+
         <Button
           type="submit"
           className="w-full gap-2 items-center"

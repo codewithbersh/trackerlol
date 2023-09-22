@@ -19,8 +19,10 @@ export const NavigationItem = ({
         href={href}
         passHref
         className={cn(
-          "rounded-full p-2 hover:bg-accent",
-          active ? " text-foreground bg-accent " : "text-muted-foreground"
+          "rounded-full p-1.5 hover:bg-neutral-600/80",
+          active
+            ? " text-foreground bg-neutral-600 "
+            : "text-muted-foreground/50"
         )}
       >
         <Icon />
