@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useCategoryModal } from "@/hooks/use-category-modal";
-import { useEditExpenseStore } from "@/hooks/use-edit-expense-store";
 import { cn } from "@/lib/utils";
 import { ChevronsUpDown, Dot, PlusCircle, Settings2 } from "lucide-react";
 import { Category } from "@prisma/client";
@@ -21,6 +20,7 @@ import { FormControl } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
+  PopoverContentWithoutPortal,
   PopoverTrigger,
 } from "@/components/ui/popover";
 
@@ -43,8 +43,8 @@ export const FieldCategory = ({
   selectedType,
 }: FieldCategoryProps) => {
   const [open, setOpen] = useState(false);
-  const { onOpen } = useCategoryModal();
-  const { onOpen: openEditModal, setCategory } = useEditExpenseStore();
+  const { onOpen, setCategory } = useCategoryModal();
+
   const selectedCategories =
     selectedType === "EXPENSE" ? categories.expense : categories.income;
 
@@ -85,12 +85,12 @@ export const FieldCategory = ({
           </FormControl>
         </PopoverTrigger>
 
-        <PopoverContent className="p-0" align="center">
+        <PopoverContentWithoutPortal className="p-0" align="center">
           <Command className="bg-none backdrop-blur-none ">
             <CommandList>
               <CommandInput placeholder="Search categories..." />
               <CommandEmpty>No category found.</CommandEmpty>
-              <CommandGroup>
+              <CommandGroup className="max-h-[150px] overflow-y-auto">
                 {selectedCategories.map((category) => (
                   <CommandItem
                     key={category.id}
@@ -122,8 +122,9 @@ export const FieldCategory = ({
                       onClick={(e) => {
                         e.stopPropagation();
                         setCategory(category);
-                        openEditModal();
+                        onOpen();
                       }}
+                      type="button"
                     >
                       <Settings2 className="w-4 h-4" />
                     </Button>
@@ -135,7 +136,10 @@ export const FieldCategory = ({
             <CommandList>
               <CommandGroup>
                 <CommandItem
-                  onSelect={onOpen}
+                  onSelect={() => {
+                    onOpen();
+                    setCategory(null);
+                  }}
                   className={cn(
                     buttonVariants({ variant: "secondary", size: "sm" }),
                     "w-full justify-start"
@@ -148,7 +152,7 @@ export const FieldCategory = ({
               </CommandGroup>
             </CommandList>
           </Command>
-        </PopoverContent>
+        </PopoverContentWithoutPortal>
       </Popover>
     </>
   );

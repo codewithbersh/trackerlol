@@ -1,57 +1,67 @@
 "use client";
 
+import { HexColorPicker } from "react-colorful";
 import { expenseColors, incomeColors } from "@/lib/colors";
+import { Plus } from "lucide-react";
+import { Category } from "@prisma/client";
 import { cn } from "@/lib/utils";
 
-import { RadioGroup, RadioGroupColorItem } from "@/components/ui/radio-group";
-import { Category } from "@prisma/client";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface FieldColorProps {
   value: string;
   onChange: (value: string) => void;
-  isLoading: boolean;
   type: "EXPENSE" | "INCOME";
-  categories: {
-    income: Category[];
-    expense: Category[];
-  };
+  categories: Category[] | undefined;
 }
 
 export const FieldColor = ({
   value,
   onChange,
-  isLoading,
   type,
   categories,
 }: FieldColorProps) => {
-  const selectedCategoy =
-    type === "EXPENSE" ? categories.expense : categories.income;
-
   const colors = type === "EXPENSE" ? expenseColors : incomeColors;
 
   return (
-    <RadioGroup
-      defaultValue={value}
-      onValueChange={onChange}
-      className="grid grid-cols-10 "
-      disabled={isLoading}
-    >
+    <div className="w-full grid grid-cols-10 gap-2">
       {colors.map((color) => (
-        <RadioGroupColorItem
+        <button
           key={color.value}
-          value={color.value}
+          type="button"
           className={cn(
-            "w-full h-full rounded-md border-none col-span-1",
-            selectedCategoy.some(
-              (category) => category.color === color.value
-            ) && "blur-sm"
+            "w-full h-full aspect-square rounded-full",
+            categories
+              ? categories.some((category) => category.color === color.value) &&
+                  "blur-sm cursor-not-allowed"
+              : "blur-sm animate-pulse cursor-not-allowed"
           )}
+          disabled={
+            categories
+              ? categories.some((category) => category.color === color.value)
+              : true
+          }
           style={{ backgroundColor: color.value }}
-          disabled={selectedCategoy.some(
-            (category) => category.color === color.value
-          )}
+          onClick={() => onChange(color.value)}
         />
       ))}
-    </RadioGroup>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <button className="w-full h-full aspect-square bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-500 via-red-500 to-yellow-500 p-1 rounded-full">
+            <div className="bg-foreground text-background w-full h-full rounded-full grid place-items-center">
+              <Plus strokeWidth={3} />
+            </div>
+          </button>
+        </PopoverTrigger>
+        <PopoverContent align="end" className="w-fit">
+          <HexColorPicker color={value} onChange={onChange} />
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 };

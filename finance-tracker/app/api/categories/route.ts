@@ -7,9 +7,6 @@ export async function POST(req: Request) {
   const user = await getCurrentUser();
   const { emoji, title, color, type } = await req.json();
 
-  if (!user) {
-    return new NextResponse("Unauthenticated", { status: 401 });
-  }
   if (!type) {
     return new NextResponse("Type is required", { status: 401 });
   }

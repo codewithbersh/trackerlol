@@ -234,7 +234,7 @@ export const FormTransaction = ({
               </FormItem>
             )}
           />
-          <div className="col-span-full flex mt-6 items-center gap-4 justify-end">
+          <div className="col-span-full flex mt-6 items-center gap-4 ">
             {initialData && (
               <Button
                 variant="outlineDestructive"
@@ -242,6 +242,16 @@ export const FormTransaction = ({
                 onClick={() => handleDelete(initialData.id)}
               >
                 Delete
+              </Button>
+            )}
+            {isModal && (
+              <Button
+                variant="ghost"
+                type="button"
+                onClick={() => router.back()}
+                className="ml-auto"
+              >
+                Cancel
               </Button>
             )}
             <Button type="submit" className="w-fit" disabled={isLoading}>

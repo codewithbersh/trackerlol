@@ -10,10 +10,6 @@ export async function PATCH(
   const user = await getCurrentUser();
   const { emoji, title, color, type } = await req.json();
 
-  if (!user) {
-    return new NextResponse("Unauthenticated", { status: 401 });
-  }
-
   if (!type) {
     return new NextResponse("Type is required", { status: 401 });
   }
@@ -55,7 +51,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: Request,
+  _req: Request,
   { params: { categoryId } }: { params: { categoryId: string } }
 ) {
   const user = await getCurrentUser();

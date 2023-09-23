@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCategoryData from "@/hooks/use-category-data";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -21,8 +22,8 @@ import { Input } from "@/components/ui/input";
 
 import { Button } from "@/components/ui/button";
 import { FieldEmoji } from "./field-emoji";
-import { FieldColorTest } from "./field-color-test";
 import { FieldType } from "./field-type";
+import { FieldColor } from "./field-color";
 
 export const CategoryFormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -34,12 +35,13 @@ export const CategoryFormSchema = z.object({
 });
 
 export const FormCategory = () => {
-  const { isOpen, onClose } = useCategoryModal();
-  const { data: categories } = useCategoryData();
+  const { onClose, category: initialData } = useCategoryModal();
+  const { data: categories, refetch } = useCategoryData();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof CategoryFormSchema>>({
     resolver: zodResolver(CategoryFormSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       type: "EXPENSE",
       emoji: "",
       title: "",
@@ -49,13 +51,21 @@ export const FormCategory = () => {
 
   const isLoading = form.formState.isSubmitting;
   const currentColor = form.watch("color");
+  const buttonText = initialData ? "Save Category" : "Add Category";
 
   async function onSubmit(values: z.infer<typeof CategoryFormSchema>) {
     try {
-      await axios.post("/api/categories", values);
-      toast.success("Category added.");
+      if (initialData) {
+        await axios.patch(`/api/categories/${initialData.id}`, values);
+        toast.success("Category updated.");
+      } else {
+        await axios.post("/api/categories", values);
+        toast.success("Category added.");
+      }
       onClose();
       form.reset();
+      refetch();
+      router.refresh();
     } catch (error) {
       if (isAxiosError(error)) {
         error.response?.data === "Emoji has been used."
@@ -72,19 +82,29 @@ export const FormCategory = () => {
     }
   }
 
-  if (!categories) return null;
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`/api/categories/${id}`);
+      toast.success("Transaction has been deleted.");
+      router.refresh();
+      onClose();
+    } catch (error) {
+      toast.error("An error has occured.");
+      console.log("[DELETE_CATEGORY_ERROR]", error);
+    }
+  };
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-8"
+        className="flex flex-col gap-8 pt-8"
       >
         <FormField
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-full">
               <FormControl>
                 <FieldType
                   value={field.value}
@@ -94,7 +114,6 @@ export const FormCategory = () => {
                   }}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -102,7 +121,7 @@ export const FormCategory = () => {
           control={form.control}
           name="emoji"
           render={({ field }) => (
-            <FormItem className="flex flex-col items-center">
+            <FormItem className="flex flex-col items-center pt-8">
               <FormControl>
                 <FieldEmoji
                   onChange={field.onChange}
@@ -142,11 +161,11 @@ export const FormCategory = () => {
             <FormItem>
               <FormLabel>Color</FormLabel>
               <FormControl>
-                <FieldColorTest
+                <FieldColor
                   categories={
                     form.watch("type") === "EXPENSE"
-                      ? categories.expense
-                      : categories.income
+                      ? categories?.expense
+                      : categories?.income
                   }
                   onChange={field.onChange}
                   value={field.value}
@@ -158,14 +177,34 @@ export const FormCategory = () => {
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full gap-2 items-center"
-          disabled={isLoading}
-        >
-          {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-          Add Category
-        </Button>
+        <div className="w-full flex gap-4 mt-6">
+          {initialData && (
+            <Button
+              className=""
+              variant="outlineDestructive"
+              type="button"
+              onClick={() => handleDelete(initialData.id)}
+            >
+              Delete
+            </Button>
+          )}
+          <Button
+            className=" ml-auto"
+            variant="ghost"
+            type="button"
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            className="w-fit gap-2 items-center"
+            disabled={isLoading}
+          >
+            {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+            {buttonText}
+          </Button>
+        </div>
       </form>
     </Form>
   );
