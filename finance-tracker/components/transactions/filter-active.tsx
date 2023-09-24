@@ -54,7 +54,7 @@ export const FilterActive = ({
   return (
     <div
       className={cn(
-        "relative text-xs px-2 py-1 border border-neutral-700 bg-neutral-800 rounded-sm group",
+        "relative text-xs px-2 py-1 border border-neutral-700 bg-neutral-800 rounded-full group",
         className
       )}
       onClick={(e) => handleRemoveQuery(e)}

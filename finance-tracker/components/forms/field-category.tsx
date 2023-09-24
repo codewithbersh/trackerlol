@@ -23,7 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CategoryBadge } from "@/components/category-badget";
+import { CategoryBadge } from "@/components/category-badge";
 
 interface FieldCategoryProps {
   selectedType: "INCOME" | "EXPENSE";

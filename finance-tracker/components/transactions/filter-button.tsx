@@ -8,14 +8,8 @@ import { SlidersHorizontal } from "lucide-react";
 import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { FilterForm } from "./filter-form";
+import { CategoryBadge } from "@/components/category-badge";
+import { FilterTransactionsModal } from "@/components/modals/filter-transactions-modal";
 import { FilterActive } from "./filter-active";
 
 interface FilterButtonProps {
@@ -39,8 +33,6 @@ export const FilterButton = ({
     setTypeQuery,
     onOpen,
     typeQuery: typeQueryState,
-    isOpen,
-    onClose,
     setCategoryQuery,
   } = useFilterTransactionsStore();
 
@@ -73,26 +65,19 @@ export const FilterButton = ({
           <FilterActive removeQuery="typeQuery" buttonText={typeQueryState} />
         )}
         {categoryQuery && (
-          <FilterActive
-            removeQuery="categoryQuery"
-            className="flex gap-2 px-2 py-1 rounded-sm text-primary-foreground"
-            style={{ backgroundColor: categoryQuery.color }}
-          >
-            <span>{categoryQuery.emoji}</span>
-            <span>{categoryQuery.title}</span>
+          <FilterActive removeQuery="categoryQuery" className="border-0 p-0">
+            <CategoryBadge
+              variant="small"
+              backgroundColor={categoryQuery.color}
+              emoji={categoryQuery.emoji}
+              title={categoryQuery.title}
+              className="h-[26px]"
+            />
           </FilterActive>
         )}
       </Button>
-      <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Apply Filters</SheetTitle>
-            <SheetDescription>Filter transactions</SheetDescription>
-          </SheetHeader>
 
-          <FilterForm categories={categories} />
-        </SheetContent>
-      </Sheet>
+      <FilterTransactionsModal categories={categories} />
     </>
   );
 };

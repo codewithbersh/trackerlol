@@ -26,6 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { CategoryBadge } from "@/components/category-badge";
 
 const formSchema = z.object({
   date: z
@@ -38,7 +39,11 @@ const formSchema = z.object({
   category: z.string().optional(),
 });
 
-export const FilterForm = ({ categories }: { categories: Category[] }) => {
+export const FormFilterTransactions = ({
+  categories,
+}: {
+  categories: Category[];
+}) => {
   const {
     onClose,
     dateQuery,
@@ -204,12 +209,13 @@ export const FilterForm = ({ categories }: { categories: Category[] }) => {
                       <FormControl>
                         <RadioGroupItem value={category.slug} />
                       </FormControl>
-                      <FormLabel
-                        className="flex gap-2 px-2 py-1 rounded-sm text-primary-foreground"
-                        style={{ backgroundColor: category.color }}
-                      >
-                        <span>{category.emoji}</span>
-                        <span>{category.title}</span>
+                      <FormLabel>
+                        <CategoryBadge
+                          backgroundColor={category.color}
+                          emoji={category.emoji}
+                          title={category.title}
+                          variant="small"
+                        />
                       </FormLabel>
                     </FormItem>
                   ))}

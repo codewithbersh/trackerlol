@@ -4,7 +4,7 @@ import { parseISO, format } from "date-fns";
 import { GroupedTransactions as GroupedTransactionsType } from "@/lib/utils";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
-import { CategoryBadge } from "@/components/category-badget";
+import { CategoryBadge } from "@/components/category-badge";
 
 interface GroupedTransactionsProps {
   group: GroupedTransactionsType;
