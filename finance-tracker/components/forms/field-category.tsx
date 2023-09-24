@@ -23,6 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CategoryBadge } from "@/components/category-badget";
 
 interface FieldCategoryProps {
   selectedType: "INCOME" | "EXPENSE";
@@ -109,13 +110,12 @@ export const FieldCategory = ({
                         category.id === value ? "opacity-100" : "opacity-0"
                       )}
                     />
-                    <div
-                      className="flex items-center gap-2 text-neutral-950 rounded-full font-medium px-3 py-1 leading-none"
-                      style={{ backgroundColor: category.color }}
-                    >
-                      <span>{category.emoji}</span>
-                      <span>{category.title}</span>
-                    </div>
+                    <CategoryBadge
+                      backgroundColor={category.color}
+                      emoji={category.emoji}
+                      title={category.title}
+                      variant="small"
+                    />
 
                     <Button
                       className="h-6 w-6 ml-auto"

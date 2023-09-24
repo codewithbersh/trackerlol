@@ -4,6 +4,8 @@ import { parseISO, format } from "date-fns";
 import { GroupedTransactions as GroupedTransactionsType } from "@/lib/utils";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
+import { CategoryBadge } from "@/components/category-badget";
+
 interface GroupedTransactionsProps {
   group: GroupedTransactionsType;
 }
@@ -36,13 +38,11 @@ export const GroupedTransactions = ({
             }}
           >
             <div className="flex gap-4 w-full items-center justify-between">
-              <div
-                className="flex items-center gap-2 text-neutral-950 rounded-full font-medium px-3 py-1 leading-none"
-                style={{ backgroundColor: transaction.category.color }}
-              >
-                <span>{transaction.category.emoji}</span>
-                <span>{transaction.category.title}</span>
-              </div>
+              <CategoryBadge
+                backgroundColor={transaction.category.color}
+                emoji={transaction.category.emoji}
+                title={transaction.category.title}
+              />
               <div className="text-muted-foreground truncate leading-tight">
                 {transaction.note}
               </div>
