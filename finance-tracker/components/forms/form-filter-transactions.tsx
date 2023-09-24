@@ -106,7 +106,10 @@ export const FormFilterTransactions = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-12">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-8"
+      >
         <FormField
           control={form.control}
           name="date"
@@ -225,7 +228,10 @@ export const FormFilterTransactions = ({
             </FormItem>
           )}
         />
-        <Button type="submit">Apply Filters</Button>
+
+        <Button type="submit" className="mt-auto w-fit">
+          Apply Filters
+        </Button>
       </form>
     </Form>
   );
