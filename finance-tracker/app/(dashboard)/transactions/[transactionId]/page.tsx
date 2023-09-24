@@ -1,5 +1,4 @@
 import { getTransaction } from "@/actions/get-transaction";
-import { getCategories } from "@/actions/get-categories";
 
 import { FormTransaction } from "@/components/forms/form-transaction";
 
@@ -11,13 +10,9 @@ const TransactionIdPage = async ({
   params: { transactionId },
 }: TransactionIdPageProps) => {
   const transaction = await getTransaction({ transactionId });
-  const { income, expense } = await getCategories();
   return (
     <div>
-      <FormTransaction
-        initialData={transaction}
-        categories={{ income, expense }}
-      />
+      <FormTransaction initialData={transaction} />
     </div>
   );
 };

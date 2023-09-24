@@ -12,12 +12,15 @@ interface GetTransactionsProps {
   slug?: string;
 }
 
+import { Transaction } from "@prisma/client";
+
 export const getTransactions = cache(
   async ({ to, from, type, slug }: GetTransactionsProps) => {
     const user = await getCurrentUser();
 
     const lte = stringToDate(to);
-    return await prismadb.transaction.findMany({
+
+    const transactions = await prismadb.transaction.findMany({
       where: {
         userId: user.id,
         date: {
@@ -40,5 +43,12 @@ export const getTransactions = cache(
         category: true,
       },
     });
+
+    const formattedTransactions = transactions.map((transaction) => ({
+      ...transaction,
+      amount: Number(transaction.amount),
+    }));
+
+    return formattedTransactions;
   }
 );

@@ -1,6 +1,8 @@
-import Link from "next/link";
+"use client";
+
 import { parseISO, format } from "date-fns";
 import { GroupedTransactions as GroupedTransactionsType } from "@/lib/utils";
+import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 interface GroupedTransactionsProps {
   group: GroupedTransactionsType;
@@ -9,6 +11,7 @@ interface GroupedTransactionsProps {
 export const GroupedTransactions = ({
   group: { date: initialDate, transactions },
 }: GroupedTransactionsProps) => {
+  const { onOpen, setTransaction } = useTransactionModal();
   const date = format(parseISO(initialDate), "EEE, MMM d");
   const sum = transactions
     .reduce((acc, transaction) => {
@@ -24,12 +27,13 @@ export const GroupedTransactions = ({
       </div>
       <div className="flex flex-col gap-4 overflow-hidden">
         {transactions.map((transaction) => (
-          <Link
-            href={`/transactions/${transaction.id}`}
+          <div
             key={transaction.id}
             className="bg-accent/75 rounded-full flex items-center justify-between px-4 py-2 hover:bg-accent/50 cursor-pointer"
-            scroll={false}
-            prefetch={false}
+            onClick={() => {
+              setTransaction(transaction);
+              onOpen();
+            }}
           >
             <div className="flex gap-4 w-full items-center justify-between">
               <div
@@ -48,7 +52,7 @@ export const GroupedTransactions = ({
                 {Number(transaction.amount).toLocaleString("en-US")}
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

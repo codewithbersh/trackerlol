@@ -44,7 +44,7 @@ const TransactionsPage = async ({
   const groupedTransactions = groupTransactionsByDate(transactions);
 
   return (
-    <div className="flex flex-col gap-8 py-12">
+    <div className="flex flex-col gap-8 py-24">
       <FilterButton
         dateRangeQuery={dateRangeQuery}
         typeQuery={typeQuery}

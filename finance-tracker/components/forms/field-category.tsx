@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import { cn } from "@/lib/utils";
 import { ChevronsUpDown, Dot, PlusCircle, Settings2 } from "lucide-react";
-import { Category } from "@prisma/client";
+import useCategoryData from "@/hooks/use-category-data";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -19,36 +19,32 @@ import {
 import { FormControl } from "@/components/ui/form";
 import {
   Popover,
-  PopoverContent,
   PopoverContentWithoutPortal,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface FieldCategoryProps {
   selectedType: "INCOME" | "EXPENSE";
   onChange: (value: string) => void;
   value: string;
   isLoading: boolean;
-  categories: {
-    income: Category[];
-    expense: Category[];
-  };
 }
 
 export const FieldCategory = ({
   onChange,
   value,
   isLoading: isSubmitting,
-  categories,
   selectedType,
 }: FieldCategoryProps) => {
   const [open, setOpen] = useState(false);
   const { onOpen, setCategory } = useCategoryModal();
+  const { data: categories } = useCategoryData();
 
   const selectedCategories =
-    selectedType === "EXPENSE" ? categories.expense : categories.income;
+    selectedType === "EXPENSE" ? categories?.expense : categories?.income;
 
-  const selectedCategory = selectedCategories.find(
+  const selectedCategory = selectedCategories?.find(
     (category) => category.id === value
   );
   return (
@@ -57,7 +53,7 @@ export const FieldCategory = ({
         <PopoverTrigger asChild>
           <FormControl>
             <Button
-              disabled={isSubmitting}
+              disabled={isSubmitting || !categories}
               variant="outline"
               role="combobox"
               className={cn(
@@ -65,6 +61,12 @@ export const FieldCategory = ({
                 !value && "text-muted-foreground"
               )}
             >
+              {!categories && (
+                <div className="flex gap-2 items-center w-full">
+                  <Skeleton className="w-6 h-6 rounded-full shrink-0" />
+                  <Skeleton className="w-full h-5 rounded-full" />
+                </div>
+              )}
               {value ? (
                 <div className="flex gap-2 items-center w-full ">
                   <div
@@ -91,7 +93,7 @@ export const FieldCategory = ({
               <CommandInput placeholder="Search categories..." />
               <CommandEmpty>No category found.</CommandEmpty>
               <CommandGroup className="max-h-[150px] overflow-y-auto">
-                {selectedCategories.map((category) => (
+                {selectedCategories?.map((category) => (
                   <CommandItem
                     key={category.id}
                     onSelect={() => {

@@ -1,4 +1,3 @@
-import { getCategories } from "@/actions/get-categories";
 import { Category } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 

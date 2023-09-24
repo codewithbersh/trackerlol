@@ -1,3 +1,4 @@
+import { TransactionWithCategory } from "@/lib/utils";
 import { Transaction } from "@prisma/client";
 import { LucideIcon } from "lucide-react";
 
@@ -14,6 +15,12 @@ export type Route = {
 
 export type TransactionWithAmountAsNumber = Prettify<
   Omit<Transaction, "amount"> & {
+    amount: number;
+  }
+>;
+
+export type TransactionWithCategoryWithAmountAsNumber = Prettify<
+  Omit<TransactionWithCategory, "amount"> & {
     amount: number;
   }
 >;

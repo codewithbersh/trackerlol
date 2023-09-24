@@ -1,3 +1,4 @@
+import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
 import { Category, Transaction, TransactionType } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import { isValid, parseISO } from "date-fns";
@@ -22,13 +23,16 @@ export interface TransactionWithCategory extends Transaction {
 
 export type GroupedTransactions = {
   date: string;
-  transactions: TransactionWithCategory[];
+  transactions: TransactionWithCategoryWithAmountAsNumber[];
 };
 
 export function groupTransactionsByDate(
-  transactions: TransactionWithCategory[]
+  transactions: TransactionWithCategoryWithAmountAsNumber[]
 ): GroupedTransactions[] {
-  const groupedMap: Record<string, TransactionWithCategory[]> = {};
+  const groupedMap: Record<
+    string,
+    TransactionWithCategoryWithAmountAsNumber[]
+  > = {};
 
   for (const transaction of transactions) {
     const date = new Date(transaction.date).toISOString().split("T")[0];
