@@ -16,11 +16,14 @@ export const TransactionButton = ({
   className,
   tooltipSide,
 }: TransactionButtonProps) => {
-  const { onOpen } = useTransactionModal();
+  const { onOpen, setTransaction } = useTransactionModal();
   return (
     <ActionTooltip label="Add Transaction" side={tooltipSide} align="center">
       <Button
-        onClick={onOpen}
+        onClick={() => {
+          setTransaction(null);
+          onOpen();
+        }}
         className={cn("h-9 w-9 rounded-full", className)}
       >
         <Plus className="shrink-0" />
