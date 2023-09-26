@@ -45,6 +45,7 @@ model User {
 
   categories   Category[]
   transactions Transaction[]
+  budgets      Budget[]
 }
 
 model VerificationToken {
@@ -67,6 +68,7 @@ model Category {
   emoji        String
   color        String
   transactions Transaction[]
+  budget       Budget?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -90,6 +92,44 @@ model Transaction {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Budget {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  type       BudgetType
+  category   Category?     @relation(fields: [categoryId], references: [id])
+  categoryId String?       @unique
+  amount     Decimal
+  timeFrame  TimeFrameType
+  startDate  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum WeeklyType {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum TimeFrameType {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum BudgetType {
+  OVERALL
+  CATEGORY
 }
 
 enum TransactionType {

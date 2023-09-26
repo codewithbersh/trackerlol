@@ -228,10 +228,29 @@ export const FormFilterTransactions = ({
             </FormItem>
           )}
         />
-
-        <Button type="submit" className="mt-auto w-fit">
-          Apply Filters
-        </Button>
+        <div className="mt-auto w-full flex gap-4">
+          <Button
+            variant="outlineDestructive"
+            type="button"
+            onClick={() => {
+              onClose();
+              router.push("/transactions");
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            variant="ghost"
+            className="ml-auto"
+            type="button"
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" className="w-fit">
+            Apply Filters
+          </Button>
+        </div>
       </form>
     </Form>
   );

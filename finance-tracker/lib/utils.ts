@@ -1,7 +1,20 @@
 import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
-import { Category, Transaction, TransactionType } from "@prisma/client";
+import {
+  Category,
+  TimeFrameType,
+  Transaction,
+  TransactionType,
+} from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
-import { isValid, parseISO } from "date-fns";
+import {
+  eachDayOfInterval,
+  endOfMonth,
+  endOfWeek,
+  isValid,
+  parseISO,
+  startOfMonth,
+  startOfWeek,
+} from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -78,4 +91,29 @@ export const validateCategoryQuery = (
   if (!category) return undefined;
 
   return categories.find((item) => item.slug === category);
+};
+
+const daysOfWeek = (today: Date) => {
+  return eachDayOfInterval({
+    start: startOfWeek(today, { weekStartsOn: 0 }),
+    end: endOfWeek(today, { weekStartsOn: 0 }),
+  });
+};
+
+const daysOfMonth = (today: Date) => {
+  return eachDayOfInterval({
+    start: startOfMonth(today),
+    end: endOfMonth(today).setDate(28),
+  });
+};
+
+export const startDateChoices = (timeFrame: TimeFrameType) => {
+  switch (timeFrame) {
+    case "DAILY":
+      return [new Date()];
+    case "WEEKLY":
+      return daysOfWeek(new Date());
+    case "MONTHLY":
+      return daysOfMonth(new Date());
+  }
 };

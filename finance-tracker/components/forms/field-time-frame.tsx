@@ -5,27 +5,32 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { buttonVariants } from "@/components/ui/button";
 
-interface FieldTypeProps {
-  value: "EXPENSE" | "INCOME";
-  onChange: (value: "EXPENSE" | "INCOME") => void;
+interface FieldTimeFrame {
+  value: "DAILY" | "WEEKLY" | "MONTHLY";
+  onChange: (value: "DAILY" | "WEEKLY" | "MONTHLY") => void;
 }
 
-export const FieldType = ({ value, onChange }: FieldTypeProps) => {
+export const FieldTimeFrame = ({ value, onChange }: FieldTimeFrame) => {
   const transactionTypes = [
     {
-      label: "Expense",
-      value: "EXPENSE",
+      label: "Daily",
+      value: "DAILY",
       id: useId(),
     },
     {
-      label: "Income",
-      value: "INCOME",
+      label: "Weekly",
+      value: "WEEKLY",
+      id: useId(),
+    },
+    {
+      label: "Monthly",
+      value: "MONTHLY",
       id: useId(),
     },
   ];
   return (
     <RadioGroup
-      onValueChange={(value: "EXPENSE" | "INCOME") => {
+      onValueChange={(value: "DAILY" | "WEEKLY" | "MONTHLY") => {
         onChange(value);
       }}
       defaultValue={value}

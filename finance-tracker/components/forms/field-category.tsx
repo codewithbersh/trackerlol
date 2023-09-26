@@ -5,6 +5,7 @@ import { useCategoryModal } from "@/hooks/use-category-modal";
 import { cn } from "@/lib/utils";
 import { ChevronsUpDown, Dot, PlusCircle, Settings2 } from "lucide-react";
 import useCategoryData from "@/hooks/use-category-data";
+import { Budget } from "@prisma/client";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -28,8 +29,9 @@ import { CategoryBadge } from "@/components/category-badge";
 interface FieldCategoryProps {
   selectedType: "INCOME" | "EXPENSE";
   onChange: (value: string) => void;
-  value: string;
+  value: string | undefined;
   isLoading: boolean;
+  budgets?: Budget[];
 }
 
 export const FieldCategory = ({
@@ -37,6 +39,7 @@ export const FieldCategory = ({
   value,
   isLoading: isSubmitting,
   selectedType,
+  budgets,
 }: FieldCategoryProps) => {
   const [open, setOpen] = useState(false);
   const { onOpen, setCategory } = useCategoryModal();
@@ -48,6 +51,14 @@ export const FieldCategory = ({
   const selectedCategory = selectedCategories?.find(
     (category) => category.id === value
   );
+
+  const categoriesList = budgets
+    ? selectedCategories?.filter(
+        (category) =>
+          !budgets.some((budget) => budget.categoryId === category.id)
+      )
+    : selectedCategories;
+
   return (
     <>
       <Popover open={open} onOpenChange={setOpen}>
@@ -81,7 +92,7 @@ export const FieldCategory = ({
                   <span>{selectedCategory?.title}</span>
                 </div>
               ) : (
-                "Select a category"
+                <span className="shrink-0">Select a category</span>
               )}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -94,7 +105,13 @@ export const FieldCategory = ({
               <CommandInput placeholder="Search categories..." />
               <CommandEmpty>No category found.</CommandEmpty>
               <CommandGroup className="max-h-[150px] overflow-y-auto">
-                {selectedCategories?.map((category) => (
+                {categoriesList?.length === 0 && (
+                  <div className="py-6 text-center text-sm">
+                    No category found.
+                  </div>
+                )}
+
+                {categoriesList?.map((category) => (
                   <CommandItem
                     key={category.id}
                     onSelect={() => {

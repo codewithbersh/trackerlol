@@ -5,27 +5,27 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { buttonVariants } from "@/components/ui/button";
 
-interface FieldTypeProps {
-  value: "EXPENSE" | "INCOME";
-  onChange: (value: "EXPENSE" | "INCOME") => void;
+interface FieldBudgetTypeProps {
+  value: "CATEGORY" | "OVERALL";
+  onChange: (value: "CATEGORY" | "OVERALL") => void;
 }
 
-export const FieldType = ({ value, onChange }: FieldTypeProps) => {
+export const FieldBudgetType = ({ value, onChange }: FieldBudgetTypeProps) => {
   const transactionTypes = [
     {
-      label: "Expense",
-      value: "EXPENSE",
+      label: "Category",
+      value: "CATEGORY",
       id: useId(),
     },
     {
-      label: "Income",
-      value: "INCOME",
+      label: "Overall",
+      value: "OVERALL",
       id: useId(),
     },
   ];
   return (
     <RadioGroup
-      onValueChange={(value: "EXPENSE" | "INCOME") => {
+      onValueChange={(value: "CATEGORY" | "OVERALL") => {
         onChange(value);
       }}
       defaultValue={value}
