@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import useBudgetData from "@/hooks/use-budget-data";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { getDate, setDate } from "date-fns";
 
 import {
   Form,
@@ -41,14 +42,14 @@ const overallSchema = z.object({
 });
 
 const schemaCond = z.discriminatedUnion("type", [
-  categorySchema,
   overallSchema,
+  categorySchema,
 ]);
 
 const formSchema = z.intersection(schemaCond, defaultProps);
 
 export const FormBudget = () => {
-  const { onClose } = useBudgetModal();
+  const { onClose, budget: initialData } = useBudgetModal();
   const { data: budgets } = useBudgetData();
   const router = useRouter();
 
@@ -58,19 +59,36 @@ export const FormBudget = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      type: "CATEGORY",
-      timeFrame: "MONTHLY",
-      categoryId: "",
-      amount: 0,
-      startDate: new Date().toDateString(),
-    },
+    //@ts-ignore
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          startDate: setDate(
+            new Date(),
+            getDate(new Date(initialData.startDate))
+          ).toDateString(),
+        }
+      : {
+          type: "CATEGORY",
+          timeFrame: "MONTHLY",
+          categoryId: "",
+          amount: 0,
+          startDate: new Date().toDateString(),
+        },
   });
+
+  const isLoading = form.formState.isSubmitting;
+  const buttonText = initialData ? "Save Changes" : "Add Budget";
+  const toastSuccess = initialData ? "Budget updated." : "Budget added.";
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/budgets", values);
-      toast.success("New budget added.");
+      if (initialData) {
+        await axios.patch(`/api/budgets/${initialData.id}`, values);
+      } else {
+        await axios.post("/api/budgets", values);
+      }
+      toast.success(toastSuccess);
       onClose();
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
       router.refresh();
@@ -79,8 +97,6 @@ export const FormBudget = () => {
       toast.error("An error has occured.");
     }
   };
-
-  const isLoading = form.formState.isSubmitting;
 
   return (
     <Form {...form}>
@@ -92,6 +108,7 @@ export const FormBudget = () => {
             <FormItem className="col-span-full">
               <FormControl>
                 <FieldBudgetType
+                  initialData={initialData}
                   value={field.value}
                   onChange={(value) => {
                     field.onChange(value);
@@ -149,7 +166,7 @@ export const FormBudget = () => {
                 value={field.value}
                 onChange={(value) => {
                   field.onChange(value);
-                  form.resetField("startDate");
+                  form.setValue("startDate", new Date().toDateString());
                 }}
               />
             </FormItem>
@@ -180,7 +197,7 @@ export const FormBudget = () => {
           >
             Cancel
           </Button>
-          <Button type="submit">Add Budget</Button>
+          <Button type="submit">{buttonText}</Button>
         </div>
       </form>
     </Form>

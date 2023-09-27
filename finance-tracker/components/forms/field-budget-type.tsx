@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { useId } from "react";
+import { BudgetWithCategory } from "@/types/types";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -9,12 +10,14 @@ interface FieldBudgetTypeProps {
   value: "CATEGORY" | "OVERALL";
   onChange: (value: "CATEGORY" | "OVERALL") => void;
   hasOverall: boolean | undefined;
+  initialData: BudgetWithCategory | null;
 }
 
 export const FieldBudgetType = ({
   value,
   onChange,
   hasOverall,
+  initialData,
 }: FieldBudgetTypeProps) => {
   const transactionTypes = [
     {
@@ -42,7 +45,11 @@ export const FieldBudgetType = ({
             hidden
             value={type.value}
             id={type.id}
-            disabled={hasOverall && type.value === "OVERALL" && true}
+            disabled={
+              (hasOverall && type.value === "OVERALL" && true) || initialData
+                ? true
+                : false
+            }
           />
           <Label
             htmlFor={type.id}
@@ -52,6 +59,8 @@ export const FieldBudgetType = ({
               value === type.value && "ring-2 ring-offset-4 ring-ring",
               hasOverall &&
                 type.value === "OVERALL" &&
+                "bg-muted/20 text-muted-foreground hover:cursor-not-allowed hover:bg-muted/20 hover:text-muted-foreground",
+              initialData &&
                 "bg-muted/20 text-muted-foreground hover:cursor-not-allowed hover:bg-muted/20 hover:text-muted-foreground"
             )}
           >

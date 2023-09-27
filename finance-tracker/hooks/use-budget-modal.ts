@@ -1,12 +1,12 @@
-import { Budget } from "@prisma/client";
+import { BudgetWithCategory } from "@/types/types";
 import { create } from "zustand";
 
 interface UseBudgetModalState {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  budget: Budget | null;
-  setBudget: (budget: Budget | null) => void;
+  budget: BudgetWithCategory | null;
+  setBudget: (budget: BudgetWithCategory | null) => void;
 }
 
 export const useBudgetModal = create<UseBudgetModalState>((set) => ({
