@@ -59,10 +59,6 @@ export async function POST(req: Request) {
 export async function GET(_req: Request) {
   const user = await getCurrentUser();
 
-  if (!user) {
-    return new NextResponse("Unauthenticated", { status: 401 });
-  }
-
   const categories = await prismadb.category.findMany({
     where: {
       userId: user.id,

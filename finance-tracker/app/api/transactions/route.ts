@@ -31,3 +31,18 @@ export async function POST(req: Request) {
 
   return NextResponse.json(transaction);
 }
+
+export async function GET(_req: Request) {
+  const user = await getCurrentUser();
+
+  const transactions = await prismadb.transaction.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+
+  return NextResponse.json(transactions);
+}

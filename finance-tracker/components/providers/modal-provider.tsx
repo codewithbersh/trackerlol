@@ -6,6 +6,7 @@ import { useTransactionModal } from "@/hooks/use-transaction-modal";
 import { TransactionModal } from "@/components/modals/transaction-modal";
 import { CategoryModal } from "@/components/modals/category-modal";
 import { BudgetModal } from "@/components/modals/budget-modal";
+import { ReceiptModal } from "@/components/modals/receipt-modal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -34,6 +35,7 @@ const ModalProvider = () => {
       <TransactionModal />
       <CategoryModal />
       <BudgetModal />
+      <ReceiptModal />
     </>
   );
 };

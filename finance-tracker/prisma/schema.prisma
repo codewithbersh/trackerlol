@@ -46,6 +46,7 @@ model User {
   categories   Category[]
   transactions Transaction[]
   budgets      Budget[]
+  receipts     Receipt[]
 }
 
 model VerificationToken {
@@ -106,6 +107,19 @@ model Budget {
   amount     Decimal
   timeFrame  TimeFrameType
   startDate  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Receipt {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  imageUrl String @db.Text
+  title    String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

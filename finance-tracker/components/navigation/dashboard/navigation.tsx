@@ -2,7 +2,7 @@
 
 import { Route } from "@/types/types";
 import { usePathname } from "next/navigation";
-import { Layers, LayoutGrid, Settings, Wallet2 } from "lucide-react";
+import { ImagePlus, Layers, LayoutGrid, Settings, Wallet2 } from "lucide-react";
 
 import { NavigationMobile } from "./navigation-mobile";
 import { NavigationDesktop } from "./navigation-desktop";
@@ -21,6 +21,12 @@ export const Navigation = () => {
       label: "Budgets",
       href: "/budgets",
       active: pathname.toLowerCase().startsWith("/budgets"),
+    },
+    {
+      icon: ImagePlus,
+      label: "Receipts",
+      href: "/receipts",
+      active: pathname.toLowerCase().startsWith("/receipts"),
     },
     {
       icon: LayoutGrid,
