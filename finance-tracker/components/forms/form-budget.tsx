@@ -22,6 +22,7 @@ import { FieldAmount } from "./field-amount";
 import { FieldBudgetType } from "./field-budget-type";
 import { FieldTimeFrame } from "./field-time-frame";
 import { FieldStartDate } from "./field-start-date";
+import { useRouter } from "next/navigation";
 
 const defaultProps = z.object({
   type: z.enum(["CATEGORY", "OVERALL"]),
@@ -49,6 +50,7 @@ const formSchema = z.intersection(schemaCond, defaultProps);
 export const FormBudget = () => {
   const { onClose } = useBudgetModal();
   const { data: budgets } = useBudgetData();
+  const router = useRouter();
 
   const queryClient = useQueryClient();
 
@@ -69,6 +71,7 @@ export const FormBudget = () => {
       toast.success("New budget added.");
       onClose();
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
+      router.refresh();
     } catch (error) {
       console.log("[CREATE_BUDGET_ERROR]", error);
       toast.error("An error has occured.");

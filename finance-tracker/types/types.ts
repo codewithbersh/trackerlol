@@ -1,5 +1,4 @@
-import { TransactionWithCategory } from "@/lib/utils";
-import { Transaction } from "@prisma/client";
+import { Category, Prisma, Transaction } from "@prisma/client";
 import { LucideIcon } from "lucide-react";
 
 type Prettify<T> = {
@@ -13,6 +12,10 @@ export type Route = {
   active: boolean;
 };
 
+export type TransactionWithCategory = Prisma.TransactionGetPayload<{
+  include: { category: true };
+}>;
+
 export type TransactionWithAmountAsNumber = Prettify<
   Omit<Transaction, "amount"> & {
     amount: number;
@@ -24,3 +27,12 @@ export type TransactionWithCategoryWithAmountAsNumber = Prettify<
     amount: number;
   }
 >;
+
+export type BudgetWithCategory = Omit<
+  Prisma.BudgetGetPayload<{
+    include: { category: true };
+  }>,
+  "amount"
+> & {
+  amount: number;
+};

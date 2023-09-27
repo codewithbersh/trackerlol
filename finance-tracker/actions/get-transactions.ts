@@ -6,25 +6,23 @@ import { getCurrentUser } from "./get-current-user";
 import { cache } from "react";
 
 interface GetTransactionsProps {
-  to?: string;
-  from?: string;
+  to?: string | Date;
+  from?: string | Date;
   type?: string;
   slug?: string;
 }
-
-import { Transaction } from "@prisma/client";
 
 export const getTransactions = cache(
   async ({ to, from, type, slug }: GetTransactionsProps) => {
     const user = await getCurrentUser();
 
-    const lte = stringToDate(to);
+    const lte = typeof to === "string" ? stringToDate(to) : to;
 
     const transactions = await prismadb.transaction.findMany({
       where: {
         userId: user.id,
         date: {
-          gte: stringToDate(from),
+          gte: typeof from === "string" ? stringToDate(from) : from,
           lte: lte ? addDays(lte, 1) : undefined,
         },
         type: type

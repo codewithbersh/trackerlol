@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/actions/get-current-user";
 import prismadb from "@/lib/prismadb";
+import { addDays } from "date-fns";
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
       type,
       amount,
       timeFrame,
-      startDate: new Date(startDate),
+      startDate: addDays(new Date(startDate), 1),
       categoryId,
     },
   });

@@ -1,17 +1,17 @@
 import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
-import {
-  Category,
-  TimeFrameType,
-  Transaction,
-  TransactionType,
-} from "@prisma/client";
+import { Category, TimeFrameType, TransactionType } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import {
+  addMonths,
+  addWeeks,
+  differenceInDays,
   eachDayOfInterval,
   endOfMonth,
   endOfWeek,
+  getDate,
   isValid,
   parseISO,
+  setDate,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
@@ -28,10 +28,6 @@ export function translateTheme(theme: string | undefined) {
     default:
       return theme;
   }
-}
-
-export interface TransactionWithCategory extends Transaction {
-  category: Category;
 }
 
 export type GroupedTransactions = {
@@ -115,5 +111,55 @@ export const startDateChoices = (timeFrame: TimeFrameType) => {
       return daysOfWeek(new Date());
     case "MONTHLY":
       return daysOfMonth(new Date());
+  }
+};
+
+export const calculateDaysLeft = (
+  timeFrame: TimeFrameType,
+  startDate: Date
+) => {
+  const todayDay = getDate(new Date());
+  const startDateDay = getDate(startDate);
+  switch (timeFrame) {
+    case "DAILY":
+      return 0;
+    case "WEEKLY":
+      if (todayDay >= startDateDay) {
+        return differenceInDays(addWeeks(startDate, 1), new Date());
+      }
+
+      return differenceInDays(setDate(new Date(), startDateDay), new Date());
+
+    case "MONTHLY":
+      if (todayDay >= startDateDay) {
+        return differenceInDays(addMonths(startDate, 1), new Date());
+      }
+
+      return differenceInDays(setDate(new Date(), startDateDay), new Date());
+  }
+};
+
+export const getBudgetTransactionRange = ({
+  timeFrame,
+  range,
+  startDate,
+}: {
+  timeFrame: TimeFrameType;
+  range: "to" | "from";
+  startDate: Date;
+}) => {
+  switch (timeFrame) {
+    case "DAILY":
+      return new Date();
+    case "WEEKLY":
+      if (range === "from") {
+        return startOfWeek(startDate, { weekStartsOn: 0 });
+      }
+      return endOfWeek(startDate, { weekStartsOn: 0 });
+    case "MONTHLY":
+      if (range === "from") {
+        return startOfMonth(startDate);
+      }
+      return endOfMonth(startDate);
   }
 };

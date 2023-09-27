@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { TransactionWithAmountAsNumber } from "@/types/types";
+import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +30,6 @@ import {
 import { FieldCategory } from "./field-category";
 import { FieldType } from "./field-type";
 import { FieldAmount } from "./field-amount";
-import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -230,7 +230,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
           <Button
             variant="ghost"
             type="button"
-            onClick={() => router.back()}
+            onClick={onClose}
             className="ml-auto"
           >
             Cancel
