@@ -38,3 +38,19 @@ export async function PATCH(
 
   return NextResponse.json(budget);
 }
+
+export async function DELETE(
+  req: Request,
+  { params: { budgetId } }: { params: { budgetId: string } }
+) {
+  const user = await getCurrentUser();
+
+  const budget = await prismadb.budget.delete({
+    where: {
+      id: budgetId,
+      userId: user.id,
+    },
+  });
+
+  return NextResponse.json(budget);
+}

@@ -14,6 +14,7 @@ import {
   setDate,
   startOfMonth,
   startOfWeek,
+  subDays,
 } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
@@ -122,7 +123,7 @@ export const calculateDaysLeft = (
   const startDateDay = getDate(startDate);
   switch (timeFrame) {
     case "DAILY":
-      return 0;
+      return 1;
     case "WEEKLY":
       if (todayDay >= startDateDay) {
         return differenceInDays(addWeeks(startDate, 1), new Date());
@@ -150,7 +151,11 @@ export const getBudgetTransactionRange = ({
 }) => {
   switch (timeFrame) {
     case "DAILY":
+      if (range === "from") {
+        return subDays(new Date(), 1);
+      }
       return new Date();
+
     case "WEEKLY":
       if (range === "from") {
         return startOfWeek(startDate, { weekStartsOn: 0 });

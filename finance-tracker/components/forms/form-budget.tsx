@@ -63,10 +63,13 @@ export const FormBudget = () => {
     defaultValues: initialData
       ? {
           ...initialData,
-          startDate: setDate(
-            new Date(),
-            getDate(new Date(initialData.startDate))
-          ).toDateString(),
+          startDate:
+            initialData.timeFrame === "DAILY"
+              ? new Date().toDateString()
+              : setDate(
+                  new Date(),
+                  getDate(new Date(initialData.startDate))
+                ).toDateString(),
         }
       : {
           type: "CATEGORY",
@@ -98,6 +101,17 @@ export const FormBudget = () => {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`/api/budgets/${id}`);
+      toast.success("Budget has been deleted.");
+      router.refresh();
+      onClose();
+    } catch (error) {
+      toast.error("An error has occured.");
+      console.log("[DELETE_BUDGET_ERROR]", error);
+    }
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -189,15 +203,28 @@ export const FormBudget = () => {
         />
 
         <div className="flex gap-4">
+          {initialData && (
+            <Button
+              variant="outlineDestructive"
+              disabled={isLoading}
+              type="button"
+              onClick={() => handleDelete(initialData.id)}
+            >
+              Delete
+            </Button>
+          )}
           <Button
             variant="ghost"
             type="button"
             onClick={onClose}
             className="ml-auto"
+            disabled={isLoading}
           >
             Cancel
           </Button>
-          <Button type="submit">{buttonText}</Button>
+          <Button type="submit" disabled={isLoading}>
+            {buttonText}
+          </Button>
         </div>
       </form>
     </Form>
