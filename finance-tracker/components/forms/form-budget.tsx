@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import useBudgetData from "@/hooks/use-budget-data";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -22,7 +23,6 @@ import { FieldAmount } from "./field-amount";
 import { FieldBudgetType } from "./field-budget-type";
 import { FieldTimeFrame } from "./field-time-frame";
 import { FieldStartDate } from "./field-start-date";
-import { useRouter } from "next/navigation";
 
 const defaultProps = z.object({
   type: z.enum(["CATEGORY", "OVERALL"]),
@@ -51,6 +51,8 @@ export const FormBudget = () => {
   const { onClose } = useBudgetModal();
   const { data: budgets } = useBudgetData();
   const router = useRouter();
+
+  const hasOverall = budgets?.some((budget) => budget.type === "OVERALL");
 
   const queryClient = useQueryClient();
 
@@ -94,6 +96,7 @@ export const FormBudget = () => {
                   onChange={(value) => {
                     field.onChange(value);
                   }}
+                  hasOverall={hasOverall}
                 />
               </FormControl>
             </FormItem>

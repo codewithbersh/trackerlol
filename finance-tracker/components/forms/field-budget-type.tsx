@@ -8,9 +8,14 @@ import { buttonVariants } from "@/components/ui/button";
 interface FieldBudgetTypeProps {
   value: "CATEGORY" | "OVERALL";
   onChange: (value: "CATEGORY" | "OVERALL") => void;
+  hasOverall: boolean | undefined;
 }
 
-export const FieldBudgetType = ({ value, onChange }: FieldBudgetTypeProps) => {
+export const FieldBudgetType = ({
+  value,
+  onChange,
+  hasOverall,
+}: FieldBudgetTypeProps) => {
   const transactionTypes = [
     {
       label: "Category",
@@ -33,13 +38,21 @@ export const FieldBudgetType = ({ value, onChange }: FieldBudgetTypeProps) => {
     >
       {transactionTypes.map((type) => (
         <div key={type.value} className="w-full">
-          <RadioGroupItem hidden value={type.value} id={type.id} />
+          <RadioGroupItem
+            hidden
+            value={type.value}
+            id={type.id}
+            disabled={hasOverall && type.value === "OVERALL" && true}
+          />
           <Label
             htmlFor={type.id}
             className={cn(
               "w-full cursor-pointer",
               buttonVariants({ variant: "secondary" }),
-              value === type.value && "ring-2 ring-offset-4 ring-ring"
+              value === type.value && "ring-2 ring-offset-4 ring-ring",
+              hasOverall &&
+                type.value === "OVERALL" &&
+                "bg-muted/20 text-muted-foreground hover:cursor-not-allowed hover:bg-muted/20 hover:text-muted-foreground"
             )}
           >
             {type.label}
