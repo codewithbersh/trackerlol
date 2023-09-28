@@ -23,6 +23,7 @@ export const Budget = async ({ budget }: BudgetProps) => {
     slug: budget.category?.slug,
     from,
     to,
+    type: "EXPENSE",
   });
 
   return <BudgetClient transactions={transactions} budget={budget} />;

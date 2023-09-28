@@ -27,6 +27,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { CategoryBadge } from "@/components/category-badge";
+import { Label } from "../ui/label";
 
 const formSchema = z.object({
   date: z
@@ -104,6 +105,13 @@ export const FormFilterTransactions = ({
     form.reset();
   }
 
+  const expenseCategories = categories.filter(
+    (category) => category.type === "EXPENSE"
+  );
+  const incomeCategories = categories.filter(
+    (category) => category.type === "INCOME"
+  );
+
   return (
     <Form {...form}>
       <form
@@ -122,7 +130,7 @@ export const FormFilterTransactions = ({
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-full pl-3 text-left font-normal",
+                        "w-full pl-3 text-left font-normal bg-accent",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -169,7 +177,10 @@ export const FormFilterTransactions = ({
               <FormLabel>Type</FormLabel>
               <FormControl>
                 <RadioGroup
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.setValue("category", undefined);
+                  }}
                   defaultValue={field.value}
                   className="flex flex-col space-y-1"
                 >
@@ -202,26 +213,60 @@ export const FormFilterTransactions = ({
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
-                  className="flex flex-col space-y-1"
+                  className="flex flex-col space-y-2"
                 >
-                  {categories.map((category) => (
-                    <FormItem
-                      key={category.id}
-                      className="flex items-center space-x-3 space-y-0"
-                    >
-                      <FormControl>
-                        <RadioGroupItem value={category.slug} />
-                      </FormControl>
-                      <FormLabel>
-                        <CategoryBadge
-                          backgroundColor={category.color}
-                          emoji={category.emoji}
-                          title={category.title}
-                          variant="small"
-                        />
-                      </FormLabel>
-                    </FormItem>
-                  ))}
+                  <Label className="uppercase text-xs tracking-wide text-muted-foreground/80">
+                    Expense
+                  </Label>
+                  <div className="space-y-2">
+                    {expenseCategories.map((category) => (
+                      <FormItem
+                        key={category.id}
+                        className="flex items-center space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <RadioGroupItem
+                            disabled={form.watch("type") === "INCOME"}
+                            value={category.slug}
+                          />
+                        </FormControl>
+                        <FormLabel>
+                          <CategoryBadge
+                            backgroundColor={category.color}
+                            emoji={category.emoji}
+                            title={category.title}
+                            variant="small"
+                          />
+                        </FormLabel>
+                      </FormItem>
+                    ))}
+                  </div>
+                  <Label className="uppercase text-xs tracking-wide text-muted-foreground/80">
+                    INCOME
+                  </Label>
+                  <div className="space-y-2">
+                    {incomeCategories.map((category) => (
+                      <FormItem
+                        key={category.id}
+                        className="flex items-center space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <RadioGroupItem
+                            disabled={form.watch("type") === "EXPENSE"}
+                            value={category.slug}
+                          />
+                        </FormControl>
+                        <FormLabel>
+                          <CategoryBadge
+                            backgroundColor={category.color}
+                            emoji={category.emoji}
+                            title={category.title}
+                            variant="small"
+                          />
+                        </FormLabel>
+                      </FormItem>
+                    ))}
+                  </div>
                 </RadioGroup>
               </FormControl>
               <FormMessage />

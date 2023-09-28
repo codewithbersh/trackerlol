@@ -17,7 +17,12 @@ export const GroupedTransactions = ({
   const date = format(parseISO(initialDate), "EEE, MMM d");
   const sum = transactions
     .reduce((acc, transaction) => {
-      return acc + Number(transaction.amount);
+      return (
+        acc +
+        (transaction.type === "INCOME"
+          ? Number(transaction.amount)
+          : -1 * Number(transaction.amount))
+      );
     }, 0)
     .toLocaleString("en-US");
 
@@ -31,7 +36,7 @@ export const GroupedTransactions = ({
         {transactions.map((transaction) => (
           <div
             key={transaction.id}
-            className="bg-accent/75 rounded-full flex items-center justify-between px-4 py-2 hover:bg-accent/50 cursor-pointer"
+            className="bg-accent/50 rounded-full flex items-center justify-between px-4 py-2 hover:bg-accent/75 cursor-pointer"
             onClick={() => {
               setTransaction(transaction);
               onOpen();

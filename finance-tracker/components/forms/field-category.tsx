@@ -73,13 +73,12 @@ export const FieldCategory = ({
                 !value && "text-muted-foreground"
               )}
             >
-              {!categories && (
+              {!categories ? (
                 <div className="flex gap-2 items-center w-full">
                   <Skeleton className="w-6 h-6 rounded-full shrink-0" />
                   <Skeleton className="w-full h-5 rounded-full" />
                 </div>
-              )}
-              {value ? (
+              ) : value ? (
                 <div className="flex gap-2 items-center w-full ">
                   <div
                     className="p-1 rounded-full leading-none text-base"
@@ -94,6 +93,7 @@ export const FieldCategory = ({
               ) : (
                 <span className="shrink-0">Select a category</span>
               )}
+
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </FormControl>
