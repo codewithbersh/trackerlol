@@ -37,9 +37,10 @@ export const FieldType = ({ value, onChange }: FieldTypeProps) => {
           <Label
             htmlFor={type.id}
             className={cn(
-              "w-full cursor-pointer",
+              "w-full cursor-pointer border-input border",
               buttonVariants({ variant: "secondary" }),
-              value === type.value && "ring-2 ring-offset-4 ring-ring"
+              value === type.value &&
+                "ring-2 ring-offset-2 ring-offset-secondary ring-ring "
             )}
           >
             {type.label}

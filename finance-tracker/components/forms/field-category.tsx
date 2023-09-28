@@ -66,10 +66,10 @@ export const FieldCategory = ({
           <FormControl>
             <Button
               disabled={isSubmitting || !categories}
-              variant="outline"
+              variant="secondary"
               role="combobox"
               className={cn(
-                "w-full sm:w-full justify-between",
+                "w-full sm:w-full justify-between border border-input",
                 !value && "text-muted-foreground"
               )}
             >
@@ -100,7 +100,7 @@ export const FieldCategory = ({
         </PopoverTrigger>
 
         <PopoverContentWithoutPortal className="p-0" align="center">
-          <Command className="bg-none backdrop-blur-none ">
+          <Command>
             <CommandList>
               <CommandInput placeholder="Search categories..." />
               <CommandEmpty>No category found.</CommandEmpty>

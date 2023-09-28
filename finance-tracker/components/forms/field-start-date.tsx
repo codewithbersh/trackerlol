@@ -24,7 +24,7 @@ export const FieldStartDate = ({
   const choices = startDateChoices(timeFrame);
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-full rounded-full">
+      <SelectTrigger className="w-full rounded-full bg-secondary">
         <SelectValue placeholder="Select start date" />
       </SelectTrigger>
       <SelectContent className="max-h-[256px]">

@@ -30,7 +30,7 @@ export const FieldEmoji = ({
     return (
       <Button
         variant="outline"
-        className="w-20 h-20 grid place-items-center  relative group rounded-full"
+        className="w-20 h-20 grid place-items-center bg-accent  relative group rounded-full"
         style={{ backgroundColor: currentColor }}
         onClick={() => onChange("")}
         disabled={isLoading}
@@ -39,7 +39,7 @@ export const FieldEmoji = ({
         <div
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "w-fit h-fit absolute right-0 top-0 rounded-full p-1 -translate-y-0.5 translate-x-0.5 group-hover:bg-primary bg-muted"
+            "w-fit h-fit absolute right-0 top-0 rounded-full  p-1 -translate-y-0.5 translate-x-0.5 group-hover:bg-primary"
           )}
         >
           <X className="w-3 h-3 group-hover:text-primary-foreground text-primary group-hover:scale-105" />
@@ -54,7 +54,7 @@ export const FieldEmoji = ({
         <Button
           size="icon"
           variant="outline"
-          className="mx-auto border-dashed w-20 h-20 group"
+          className="mx-auto border-dashed w-20 h-20 group bg-accent"
           style={{ backgroundColor: currentColor }}
         >
           <SmilePlus size={50} className="text-foreground" />
@@ -69,7 +69,7 @@ export const FieldEmoji = ({
           onEmojiSelect={(emoji: any) => onChange(emoji.native)}
           dynamicWidth={true}
           theme={translateTheme(theme)}
-          className="w-full rounded-full bg-red-500"
+          className="w-full rounded-full "
           previewPosition="none"
         />
       </PopoverContent>

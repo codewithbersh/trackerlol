@@ -186,9 +186,9 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      variant={"outline"}
+                      variant="secondary"
                       className={cn(
-                        "w-full pl-3 text-left font-normal",
+                        "w-full pl-3 text-left font-normal border-input border",
                         !field.value && "text-muted-foreground"
                       )}
                       disabled={isLoading}

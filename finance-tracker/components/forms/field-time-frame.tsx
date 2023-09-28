@@ -42,9 +42,9 @@ export const FieldTimeFrame = ({ value, onChange }: FieldTimeFrame) => {
           <Label
             htmlFor={type.id}
             className={cn(
-              "w-full cursor-pointer",
+              "w-full cursor-pointer border border-input",
               buttonVariants({ variant: "secondary" }),
-              value === type.value && "ring-2 ring-offset-4 ring-ring"
+              value === type.value && "ring-2 ring-offset-2 ring-ring"
             )}
           >
             {type.label}
