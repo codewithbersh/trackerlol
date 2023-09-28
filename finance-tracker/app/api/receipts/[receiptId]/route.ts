@@ -8,7 +8,7 @@ export async function PATCH(
   { params: { receiptId } }: { params: { receiptId: string } }
 ) {
   const user = await getCurrentUser();
-  const { imageUrl, oldImageUrl, title } = await req.json();
+  const { imageUrl, oldImageUrl, title, categoryId } = await req.json();
 
   if (imageUrl !== oldImageUrl) {
     await utapi.deleteFiles(oldImageUrl.replace("https://utfs.io/f/", ""));
@@ -22,6 +22,7 @@ export async function PATCH(
     data: {
       imageUrl,
       title,
+      categoryId,
     },
   });
 

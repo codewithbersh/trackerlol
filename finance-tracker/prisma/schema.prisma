@@ -70,6 +70,7 @@ model Category {
   color        String
   transactions Transaction[]
   budget       Budget?
+  receipts     Receipt[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -118,21 +119,13 @@ model Receipt {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  imageUrl String @db.Text
-  title    String
+  imageUrl   String    @db.Text
+  title      String
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-enum WeeklyType {
-  SUNDAY
-  MONDAY
-  TUESDAY
-  WEDNESDAY
-  THURSDAY
-  FRIDAY
-  SATURDAY
 }
 
 enum TimeFrameType {
