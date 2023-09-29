@@ -168,3 +168,81 @@ export const getBudgetTransactionRange = ({
       return endOfMonth(startDate);
   }
 };
+
+export function getRangeDefaultValue(range: string | undefined) {
+  switch (range?.toLowerCase()) {
+    case "month":
+      return "month";
+    case "year":
+      return "year";
+    default:
+      return "week";
+  }
+}
+
+export const groupTransactionsByCategory = (
+  transactions: TransactionWithCategoryWithAmountAsNumber[]
+) => {
+  const groupedExpenses: {
+    [key: string]: TransactionWithCategoryWithAmountAsNumber[];
+  } = {};
+
+  transactions.forEach((transaction) => {
+    const slug = transaction.category.slug;
+    if (!groupedExpenses[slug]) {
+      groupedExpenses[slug] = [];
+    }
+    groupedExpenses[slug].push(transaction);
+  });
+
+  return groupedExpenses;
+};
+
+export function toTitleCase(input: string): string {
+  return input.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+interface GetTotalAmountPerCategoryProps {
+  group: {
+    [key: string]: TransactionWithCategoryWithAmountAsNumber[];
+  };
+}
+export const getTotalAmountPerCategory = ({
+  group,
+}: GetTotalAmountPerCategoryProps) => {
+  const totalAmountPerCategory: Record<string, number> = {};
+  let totalAmountForType = 0;
+  const keys = Object.keys(group);
+
+  const categoriesWithAmounts = keys.map((key) => ({
+    category: key,
+    amount: group[key].reduce(
+      (acc, transaction) => acc + transaction.amount,
+      0
+    ),
+  }));
+
+  categoriesWithAmounts.sort((a, b) => b.amount - a.amount);
+
+  categoriesWithAmounts.forEach((item) => {
+    totalAmountPerCategory[item.category] = item.amount;
+  });
+
+  totalAmountPerCategory["totalForType"] = categoriesWithAmounts.reduce(
+    (acc, item) => acc + item.amount,
+    0
+  );
+
+  return totalAmountPerCategory;
+};
+
+export function getCategoryBySlug(
+  slug: string,
+  transactions: TransactionWithCategoryWithAmountAsNumber[]
+) {
+  return (
+    transactions.find((item) => item.category.slug === slug)?.category || null
+  );
+}
