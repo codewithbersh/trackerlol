@@ -27,7 +27,7 @@ const ModalProvider = () => {
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, []);
+  }, [onOpen, setTransaction]);
 
   if (!isMounted) return null;
   return (

@@ -1,9 +1,14 @@
 import { getCurrentUser } from "./get-current-user";
 import prismadb from "@/lib/prismadb";
+import { redirect } from "next/navigation";
 import { cache } from "react";
 
 export const getBudgets = cache(async () => {
   const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   const budgets = await prismadb.budget.findMany({
     where: {

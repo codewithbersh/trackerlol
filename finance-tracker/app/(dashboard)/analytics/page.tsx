@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, validateRangeParams } from "@/lib/utils";
 import {
   endOfMonth,
   endOfWeek,
@@ -9,35 +9,17 @@ import {
   startOfYear,
 } from "date-fns";
 import Link from "next/link";
-
 import { getTransactions } from "@/actions/get-transactions";
+
 import { AnalyticsButton } from "@/components/analytics/analytics-button";
 import { NetOverall } from "@/components/analytics/net-overall";
 import { TopCategories } from "@/components/analytics/top-categories";
 import { buttonVariants } from "@/components/ui/button";
+import { CategoryBudgets } from "@/components/analytics/category-budgets";
+import { OverallBudget } from "@/components/analytics/overall-budget";
 
 interface AnalyticsPageProps {
   searchParams: { [key: string]: string | undefined };
-}
-
-export function validateRangeParams(range: string | undefined) {
-  const today = new Date();
-  switch (range?.toLowerCase()) {
-    case "month":
-      return {
-        from: startOfMonth(today),
-        to: endOfMonth(today),
-        range: "month",
-      };
-    case "year":
-      return { from: startOfYear(today), to: endOfYear(today), range: "year" };
-    default:
-      return {
-        from: startOfWeek(today, { weekStartsOn: 0 }),
-        to: endOfWeek(today, { weekStartsOn: 0 }),
-        range: "week",
-      };
-  }
 }
 
 const AnalyticsPage = async ({ searchParams }: AnalyticsPageProps) => {
@@ -46,8 +28,8 @@ const AnalyticsPage = async ({ searchParams }: AnalyticsPageProps) => {
   const transactions = await getTransactions({ from, to });
 
   return (
-    <div className="flex flex-col gap-8 py-24">
-      <div className="flex flex-col justify-between items-center gap-2">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 py-24">
+      <div className="flex flex-col justify-between items-center gap-2 col-span-full">
         <AnalyticsButton range={range} />
         <Link
           href={`/transactions?from=${format(from, "yyyy-MM-dd")}&to=${format(
@@ -64,6 +46,8 @@ const AnalyticsPage = async ({ searchParams }: AnalyticsPageProps) => {
       </div>
       <NetOverall transactions={transactions} />
       <TopCategories transactions={transactions} range={rangeType} />
+      <CategoryBudgets />
+      <OverallBudget />
     </div>
   );
 };

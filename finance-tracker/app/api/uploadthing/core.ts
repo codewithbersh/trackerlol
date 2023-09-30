@@ -1,10 +1,15 @@
 import { getCurrentUser } from "@/actions/get-current-user";
+import { redirect } from "next/navigation";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 const f = createUploadthing();
 
 const handleAuth = async () => {
   const user = await getCurrentUser();
+
+  if (!user) {
+    return redirect("/login");
+  }
   return { userId: user.id };
 };
 

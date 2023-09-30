@@ -10,6 +10,10 @@ export async function PATCH(
   const user = await getCurrentUser();
   const { emoji, title, color, type } = await req.json();
 
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
+
   if (!type) {
     return new NextResponse("Type is required", { status: 401 });
   }

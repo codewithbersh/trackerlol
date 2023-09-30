@@ -4,6 +4,7 @@ import { stringToDate } from "@/lib/utils";
 import { addDays } from "date-fns";
 import { getCurrentUser } from "./get-current-user";
 import { cache } from "react";
+import { redirect } from "next/navigation";
 
 interface GetTransactionsProps {
   to?: string | Date;
@@ -15,6 +16,10 @@ interface GetTransactionsProps {
 export const getTransactions = cache(
   async ({ to, from, type, slug }: GetTransactionsProps) => {
     const user = await getCurrentUser();
+
+    if (!user) {
+      redirect("/login");
+    }
 
     const lte = typeof to === "string" ? stringToDate(to) : to;
 

@@ -40,7 +40,14 @@ export const FilterButton = ({
     setDateQuery(dateRangeQuery);
     setTypeQuery(typeQuery);
     setCategoryQuery(categoryQuery?.slug);
-  }, [dateRangeQuery, typeQuery, categoryQuery]);
+  }, [
+    dateRangeQuery,
+    typeQuery,
+    categoryQuery,
+    setCategoryQuery,
+    setDateQuery,
+    setTypeQuery,
+  ]);
 
   const dateQueryFrom = formatDate(dateQuery?.from);
   const dateQueryTo = formatDate(dateQuery?.to);

@@ -8,12 +8,14 @@ import {
   eachDayOfInterval,
   endOfMonth,
   endOfWeek,
+  endOfYear,
   getDate,
   isValid,
   parseISO,
   setDate,
   startOfMonth,
   startOfWeek,
+  startOfYear,
   subDays,
 } from "date-fns";
 import { twMerge } from "tailwind-merge";
@@ -245,4 +247,24 @@ export function getCategoryBySlug(
   return (
     transactions.find((item) => item.category.slug === slug)?.category || null
   );
+}
+
+export function validateRangeParams(range: string | undefined) {
+  const today = new Date();
+  switch (range?.toLowerCase()) {
+    case "month":
+      return {
+        from: startOfMonth(today),
+        to: endOfMonth(today),
+        range: "month",
+      };
+    case "year":
+      return { from: startOfYear(today), to: endOfYear(today), range: "year" };
+    default:
+      return {
+        from: startOfWeek(today, { weekStartsOn: 0 }),
+        to: endOfWeek(today, { weekStartsOn: 0 }),
+        range: "week",
+      };
+  }
 }

@@ -8,6 +8,7 @@ import {
 } from "@/lib/utils";
 import { useState } from "react";
 import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
+
 import {
   Select,
   SelectContent,
@@ -46,11 +47,13 @@ export const TopCategories = ({
   const totalAmount = getTotalAmountPerCategory({ group });
 
   return (
-    <div className="p-4 sm:p-6 rounded-lg border border-input bg-accent/50 space-y-8">
+    <div className="p-4 rounded-lg border-t  border-input bg-accent/50 space-y-8 col-span-full">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-bold text-xl">Top Categories</h1>
-          <p className="text-muted-foreground">This {range}'s transactions</p>
+          <h1 className="font-bold">Top Categories</h1>
+          <p className="text-muted-foreground text-sm">
+            This {range}&apos;s transactions
+          </p>
         </div>
         <Select
           defaultValue={value}
@@ -69,6 +72,11 @@ export const TopCategories = ({
         </Select>
       </div>
       <div className="flex flex-col gap-4">
+        {transactions.length === 0 && (
+          <div className="py-2 text-sm text-muted-foreground">
+            No transactions found.
+          </div>
+        )}
         {Object.keys(totalAmount).map((slug) => {
           const category = getCategoryBySlug(slug, transactions);
           return (
@@ -86,10 +94,10 @@ export const TopCategories = ({
                 >
                   {category?.emoji}
                 </div>
-                <div className="text-lg font-medium">{category?.title}</div>
+                <div className="font-medium">{category?.title}</div>
               </div>
 
-              <span className="text-end text-lg font-bold ml-auto mr-4">
+              <span className="text-end font-bold ml-auto mr-4">
                 $ {totalAmount[slug].toLocaleString("en-US")}
               </span>
               <span className="text-end  text-muted-foreground text-sm min-w-[36.48px]">

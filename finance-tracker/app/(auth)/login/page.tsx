@@ -1,12 +1,15 @@
 import { getCurrentUser } from "@/actions/get-current-user";
-import { redirect } from "next/navigation";
 
 import { UserAuthForm } from "@/components/auth/user-auth-form";
 import { Wallet2 } from "lucide-react";
+import { redirect } from "next/navigation";
 
 const LoginPage = async () => {
   const user = await getCurrentUser();
-  if (user) return redirect("/transactions");
+  if (user) {
+    return redirect("/transactions");
+  }
+
   return (
     <div className="bg-background rounded p-8  flex flex-col space-y-4">
       <div className="flex flex-col items-center justify-center gap-2">

@@ -6,6 +6,9 @@ export async function POST(req: Request) {
   const user = await getCurrentUser();
   const { type, note, date, categoryId, amount } = await req.json();
 
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
   if (!type) {
     return new NextResponse("Type is required", { status: 401 });
   }
@@ -34,6 +37,10 @@ export async function POST(req: Request) {
 
 export async function GET(_req: Request) {
   const user = await getCurrentUser();
+
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
 
   const transactions = await prismadb.transaction.findMany({
     where: {

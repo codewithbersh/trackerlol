@@ -1,9 +1,13 @@
 import { getCurrentUser } from "./get-current-user";
 import prismadb from "@/lib/prismadb";
+import { redirect } from "next/navigation";
 import { cache } from "react";
 
 export const getCategories = cache(async () => {
   const user = await getCurrentUser();
+  if (!user) {
+    redirect("/login");
+  }
 
   const categories = await prismadb.category.findMany({
     where: {
@@ -22,6 +26,10 @@ export const getCategories = cache(async () => {
 
 export const getCategoriesWithReceiptCount = cache(async () => {
   const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   const categories = await prismadb.category.findMany({
     where: {

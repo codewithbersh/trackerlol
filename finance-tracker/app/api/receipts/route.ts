@@ -6,6 +6,10 @@ export async function POST(req: Request) {
   const user = await getCurrentUser();
   const { imageUrl, title } = await req.json();
 
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
+
   if (!imageUrl) {
     return new NextResponse("imageUrl is required", { status: 401 });
   }

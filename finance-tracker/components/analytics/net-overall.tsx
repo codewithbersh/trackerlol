@@ -45,16 +45,15 @@ export const NetOverall = ({ transactions }: NetOverallProps) => {
     },
     {
       id: "overall",
-
       title: "Net Overall",
       value: netOverall,
-      icon: netOverall < 0 ? TrendingDown : TrendingUp,
+      icon: TrendingDown,
     },
   ];
 
   return (
-    <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4">
-      {summary.map((item) => (
+    <>
+      {/* {summary.map((item) => (
         <div
           className="border-input border rounded-md bg-accent/50 p-4 space-y-4"
           key={item.value}
@@ -86,7 +85,61 @@ export const NetOverall = ({ transactions }: NetOverallProps) => {
             {Math.abs(item.value).toLocaleString("en-US")}
           </h1>
         </div>
-      ))}
-    </div>
+      ))} */}
+
+      <div className="border-input border-t rounded-md bg-accent/50 p-4 space-y-4 col-span-1">
+        <div className="flex justify-between w-full">
+          <p className="text-muted-foreground">Total Income</p>
+          <div
+            className={cn("p-1 rounded-full bg-green-500/25 text-green-500")}
+          >
+            <ArrowUpRight className="w-4 h-4" />
+          </div>
+        </div>
+        <h1 className={cn("text-2xl font-bold tracking-wide")}>
+          $ {Math.abs(totalIncome).toLocaleString("en-US")}
+        </h1>
+      </div>
+
+      <div className="border-input border-t  rounded-md bg-accent/50 p-4 space-y-4 col-span-1">
+        <div className="flex justify-between w-full">
+          <p className="text-muted-foreground">Total Expense</p>
+          <div
+            className={cn(
+              "p-1 rounded-full bg-destructive/25 text-destructive"
+            )}
+          >
+            <ArrowDownRight className="w-4 h-4" />
+          </div>
+        </div>
+        <h1 className={cn("text-2xl font-bold tracking-wide")}>
+          $ {Math.abs(totalExpense).toLocaleString("en-US")}
+        </h1>
+      </div>
+
+      <div className="border-input border-t  rounded-md bg-accent/50 p-4 space-y-4 col-span-2 sm:col-span-1">
+        <div className="flex justify-between w-full">
+          <p className="text-muted-foreground">Net Overall</p>
+          <div
+            className={cn(
+              "p-1 rounded-full",
+              netOverall >= 0
+                ? "bg-green-400/25 text-green-400"
+                : "bg-destructive/25 text-destructive"
+            )}
+          >
+            {netOverall >= 0 ? (
+              <TrendingUp className="w-4 h-4" />
+            ) : (
+              <TrendingDown className="w-4 h-4" />
+            )}
+          </div>
+        </div>
+        <h1 className={cn("text-2xl font-bold tracking-wide")}>
+          {netOverall >= 0 ? "$" : "-$"}{" "}
+          {Math.abs(netOverall).toLocaleString("en-US")}
+        </h1>
+      </div>
+    </>
   );
 };

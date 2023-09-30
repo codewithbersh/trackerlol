@@ -1,5 +1,6 @@
 import { getCurrentUser } from "./get-current-user";
 import prismadb from "@/lib/prismadb";
+import { redirect } from "next/navigation";
 import { cache } from "react";
 
 interface GetReceiptsProps {
@@ -8,6 +9,10 @@ interface GetReceiptsProps {
 
 export const getReceipts = cache(async ({ categorySlug }: GetReceiptsProps) => {
   const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   if (categorySlug) {
     return await prismadb.receipt.findMany({

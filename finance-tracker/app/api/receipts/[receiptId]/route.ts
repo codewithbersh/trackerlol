@@ -10,6 +10,10 @@ export async function PATCH(
   const user = await getCurrentUser();
   const { imageUrl, oldImageUrl, title, categoryId } = await req.json();
 
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
+
   if (imageUrl !== oldImageUrl) {
     await utapi.deleteFiles(oldImageUrl.replace("https://utfs.io/f/", ""));
   }
@@ -34,6 +38,10 @@ export async function DELETE(
   { params: { receiptId } }: { params: { receiptId: string } }
 ) {
   const user = await getCurrentUser();
+
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
 
   const receipt = await prismadb.receipt.findUnique({
     where: {

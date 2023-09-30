@@ -9,6 +9,9 @@ export async function PATCH(
   const user = await getCurrentUser();
   const { type, categoryId, amount, timeFrame, startDate } = await req.json();
 
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
   if (!type) {
     return new NextResponse("Type is required", { status: 401 });
   }
@@ -44,6 +47,10 @@ export async function DELETE(
   { params: { budgetId } }: { params: { budgetId: string } }
 ) {
   const user = await getCurrentUser();
+
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
 
   const budget = await prismadb.budget.delete({
     where: {
