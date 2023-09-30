@@ -23,8 +23,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background antialiased font-sans relative",
-          font.className
+          "relative min-h-screen bg-background font-sans antialiased",
+          font.className,
         )}
       >
         <QueryProvider>

@@ -1,4 +1,4 @@
-import { Navigation } from "@/components/navigation/dashboard/navigation";
+import { Navigation } from "@/components/navigation/dashboard-test/navigation";
 import ModalProvider from "@/components/providers/modal-provider";
 
 const DashboardLayout = ({
@@ -9,9 +9,9 @@ const DashboardLayout = ({
   modal: React.ReactNode;
 }) => {
   return (
-    <div className="min-h-screen">
-      <div className="container px-4 sm:px-16 max-w-3xl">{children}</div>
+    <div className=" mx-auto flex min-h-screen max-w-screen-xl flex-col gap-6 lg:flex-row">
       <Navigation />
+      <div className="  flex-1 px-4">{children}</div>
       <ModalProvider />
       {modal}
     </div>
