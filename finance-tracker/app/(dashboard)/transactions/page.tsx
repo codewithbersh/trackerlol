@@ -5,11 +5,14 @@ import {
   validateTypeQuery,
 } from "@/lib/utils";
 import { getTransactions } from "@/actions/get-transactions";
-import { DateRange } from "react-day-picker";
 import { getCategories } from "@/actions/get-categories";
 
+import { AddTransactionButton } from "@/components/transactions/add-transaction-button";
+import { PageHeading } from "@/components/page-heading";
+import { Filters } from "@/components/transactions/filters";
 import { GroupedTransactions } from "@/components/transactions/grouped-transactions";
-import { FilterButton } from "@/components/transactions/filter-button";
+import { FiltersMobile } from "@/components/transactions/filters-mobile";
+import { FilterTransactionsSheet } from "@/components/modals/filter-transactions-sheet";
 
 interface TransactionsPageProps {
   searchParams: {
@@ -24,7 +27,7 @@ interface TransactionsPageProps {
 const TransactionsPage = async ({
   searchParams: { from, to, type, category },
 }: TransactionsPageProps) => {
-  const dateRangeQuery: DateRange = {
+  const dateRangeQuery = {
     from: stringToDate(from),
     to: stringToDate(to),
   };
@@ -43,22 +46,39 @@ const TransactionsPage = async ({
 
   const groupedTransactions = groupTransactionsByDate(transactions);
 
+  const hasValidQuery =
+    dateRangeQuery.from !== undefined ||
+    dateRangeQuery.to !== undefined ||
+    typeQuery !== undefined ||
+    categoryQuery !== undefined;
+
   return (
-    <div className="flex flex-col gap-8 py-24">
-      <FilterButton
-        dateRangeQuery={dateRangeQuery}
-        typeQuery={typeQuery}
-        categoryQuery={categoryQuery}
-        categories={categories}
-      />
+    <div className="mt-[60px] flex  flex-col sm:mt-16 lg:mt-0">
+      <PageHeading title="Transactions">
+        <AddTransactionButton />
+      </PageHeading>
+
+      <div className="py-8">
+        <div className="hidden w-fit gap-4 sm:flex">
+          <Filters categories={categories} hasValidQuery={hasValidQuery} />
+        </div>
+        <FiltersMobile />
+      </div>
+
       {groupedTransactions.length === 0 && (
-        <div className="text-sm text-muted-foreground text-center py-12">
+        <div className="py-12 text-center text-sm text-muted-foreground">
           No transactions found.
         </div>
       )}
-      {groupedTransactions.map((group) => (
-        <GroupedTransactions group={group} key={group.date} />
-      ))}
+      <div className="space-y-16">
+        {groupedTransactions.map((group) => (
+          <GroupedTransactions group={group} key={group.date} />
+        ))}
+      </div>
+      <FilterTransactionsSheet
+        categories={categories}
+        hasValidQuery={hasValidQuery}
+      />
     </div>
   );
 };

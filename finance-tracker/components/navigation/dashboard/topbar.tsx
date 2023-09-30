@@ -21,8 +21,8 @@ export const Topbar = ({ routes }: TopbarProps) => {
   const router = useRouter();
 
   return (
-    <div className="fixed flex w-full items-center justify-between bg-accent/50 px-4 py-4 backdrop-blur-lg lg:hidden">
-      <div className="flex w-full items-center gap-4 text-primary sm:px-8">
+    <div className="fixed z-50 flex w-full items-center justify-between bg-accent/50 px-4 py-4 backdrop-blur-lg lg:hidden">
+      <div className="flex w-full items-center gap-4 text-primary blur-sm sm:px-8">
         <Layers className="h-4 w-4 sm:h-6 sm:w-6" strokeWidth={2.5} />
         <h1 className="font-bold leading-none sm:text-lg">Savvve</h1>
       </div>

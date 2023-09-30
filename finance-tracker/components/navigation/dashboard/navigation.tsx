@@ -1,39 +1,46 @@
 "use client";
 
 import { Route } from "@/types/types";
+import {
+  Aperture,
+  ArrowRightLeft,
+  KanbanSquare,
+  Settings,
+  Target,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
-import { ImagePlus, Layers, LayoutGrid, Settings, Wallet2 } from "lucide-react";
 
-import { NavigationMobile } from "./navigation-mobile";
-import { NavigationDesktop } from "./navigation-desktop";
+import { Sidebar } from "./sidebar";
+import { Topbar } from "./topbar";
 
 export const Navigation = () => {
   const pathname = usePathname();
   const routes: Route[] = [
     {
-      icon: Layers,
+      icon: ArrowRightLeft,
       label: "Transactions",
       href: "/transactions",
       active: pathname.toLowerCase().startsWith("/transactions"),
     },
     {
-      icon: Wallet2,
+      icon: Target,
       label: "Budgets",
       href: "/budgets",
       active: pathname.toLowerCase().startsWith("/budgets"),
     },
     {
-      icon: ImagePlus,
-      label: "Receipts",
-      href: "/receipts",
-      active: pathname.toLowerCase().startsWith("/receipts"),
-    },
-    {
-      icon: LayoutGrid,
+      icon: Aperture,
       label: "Analytics",
       href: "/analytics",
       active: pathname.toLowerCase().startsWith("/analytics"),
     },
+    {
+      icon: KanbanSquare,
+      label: "Receipts",
+      href: "/receipts",
+      active: pathname.toLowerCase().startsWith("/receipts"),
+    },
+
     {
       icon: Settings,
       label: "Settings",
@@ -43,8 +50,8 @@ export const Navigation = () => {
   ];
   return (
     <>
-      <NavigationMobile routes={routes} />
-      <NavigationDesktop routes={routes} />
+      <Sidebar routes={routes} />
+      <Topbar routes={routes} />
     </>
   );
 };

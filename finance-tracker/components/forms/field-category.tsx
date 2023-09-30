@@ -20,7 +20,7 @@ import {
 import { FormControl } from "@/components/ui/form";
 import {
   Popover,
-  PopoverContentWithoutPortal,
+  PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -49,13 +49,13 @@ export const FieldCategory = ({
     selectedType === "EXPENSE" ? categories?.expense : categories?.income;
 
   const selectedCategory = selectedCategories?.find(
-    (category) => category.id === value
+    (category) => category.id === value,
   );
 
   const categoriesList = budgets
     ? selectedCategories?.filter(
         (category) =>
-          !budgets.some((budget) => budget.categoryId === category.id)
+          !budgets.some((budget) => budget.categoryId === category.id),
       )
     : selectedCategories;
 
@@ -69,19 +69,19 @@ export const FieldCategory = ({
               variant="secondary"
               role="combobox"
               className={cn(
-                "w-full sm:w-full justify-between border border-input",
-                !value && "text-muted-foreground"
+                "w-full justify-between border border-input sm:w-full",
+                !value && "text-muted-foreground",
               )}
             >
               {!categories ? (
-                <div className="flex gap-2 items-center w-full">
-                  <Skeleton className="w-6 h-6 rounded-full shrink-0" />
-                  <Skeleton className="w-full h-5 rounded-full" />
+                <div className="flex w-full items-center gap-2">
+                  <Skeleton className="h-6 w-6 shrink-0 rounded-full" />
+                  <Skeleton className="h-5 w-full rounded-full" />
                 </div>
               ) : value ? (
-                <div className="flex gap-2 items-center w-full ">
+                <div className="flex w-full items-center gap-2 ">
                   <div
-                    className="p-1 rounded-full leading-none text-base"
+                    className="rounded-full p-1 text-base leading-none"
                     style={{
                       backgroundColor: selectedCategory?.color,
                     }}
@@ -99,7 +99,7 @@ export const FieldCategory = ({
           </FormControl>
         </PopoverTrigger>
 
-        <PopoverContentWithoutPortal className="p-0" align="center">
+        <PopoverContent className="p-0" align="center">
           <Command>
             <CommandList>
               <CommandInput placeholder="Search categories..." />
@@ -118,13 +118,13 @@ export const FieldCategory = ({
                       onChange(category.id);
                       setOpen(false);
                     }}
-                    className="flex gap-2 h-fit"
+                    className="flex h-fit gap-2"
                   >
                     <Dot
                       strokeWidth={4}
                       className={cn(
                         "text-primary-foreground",
-                        category.id === value ? "opacity-100" : "opacity-0"
+                        category.id === value ? "opacity-100" : "opacity-0",
                       )}
                     />
                     <CategoryBadge
@@ -135,7 +135,7 @@ export const FieldCategory = ({
                     />
 
                     <Button
-                      className="h-6 w-6 ml-auto"
+                      className="ml-auto h-6 w-6"
                       size="icon"
                       variant="ghost"
                       onClick={(e) => {
@@ -145,7 +145,7 @@ export const FieldCategory = ({
                       }}
                       type="button"
                     >
-                      <Settings2 className="w-4 h-4" />
+                      <Settings2 className="h-4 w-4" />
                     </Button>
                   </CommandItem>
                 ))}
@@ -161,17 +161,17 @@ export const FieldCategory = ({
                   }}
                   className={cn(
                     buttonVariants({ variant: "secondary", size: "sm" }),
-                    "w-full justify-start"
+                    "w-full justify-start",
                   )}
                 >
-                  <div className="w-6 h-6" />
-                  <PlusCircle className="w-4 h-4 mr-2" />
+                  <div className="h-6 w-6" />
+                  <PlusCircle className="mr-2 h-4 w-4" />
                   New Category
                 </CommandItem>
               </CommandGroup>
             </CommandList>
           </Command>
-        </PopoverContentWithoutPortal>
+        </PopoverContent>
       </Popover>
     </>
   );

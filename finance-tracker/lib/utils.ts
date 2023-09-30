@@ -39,7 +39,7 @@ export type GroupedTransactions = {
 };
 
 export function groupTransactionsByDate(
-  transactions: TransactionWithCategoryWithAmountAsNumber[]
+  transactions: TransactionWithCategoryWithAmountAsNumber[],
 ): GroupedTransactions[] {
   const groupedMap: Record<
     string,
@@ -58,13 +58,13 @@ export function groupTransactionsByDate(
     ([date, transactions]) => ({
       date,
       transactions,
-    })
+    }),
   );
 
   return grouped;
 }
 
-export const stringToDate = (date: string | undefined) => {
+export const stringToDate = (date: string | undefined | null) => {
   if (!date) return undefined;
   const parsedDate = parseISO(date);
   if (isValid(parsedDate)) {
@@ -85,7 +85,7 @@ export const validateTypeQuery = (type: string | undefined) => {
 
 export const validateCategoryQuery = (
   categories: Category[],
-  category: string
+  category: string | null,
 ): Category | undefined => {
   if (!category) return undefined;
 
@@ -119,7 +119,7 @@ export const startDateChoices = (timeFrame: TimeFrameType) => {
 
 export const calculateDaysLeft = (
   timeFrame: TimeFrameType,
-  startDate: Date
+  startDate: Date,
 ) => {
   const todayDay = getDate(new Date());
   const startDateDay = getDate(startDate);
@@ -183,7 +183,7 @@ export function getRangeDefaultValue(range: string | undefined) {
 }
 
 export const groupTransactionsByCategory = (
-  transactions: TransactionWithCategoryWithAmountAsNumber[]
+  transactions: TransactionWithCategoryWithAmountAsNumber[],
 ) => {
   const groupedExpenses: {
     [key: string]: TransactionWithCategoryWithAmountAsNumber[];
@@ -222,7 +222,7 @@ export const getTotalAmountPerCategory = ({
     category: key,
     amount: group[key].reduce(
       (acc, transaction) => acc + transaction.amount,
-      0
+      0,
     ),
   }));
 
@@ -234,7 +234,7 @@ export const getTotalAmountPerCategory = ({
 
   totalAmountPerCategory["totalForType"] = categoriesWithAmounts.reduce(
     (acc, item) => acc + item.amount,
-    0
+    0,
   );
 
   return totalAmountPerCategory;
@@ -242,7 +242,7 @@ export const getTotalAmountPerCategory = ({
 
 export function getCategoryBySlug(
   slug: string,
-  transactions: TransactionWithCategoryWithAmountAsNumber[]
+  transactions: TransactionWithCategoryWithAmountAsNumber[],
 ) {
   return (
     transactions.find((item) => item.category.slug === slug)?.category || null

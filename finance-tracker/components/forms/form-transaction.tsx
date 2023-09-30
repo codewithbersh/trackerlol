@@ -109,7 +109,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full pt-8 grid grid-cols-2 gap-y-8 gap-x-4"
+        className="grid w-full grid-cols-2 gap-x-4 gap-y-8 pt-8"
         autoComplete="off"
       >
         <FormField
@@ -164,7 +164,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
           control={form.control}
           name="categoryId"
           render={({ field }) => (
-            <FormItem className="flex flex-col w-full col-span-full sm:col-span-1">
+            <FormItem className="col-span-full flex w-full flex-col sm:col-span-1">
               <FormLabel className="w-fit">Category</FormLabel>
               <FieldCategory
                 selectedType={form.watch("type")}
@@ -180,7 +180,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem className="flex flex-col col-span-full sm:col-span-1">
+            <FormItem className="col-span-full flex flex-col sm:col-span-1">
               <FormLabel>Date</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -188,8 +188,8 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
                     <Button
                       variant="secondary"
                       className={cn(
-                        "w-full pl-3 text-left font-normal border-input border",
-                        !field.value && "text-muted-foreground"
+                        "w-full border border-input pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground",
                       )}
                       disabled={isLoading}
                     >
@@ -217,13 +217,9 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             </FormItem>
           )}
         />
-        <div className="col-span-full flex mt-6 items-center gap-4 ">
+        <div className="col-span-full mt-6 flex items-center gap-4 ">
           {initialData && (
-            <Button
-              variant="outlineDestructive"
-              type="button"
-              onClick={() => handleDelete(initialData.id)}
-            >
+            <Button type="button" onClick={() => handleDelete(initialData.id)}>
               Delete
             </Button>
           )}

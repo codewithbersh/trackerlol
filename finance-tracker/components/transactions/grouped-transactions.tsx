@@ -4,8 +4,6 @@ import { parseISO, format } from "date-fns";
 import { GroupedTransactions as GroupedTransactionsType } from "@/lib/utils";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
-import { CategoryBadge } from "@/components/category-badge";
-
 interface GroupedTransactionsProps {
   group: GroupedTransactionsType;
 }
@@ -27,32 +25,41 @@ export const GroupedTransactions = ({
     .toLocaleString("en-US");
 
   return (
-    <div className="space-y-2 text-sm leading-none sm:text-base">
-      <div className="flex justify-between px-4">
-        <small className="text-muted-foreground">{date}</small>
-        <small className="text-muted-foreground">$ {sum}</small>
+    <div className="space-y-4">
+      <div className="flex justify-between border-b p-4 text-sm font-bold uppercase">
+        <span>{date}</span>
+        <span>$ {sum}</span>
       </div>
       <div className="flex flex-col gap-4 overflow-hidden">
         {transactions.map((transaction) => (
           <div
             key={transaction.id}
-            className="bg-accent/50 rounded-full flex items-center justify-between px-4 py-2 hover:bg-accent/75 cursor-pointer"
+            className="flex cursor-pointer items-center justify-between rounded-md hover:bg-accent/50"
             onClick={() => {
               setTransaction(transaction);
               onOpen();
             }}
           >
-            <div className="flex gap-4 w-full items-center justify-between">
-              <CategoryBadge
-                backgroundColor={transaction.category.color}
-                emoji={transaction.category.emoji}
-                title={transaction.category.title}
-              />
-              <div className="text-muted-foreground truncate leading-tight">
-                {transaction.note}
+            <div className="flex w-full items-center justify-between gap-4 px-4 py-2">
+              <div className="flex items-center gap-4">
+                <div
+                  className="grid h-10 w-10 place-items-center rounded-md"
+                  style={{ backgroundColor: transaction.category.color }}
+                >
+                  <span className="text-xl leading-none">
+                    {transaction.category.emoji}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-2 font-medium leading-none">
+                  <div className="font-bold">{transaction.category.title}</div>
+                  <div className="text-muted-foreground">
+                    {transaction.note}
+                  </div>
+                </div>
               </div>
 
-              <div className="text-foreground/80 font-bold ml-auto shrink-0">
+              <div className="ml-auto shrink-0">
                 <span>{transaction.type === "EXPENSE" ? "-" : ""} $</span>{" "}
                 {Number(transaction.amount).toLocaleString("en-US")}
               </div>
