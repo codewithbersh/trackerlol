@@ -5,6 +5,7 @@ import { Category } from "@prisma/client";
 import { Check, ChevronDown, LayoutGrid } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +27,7 @@ interface FilterCategoryProps {
 }
 
 export const FilterCategory = ({ categories }: FilterCategoryProps) => {
+  const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const categoryParams = searchParams.get("category")?.toLowerCase();
@@ -51,6 +53,8 @@ export const FilterCategory = ({ categories }: FilterCategoryProps) => {
       { skipNull: true },
     );
 
+    setOpen(false);
+
     router.push(url);
   };
 
@@ -58,12 +62,15 @@ export const FilterCategory = ({ categories }: FilterCategoryProps) => {
   const income = categories.filter((category) => category.type === "INCOME");
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
           className="flex max-h-10 w-full justify-start gap-2"
+          onClick={() => {
+            setOpen(true);
+          }}
         >
           <LayoutGrid className="h-4 w-4 opacity-50" />
           {isValidCategory ? (

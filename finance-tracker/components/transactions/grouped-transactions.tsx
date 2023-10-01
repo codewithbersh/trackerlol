@@ -24,6 +24,10 @@ export const GroupedTransactions = ({
     }, 0)
     .toLocaleString("en-US");
 
+  const sortedTransactions = transactions.sort(
+    (a, b) => Number(b.updatedAt) - Number(a.updatedAt),
+  );
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between border-b p-4 text-sm font-bold uppercase">
@@ -31,7 +35,7 @@ export const GroupedTransactions = ({
         <span>$ {sum}</span>
       </div>
       <div className="flex flex-col gap-4 overflow-hidden">
-        {transactions.map((transaction) => (
+        {sortedTransactions.map((transaction) => (
           <div
             key={transaction.id}
             className="flex cursor-pointer items-center justify-between rounded-md hover:bg-accent/50"
@@ -53,9 +57,13 @@ export const GroupedTransactions = ({
 
                 <div className="flex flex-col gap-2 font-medium leading-none">
                   <div className="font-bold">{transaction.category.title}</div>
-                  <div className="text-muted-foreground">
-                    {transaction.note}
-                  </div>
+                  {transaction.note.length > 0 ? (
+                    <div className="text-muted-foreground">
+                      {transaction.note}
+                    </div>
+                  ) : (
+                    <div className="text-muted-foreground/75">Empty</div>
+                  )}
                 </div>
               </div>
 

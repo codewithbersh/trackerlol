@@ -53,7 +53,7 @@ const TransactionsPage = async ({
     categoryQuery !== undefined;
 
   return (
-    <div className="mt-[60px] flex  flex-col sm:mt-16 lg:mt-0">
+    <div className="mt-[60px] flex  flex-col py-8 pt-0 sm:mt-16 lg:mt-0">
       <PageHeading title="Transactions">
         <AddTransactionButton />
       </PageHeading>

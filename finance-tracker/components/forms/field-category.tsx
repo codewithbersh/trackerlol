@@ -3,28 +3,23 @@
 import { useState } from "react";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import { cn } from "@/lib/utils";
-import { ChevronsUpDown, Dot, PlusCircle, Settings2 } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import useCategoryData from "@/hooks/use-category-data";
 import { Budget } from "@prisma/client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
-  CommandSeparator,
 } from "@/components/ui/command";
-import { FormControl } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Skeleton } from "@/components/ui/skeleton";
-import { CategoryBadge } from "@/components/category-badge";
 
 interface FieldCategoryProps {
   selectedType: "INCOME" | "EXPENSE";
@@ -41,9 +36,8 @@ export const FieldCategory = ({
   selectedType,
   budgets,
 }: FieldCategoryProps) => {
-  const [open, setOpen] = useState(false);
-  const { onOpen, setCategory } = useCategoryModal();
   const { data: categories } = useCategoryData();
+  const [open, setOpen] = useState(false);
 
   const selectedCategories =
     selectedType === "EXPENSE" ? categories?.expense : categories?.income;
@@ -61,115 +55,55 @@ export const FieldCategory = ({
 
   return (
     <>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover onOpenChange={setOpen} open={open}>
         <PopoverTrigger asChild>
-          <FormControl>
-            <Button
-              disabled={isSubmitting || !categories}
-              variant="secondary"
-              role="combobox"
-              className={cn(
-                "w-full justify-between border border-input sm:w-full",
-                !value && "text-muted-foreground",
-              )}
-            >
-              {!categories ? (
-                <div className="flex w-full items-center gap-2">
-                  <Skeleton className="h-6 w-6 shrink-0 rounded-full" />
-                  <Skeleton className="h-5 w-full rounded-full" />
-                </div>
-              ) : value ? (
-                <div className="flex w-full items-center gap-2 ">
-                  <div
-                    className="rounded-full p-1 text-base leading-none"
-                    style={{
-                      backgroundColor: selectedCategory?.color,
-                    }}
-                  >
-                    {selectedCategory?.emoji}
-                  </div>
-                  <span>{selectedCategory?.title}</span>
-                </div>
-              ) : (
-                <span className="shrink-0">Select a category</span>
-              )}
-
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </FormControl>
+          <Button
+            variant="outline"
+            role="combobox"
+            className="flex max-h-10 min-h-[38px] w-full justify-start gap-2"
+            disabled={isSubmitting}
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            {value ? (
+              <div className="flex items-center gap-2 leading-none">
+                <span>{selectedCategory?.emoji}</span>
+                <span>{selectedCategory?.title}</span>
+              </div>
+            ) : (
+              <span className="text-muted-foreground">Select category</span>
+            )}
+            <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          </Button>
         </PopoverTrigger>
-
-        <PopoverContent className="p-0" align="center">
+        <PopoverContent
+          className="max-w-[462px]  p-0 sm:max-w-[223px]"
+          align="start"
+        >
           <Command>
-            <CommandList>
-              <CommandInput placeholder="Search categories..." />
-              <CommandEmpty>No category found.</CommandEmpty>
-              <CommandGroup className="max-h-[150px] overflow-y-auto">
-                {categoriesList?.length === 0 && (
-                  <div className="py-6 text-center text-sm">
-                    No category found.
-                  </div>
-                )}
-
-                {categoriesList?.map((category) => (
-                  <CommandItem
-                    key={category.id}
-                    onSelect={() => {
-                      onChange(category.id);
-                      setOpen(false);
-                    }}
-                    className="flex h-fit gap-2"
-                  >
-                    <Dot
-                      strokeWidth={4}
-                      className={cn(
-                        "text-primary-foreground",
-                        category.id === value ? "opacity-100" : "opacity-0",
-                      )}
-                    />
-                    <CategoryBadge
-                      backgroundColor={category.color}
-                      emoji={category.emoji}
-                      title={category.title}
-                      variant="small"
-                    />
-
-                    <Button
-                      className="ml-auto h-6 w-6"
-                      size="icon"
-                      variant="ghost"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCategory(category);
-                        onOpen();
-                      }}
-                      type="button"
-                    >
-                      <Settings2 className="h-4 w-4" />
-                    </Button>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-            <CommandSeparator />
-            <CommandList>
-              <CommandGroup>
+            <CommandInput placeholder="Search category..." />
+            <CommandEmpty>No category found.</CommandEmpty>
+            <CommandGroup heading={selectedType}>
+              {selectedCategories?.map((category) => (
                 <CommandItem
+                  value={category.title}
+                  key={category.id}
                   onSelect={() => {
-                    onOpen();
-                    setCategory(null);
+                    onChange(category.id);
+                    setOpen(false);
                   }}
-                  className={cn(
-                    buttonVariants({ variant: "secondary", size: "sm" }),
-                    "w-full justify-start",
-                  )}
                 >
-                  <div className="h-6 w-6" />
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  New Category
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      category.id === value ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                  {category.title}
                 </CommandItem>
-              </CommandGroup>
-            </CommandList>
+              ))}
+            </CommandGroup>
           </Command>
         </PopoverContent>
       </Popover>

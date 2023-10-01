@@ -30,6 +30,7 @@ import {
 import { FieldCategory } from "./field-category";
 import { FieldType } from "./field-type";
 import { FieldAmount } from "./field-amount";
+import { FieldTransactionDate } from "./field-transaction-date";
 
 const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -182,44 +183,21 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
           render={({ field }) => (
             <FormItem className="col-span-full flex flex-col sm:col-span-1">
               <FormLabel>Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="secondary"
-                      className={cn(
-                        "w-full border border-input pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground",
-                      )}
-                      disabled={isLoading}
-                    >
-                      {field.value ? (
-                        format(field.value, "MMMM dd")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="center">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <FieldTransactionDate
+                isLoading={isLoading}
+                value={field.value}
+                onChange={field.onChange}
+              />
             </FormItem>
           )}
         />
         <div className="col-span-full mt-6 flex items-center gap-4 ">
           {initialData && (
-            <Button type="button" onClick={() => handleDelete(initialData.id)}>
+            <Button
+              type="button"
+              onClick={() => handleDelete(initialData.id)}
+              variant="outline-destructive"
+            >
               Delete
             </Button>
           )}

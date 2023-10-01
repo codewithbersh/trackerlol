@@ -53,5 +53,5 @@ export const getTransactions = cache(
     }));
 
     return formattedTransactions;
-  }
+  },
 );
