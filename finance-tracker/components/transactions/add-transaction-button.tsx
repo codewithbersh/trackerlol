@@ -4,7 +4,6 @@ import { Plus } from "lucide-react";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 import { Button } from "@/components/ui/button";
-import { CommandShortcut } from "../ui/command";
 
 export const AddTransactionButton = () => {
   const { onOpen, setTransaction } = useTransactionModal();
