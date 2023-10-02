@@ -1,22 +1,22 @@
 import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
-import { Category, TimeFrameType, TransactionType } from "@prisma/client";
+import { Category, TransactionType } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import {
-  addMonths,
-  addWeeks,
-  differenceInDays,
-  eachDayOfInterval,
   endOfMonth,
   endOfWeek,
   endOfYear,
-  getDate,
   isValid,
   parseISO,
-  setDate,
   startOfMonth,
   startOfWeek,
   startOfYear,
-  subDays,
+  endOfDay,
+  addMinutes,
+  format,
+  setHours,
+  setMinutes,
+  setSeconds,
+  setMilliseconds
 } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
@@ -90,85 +90,6 @@ export const validateCategoryQuery = (
   if (!category) return undefined;
 
   return categories.find((item) => item.slug === category);
-};
-
-const daysOfWeek = (today: Date) => {
-  return eachDayOfInterval({
-    start: startOfWeek(today, { weekStartsOn: 0 }),
-    end: endOfWeek(today, { weekStartsOn: 0 }),
-  });
-};
-
-const daysOfMonth = (today: Date) => {
-  return eachDayOfInterval({
-    start: startOfMonth(today),
-    end: endOfMonth(today).setDate(28),
-  });
-};
-
-export const startDateChoices = (timeFrame: TimeFrameType) => {
-  switch (timeFrame) {
-    case "DAILY":
-      return [new Date()];
-    case "WEEKLY":
-      return daysOfWeek(new Date());
-    case "MONTHLY":
-      return daysOfMonth(new Date());
-  }
-};
-
-export const calculateDaysLeft = (
-  timeFrame: TimeFrameType,
-  startDate: Date,
-) => {
-  const todayDay = getDate(new Date());
-  const startDateDay = getDate(startDate);
-  switch (timeFrame) {
-    case "DAILY":
-      return 1;
-    case "WEEKLY":
-      if (todayDay >= startDateDay) {
-        return differenceInDays(addWeeks(startDate, 1), new Date());
-      }
-
-      return differenceInDays(setDate(new Date(), startDateDay), new Date());
-
-    case "MONTHLY":
-      if (todayDay >= startDateDay) {
-        return differenceInDays(addMonths(startDate, 1), new Date());
-      }
-
-      return differenceInDays(setDate(new Date(), startDateDay), new Date());
-  }
-};
-
-export const getBudgetTransactionRange = ({
-  timeFrame,
-  range,
-  startDate,
-}: {
-  timeFrame: TimeFrameType;
-  range: "to" | "from";
-  startDate: Date;
-}) => {
-  switch (timeFrame) {
-    case "DAILY":
-      if (range === "from") {
-        return subDays(new Date(), 1);
-      }
-      return new Date();
-
-    case "WEEKLY":
-      if (range === "from") {
-        return startOfWeek(startDate, { weekStartsOn: 0 });
-      }
-      return endOfWeek(startDate, { weekStartsOn: 0 });
-    case "MONTHLY":
-      if (range === "from") {
-        return startOfMonth(startDate);
-      }
-      return endOfMonth(startDate);
-  }
 };
 
 export function getRangeDefaultValue(range: string | undefined) {
@@ -267,4 +188,21 @@ export function validateRangeParams(range: string | undefined) {
         range: "week",
       };
   }
+}
+
+
+
+
+export function floorDate(date: Date) {
+  const localDate = addMinutes(date, date.getTimezoneOffset());
+
+  return new Date(format(localDate, "yyyy-MM-dd'T'00:00:00.S'Z'"));
+}
+
+export function ceilingDate(date: Date) {
+  const endOfDayDate = setMilliseconds(
+    setSeconds(setMinutes(setHours(date, 23), 59), 59),
+    999,
+  );
+  return endOfDay(endOfDayDate);
 }

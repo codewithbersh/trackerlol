@@ -43,10 +43,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  categories   Category[]
-  transactions Transaction[]
-  budgets      Budget[]
-  receipts     Receipt[]
+  categories    Category[]
+  transactions  Transaction[]
+  overallBudget OverallBudget?
+  receipts      Receipt[]
 }
 
 model VerificationToken {
@@ -63,14 +63,14 @@ model Category {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  type         TransactionType
-  title        String
-  slug         String          @default("")
-  emoji        String
-  color        String
-  transactions Transaction[]
-  budget       Budget?
-  receipts     Receipt[]
+  type           TransactionType
+  title          String
+  slug           String          @default("")
+  emoji          String
+  color          String
+  transactions   Transaction[]
+  categoryBudget CategoryBudget?
+  receipts       Receipt[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -96,18 +96,33 @@ model Transaction {
   updatedAt DateTime @updatedAt
 }
 
-model Budget {
+model CategoryBudget {
+  id String @id @default(uuid())
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @unique
+
+  limit          Decimal
+  duration       Duration
+  weekStartDay   WeekStartDay?
+  monthStartDate Int?
+  yearStartDate  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OverallBudget {
   id String @id @default(uuid())
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  userId String @unique
 
-  type       BudgetType
-  category   Category?     @relation(fields: [categoryId], references: [id])
-  categoryId String?       @unique
-  amount     Decimal
-  timeFrame  TimeFrameType
-  startDate  DateTime
+  limit          Decimal
+  duration       Duration
+  weekStartDay   WeekStartDay?
+  monthStartDate Int?
+  yearStartDate  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -128,15 +143,21 @@ model Receipt {
   updatedAt DateTime @updatedAt
 }
 
-enum TimeFrameType {
+enum Duration {
   DAILY
   WEEKLY
   MONTHLY
+  YEARLY
 }
 
-enum BudgetType {
-  OVERALL
-  CATEGORY
+enum WeekStartDay {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
 }
 
 enum TransactionType {

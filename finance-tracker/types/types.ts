@@ -1,3 +1,4 @@
+import { getOverallBudget } from "@/actions/get-overall-budget";
 import { Prisma, Transaction } from "@prisma/client";
 import { LucideIcon } from "lucide-react";
 
@@ -28,15 +29,6 @@ export type TransactionWithCategoryWithAmountAsNumber = Prettify<
   }
 >;
 
-export type BudgetWithCategory = Omit<
-  Prisma.BudgetGetPayload<{
-    include: { category: true };
-  }>,
-  "amount"
-> & {
-  amount: number;
-};
-
 export type ReceiptWithCategory = Prisma.ReceiptGetPayload<{
   include: { category: true };
 }>;
@@ -50,4 +42,11 @@ export type CategoryWithReceiptCount = {
   _count: {
     receipts: number;
   };
+};
+
+export type OverallBudgetWithLimitAsNumber = Omit<
+  Prisma.OverallBudgetGetPayload<{}>,
+  "limit"
+> & {
+  limit: number;
 };

@@ -1,45 +1,39 @@
 "use client";
 
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { FormControl } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 
-interface FieldTransactionDateProps {
-  value: Date | undefined;
+interface FieldYearStartDateProps {
+  value: Date;
   onChange: (value: Date | undefined) => void;
-  isLoading: boolean;
 }
 
-export const FieldTransactionDate = ({
+export const FieldYearStartDate = ({
   value,
   onChange,
-  isLoading,
-}: FieldTransactionDateProps) => {
-  const [open, setOpen] = useState(false);
+}: FieldYearStartDateProps) => {
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover>
       <PopoverTrigger asChild>
         <FormControl>
           <Button
-            variant="outline"
+            variant={"outline"}
             className={cn(
-              "w-full border border-input pl-3 text-left font-normal",
+              "h-10 w-full pl-3 text-left font-normal",
               !value && "text-muted-foreground",
             )}
-            disabled={isLoading}
-            onClick={() => setOpen(true)}
           >
-            {value ? format(value, "MMMM dd") : <span>Pick a date</span>}
+            {value ? format(value, "PPP") : <span>Select year start date</span>}
             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
           </Button>
         </FormControl>
@@ -48,15 +42,12 @@ export const FieldTransactionDate = ({
         <Calendar
           mode="single"
           selected={value}
-          onSelect={(value) => {
-            onChange(value);
-            setOpen(false);
-          }}
-          // disabled={(date) =>
-          //   date > new Date() || date < new Date("1900-01-01")
-          // }
+          onSelect={onChange}
+          disabled={(date) =>
+            date > new Date() || date < new Date("1900-01-01")
+          }
           initialFocus
-          defaultMonth={value || new Date()}
+          defaultMonth={value}
         />
       </PopoverContent>
     </Popover>

@@ -43,12 +43,9 @@ export const AnalyticsButton = ({ range }: AnalyticsButtonProps) => {
         onValueChange={(value) => router.push(`/analytics?range=${value}`)}
       >
         <SelectTrigger
-          className={cn(
-            buttonVariants({ variant: "secondary" }),
-            "w-fit gap-2 h-fit min-h-[43.62px] mx-auto border-border border font-bold items-center"
-          )}
+          className={cn(buttonVariants({ variant: "outline" }), "w-fit gap-2")}
         >
-          <CalendarDays className="w-4 h-4" />
+          <CalendarDays className="h-4 w-4" />
           <SelectValue placeholder="Select date" />
         </SelectTrigger>
         <SelectContent>

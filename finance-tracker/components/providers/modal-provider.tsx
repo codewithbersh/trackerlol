@@ -7,6 +7,7 @@ import { TransactionModal } from "@/components/modals/transaction-modal";
 import { CategoryModal } from "@/components/modals/category-modal";
 import { BudgetModal } from "@/components/modals/budget-modal";
 import { ReceiptModal } from "@/components/modals/receipt-modal";
+import { OverallBudgetModal } from "@/components/modals/overall-budget-modal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -36,6 +37,7 @@ const ModalProvider = () => {
       <CategoryModal />
       <BudgetModal />
       <ReceiptModal />
+      <OverallBudgetModal />
     </>
   );
 };

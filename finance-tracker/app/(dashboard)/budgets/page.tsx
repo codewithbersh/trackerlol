@@ -1,17 +1,14 @@
-import { getBudgets } from "@/actions/get-budgets";
-
-import { BudgetButton } from "@/components/budget-button";
-import { Budgets } from "@/components/budgets/budgets";
+import { OverallBudget } from "@/components/budgets/overall-budget";
+import { PageHeading } from "@/components/page-heading";
 
 const BudgetsPage = async () => {
-  const { category, overall } = await getBudgets();
-
   return (
-    <div className="flex flex-col gap-8 py-24">
-      <BudgetButton />
-      <div className="mt-8 space-y-16">
-        <Budgets budgets={overall} type="Overall" />
-        <Budgets budgets={category} type="Category" />
+    <div className="mt-[60px] flex  flex-col space-y-12 py-8 pt-0 sm:mt-16 lg:mt-4">
+      <PageHeading title="Budgets" />
+
+      <div className="space-y-6">
+        <h1 className="font-semibold">Overall</h1>
+        <OverallBudget />
       </div>
     </div>
   );
