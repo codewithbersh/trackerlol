@@ -36,6 +36,7 @@ export const CategoryBudget = async ({ budget }: CategoryBudgetProps) => {
       daysLeft={daysLeft}
       spendingLimitLeft={spendingLimitLeft}
       total={Number(total.amount)}
+      range={{ from, to }}
     />
   );
 };

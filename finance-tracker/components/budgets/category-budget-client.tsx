@@ -2,11 +2,14 @@
 
 import { cn, toTitleCase } from "@/lib/utils";
 import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
-import { getStartDate } from "./utils";
 import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
+import { useRouter } from "next/navigation";
+import { format } from "date-fns";
+import { getStartDate } from "./utils";
 
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 
 interface CategoryBudgetClientProps {
   budget: CategoryBudgetWithLimitAsNumber;
@@ -14,6 +17,10 @@ interface CategoryBudgetClientProps {
   total: number;
   spendingLimitLeft: number;
   daysLeft: number;
+  range: {
+    from: Date;
+    to: Date;
+  };
 }
 
 export const CategoryBudgetClient = ({
@@ -22,11 +29,13 @@ export const CategoryBudgetClient = ({
   total,
   spendingLimitLeft,
   daysLeft,
+  range,
 }: CategoryBudgetClientProps) => {
   const { onOpen, setBudget } = useCategoryBudget();
+  const router = useRouter();
   return (
     <div
-      className="flex cursor-pointer flex-col gap-8 rounded-sm border p-4 hover:bg-accent/25"
+      className="flex cursor-pointer flex-col rounded-sm border p-4 hover:bg-accent/25"
       onClick={() => {
         setBudget(budget);
         onOpen();
@@ -62,7 +71,7 @@ export const CategoryBudgetClient = ({
         </div>
       </div>
 
-      <div className="flex  flex-1 flex-col gap-1 leading-none text-muted-foreground">
+      <div className="flex flex-1 flex-col gap-1 pt-8 leading-none text-muted-foreground">
         <div className="flex items-center justify-between text-sm font-medium text-primary">
           <div>
             <span className="hidden sm:inline">Current: </span>${" "}
@@ -83,6 +92,24 @@ export const CategoryBudgetClient = ({
             {daysLeft} {daysLeft > 1 ? "days" : "day"} left
           </div>
         </div>
+      </div>
+
+      <div className="flex items-center justify-center pt-2">
+        <Button
+          variant="link"
+          className="h-fit w-fit p-0 text-muted-foreground hover:text-primary"
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(
+              `/transactions?category=${budget.category.slug}&from=${format(
+                range.from,
+                "yyyy-MM-dd",
+              )}&to=${format(range.to, "yyyy-MM-dd")}`,
+            );
+          }}
+        >
+          View Transactions
+        </Button>
       </div>
     </div>
   );
