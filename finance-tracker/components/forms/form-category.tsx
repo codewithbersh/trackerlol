@@ -19,7 +19,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { Button } from "@/components/ui/button";
 import { FieldEmoji } from "./field-emoji";
 import { FieldType } from "./field-type";
@@ -51,6 +50,7 @@ export const FormCategory = () => {
 
   const isLoading = form.formState.isSubmitting;
   const currentColor = form.watch("color");
+  const currentName = form.watch("title");
   const buttonText = initialData ? "Save Category" : "Add Category";
 
   async function onSubmit(values: z.infer<typeof CategoryFormSchema>) {
@@ -98,7 +98,7 @@ export const FormCategory = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-8 pt-8"
+        className="grid gap-8 pt-8 sm:grid-cols-2"
       >
         <FormField
           control={form.control}
@@ -117,30 +117,12 @@ export const FormCategory = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="emoji"
-          render={({ field }) => (
-            <FormItem className="flex flex-col items-center pt-8">
-              <FormControl>
-                <FieldEmoji
-                  onChange={field.onChange}
-                  value={field.value}
-                  currentColor={currentColor}
-                  isLoading={isLoading}
-                />
-              </FormControl>
-              <FormLabel>Emoji</FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-full">
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input
@@ -153,12 +135,31 @@ export const FormCategory = () => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="emoji"
+          render={({ field }) => (
+            <FormItem className="col-span-full sm:col-span-1">
+              <FormLabel>Emoji</FormLabel>
+              <FormControl>
+                <FieldEmoji
+                  currentName={currentName}
+                  onChange={field.onChange}
+                  value={field.value}
+                  currentColor={currentColor}
+                  isLoading={isLoading}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
           name="color"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-full sm:col-span-1">
               <FormLabel>Color</FormLabel>
               <FormControl>
                 <FieldColor
@@ -177,11 +178,11 @@ export const FormCategory = () => {
           )}
         />
 
-        <div className="w-full flex gap-4 mt-6">
+        <div className="col-span-full mt-6 flex w-full gap-4">
           {initialData && (
             <Button
               className=""
-              variant="outlineDestructive"
+              variant="outline-destructive"
               type="button"
               onClick={() => handleDelete(initialData.id)}
             >
@@ -198,10 +199,10 @@ export const FormCategory = () => {
           </Button>
           <Button
             type="submit"
-            className="w-fit gap-2 items-center"
+            className="w-fit items-center gap-2"
             disabled={isLoading}
           >
-            {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
             {buttonText}
           </Button>
         </div>

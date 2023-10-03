@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Plus, Settings2 } from "lucide-react";
 import { Category } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
@@ -12,12 +12,14 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandSeparator,
 } from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useCategoryModal } from "@/hooks/use-category-modal";
 
 interface FieldCategoryProps {
   selectedType: "INCOME" | "EXPENSE";
@@ -35,6 +37,7 @@ export const FieldCategory = ({
   categories,
 }: FieldCategoryProps) => {
   const [open, setOpen] = useState(false);
+  const { onOpen, setCategory } = useCategoryModal();
 
   const selectedCategory = categories?.find(
     (category) => category.id === value,
@@ -70,7 +73,12 @@ export const FieldCategory = ({
         >
           <Command>
             <CommandInput placeholder="Search category..." />
-            <CommandEmpty className={cn(categories?.length === 0 && "hidden")}>
+            <CommandEmpty
+              className={cn(
+                "py-6 text-center text-sm",
+                categories?.length === 0 && "hidden",
+              )}
+            >
               No category found.
             </CommandEmpty>
             {categories?.length === 0 ? (
@@ -95,10 +103,35 @@ export const FieldCategory = ({
                       )}
                     />
                     {category.title}
+                    <Button
+                      className="group ml-auto h-fit w-fit p-1 hover:bg-muted"
+                      variant="ghost"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCategory(category);
+                        onOpen();
+                      }}
+                    >
+                      <Settings2 className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+                    </Button>
                   </CommandItem>
                 ))}
               </CommandGroup>
             )}
+
+            <CommandSeparator />
+            <CommandGroup>
+              <CommandItem
+                className="flex items-center gap-2"
+                onSelect={() => {
+                  setCategory(null);
+                  onOpen();
+                }}
+              >
+                <Plus className="h-4 w-4" />
+                <div className="text-sm leading-none">New Category</div>
+              </CommandItem>
+            </CommandGroup>
           </Command>
         </PopoverContent>
       </Popover>

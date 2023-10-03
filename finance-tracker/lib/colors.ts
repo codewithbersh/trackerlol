@@ -63,30 +63,6 @@ export const expenseColors = [
     name: "blue-400",
     value: "#60a5fa",
   },
-  {
-    name: "violet-400",
-    value: "#818cf8",
-  },
-  {
-    name: "pink-400",
-    value: "#f472b6",
-  },
-  {
-    name: "teal-400",
-    value: "#2dd4bf",
-  },
-  {
-    name: "fuchsia-400",
-    value: "#e879f9",
-  },
-  {
-    name: "stone-400",
-    value: "#a8a29e",
-  },
-  // {
-  //   name: "slate-400",
-  //   value: "#94a3b8",
-  // },
 ];
 
 export const incomeColors = [

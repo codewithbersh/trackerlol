@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Button } from "../ui/button";
 
 interface FieldColorProps {
   value: string;
@@ -28,17 +29,17 @@ export const FieldColor = ({
   const colors = type === "EXPENSE" ? expenseColors : incomeColors;
 
   return (
-    <div className="w-full grid grid-cols-10 gap-2">
+    <div className="grid w-full grid-cols-5 items-center gap-2 sm:max-h-20">
       {colors.map((color) => (
         <button
           key={color.value}
           type="button"
           className={cn(
-            "w-full h-full aspect-square rounded-full",
+            " aspect-square w-full max-w-[55px] rounded-full sm:w-5",
             categories
               ? categories.some((category) => category.color === color.value) &&
-                  "blur-sm cursor-not-allowed"
-              : "blur-sm animate-pulse cursor-not-allowed"
+                  "cursor-not-allowed blur-sm"
+              : "animate-pulse cursor-not-allowed blur-sm",
           )}
           disabled={
             categories
@@ -52,11 +53,9 @@ export const FieldColor = ({
 
       <Popover>
         <PopoverTrigger asChild>
-          <button className="w-full h-full aspect-square bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-500 via-red-500 to-yellow-500 p-1 rounded-full">
-            <div className="bg-foreground text-background w-full h-full rounded-full grid place-items-center">
-              <Plus strokeWidth={3} />
-            </div>
-          </button>
+          <Button className="aspect-square w-full max-w-[55px] rounded-full p-0 sm:h-5 sm:w-5">
+            <Plus className="aspect-square w-full  text-primary-foreground sm:w-3" />
+          </Button>
         </PopoverTrigger>
         <PopoverContent align="end" className="w-fit">
           <HexColorPicker color={value} onChange={onChange} />

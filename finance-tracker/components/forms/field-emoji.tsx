@@ -16,6 +16,7 @@ interface FieldEmojiProps {
   value: string;
   currentColor: string;
   isLoading: boolean;
+  currentName: string;
 }
 
 export const FieldEmoji = ({
@@ -23,6 +24,7 @@ export const FieldEmoji = ({
   value,
   currentColor,
   isLoading,
+  currentName,
 }: FieldEmojiProps) => {
   const { theme } = useTheme();
 
@@ -30,19 +32,27 @@ export const FieldEmoji = ({
     return (
       <Button
         variant="outline"
-        className="w-20 h-20 grid place-items-center bg-accent  relative group rounded-full"
+        className={cn(
+          "group relative box-border h-20 w-full border-collapse   justify-start  rounded-md  px-4",
+          currentColor ? "border-none" : "border-dashed",
+        )}
         style={{ backgroundColor: currentColor }}
         onClick={() => onChange("")}
         disabled={isLoading}
       >
-        <div className=" text-[50px] leading-none w-fit">{value}</div>
+        <div className="h- flex w-full items-center gap-4 overflow-hidden">
+          <div className="w-fit text-[50px] leading-none">{value}</div>
+          <div className="z-50 truncate text-xl font-bold text-foreground">
+            {currentName}
+          </div>
+        </div>
         <div
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "w-fit h-fit absolute right-0 top-0 rounded-full  p-1 -translate-y-0.5 translate-x-0.5 group-hover:bg-primary"
+            "absolute -right-2 -top-2 h-fit w-fit rounded-full p-1 group-hover:bg-primary",
           )}
         >
-          <X className="w-3 h-3 group-hover:text-primary-foreground text-primary group-hover:scale-105" />
+          <X className="h-3 w-3 text-primary group-hover:scale-105 group-hover:text-primary-foreground" />
         </div>
       </Button>
     );
@@ -54,22 +64,32 @@ export const FieldEmoji = ({
         <Button
           size="icon"
           variant="outline"
-          className="mx-auto border-dashed w-20 h-20 group bg-accent"
+          className={cn(
+            "group flex h-20 w-full items-center justify-start gap-4 rounded-md border-none px-4",
+            !currentColor && "border-dashed",
+          )}
           style={{ backgroundColor: currentColor }}
         >
-          <SmilePlus size={50} className="text-foreground" />
+          <SmilePlus
+            size={50}
+            className="invert"
+            style={{ color: currentColor ? currentColor : "#737373" }}
+          />
+          <div className="z-50 truncate text-xl font-bold text-foreground">
+            {currentName}
+          </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent
         align="center"
-        className="w-[300px] md:w-[350px] border p-1"
+        className="w-[300px] border p-1 md:w-[350px]"
       >
         <Picker
           data={data}
           onEmojiSelect={(emoji: any) => onChange(emoji.native)}
           dynamicWidth={true}
           theme={translateTheme(theme)}
-          className="w-full rounded-full "
+          className="w-full rounded-md "
           previewPosition="none"
         />
       </PopoverContent>
