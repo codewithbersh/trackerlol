@@ -16,7 +16,12 @@ import {
   setHours,
   setMinutes,
   setSeconds,
-  setMilliseconds
+  setMilliseconds,
+  addDays,
+  subSeconds,
+  addMonths,
+  addYears,
+  addWeeks,
 } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
@@ -170,28 +175,63 @@ export function getCategoryBySlug(
   );
 }
 
-export function validateRangeParams(range: string | undefined) {
+export function getAnalyticsDateRange(range: string | undefined) {
   const today = new Date();
   switch (range?.toLowerCase()) {
+    case "day":
+      const dayCurrent = {
+        from: floorDate(new Date()),
+        to: subSeconds(addDays(floorDate(new Date()), 1), 1),
+      };
+      const dayPrevious = {
+        from: addDays(dayCurrent.from, -1),
+        to: addDays(dayCurrent.to, -1),
+      };
+      return { current: dayCurrent, previous: dayPrevious };
     case "month":
+      const monthCurrent = {
+        from: floorDate(startOfMonth(today)),
+        to: subSeconds(addDays(floorDate(endOfMonth(today)), 1), 1),
+      };
+
+      const monthPrevious = {
+        from: addMonths(monthCurrent.from, -1),
+        to: addMonths(monthCurrent.to, -1),
+      };
+
       return {
-        from: startOfMonth(today),
-        to: endOfMonth(today),
-        range: "month",
+        current: monthCurrent,
+        previous: monthPrevious,
       };
     case "year":
-      return { from: startOfYear(today), to: endOfYear(today), range: "year" };
-    default:
-      return {
-        from: startOfWeek(today, { weekStartsOn: 0 }),
-        to: endOfWeek(today, { weekStartsOn: 0 }),
-        range: "week",
+      const yearCurrent = {
+        from: floorDate(startOfYear(today)),
+        to: subSeconds(addDays(floorDate(endOfYear(today)), 1), 1),
       };
+
+      const yearPrevious = {
+        from: addYears(yearCurrent.from, 1),
+        to: addYears(yearCurrent.to, 1),
+      };
+
+      return { current: yearCurrent, previous: yearPrevious };
+    default:
+      const weekCurrent = {
+        from: floorDate(startOfWeek(today, { weekStartsOn: 0 })),
+        to: subSeconds(
+          addDays(floorDate(endOfWeek(today, { weekStartsOn: 0 })), 1),
+          1,
+        ),
+      };
+
+      const weekPrevious = {
+        from: addWeeks(weekCurrent.from, -1),
+        to: addWeeks(weekCurrent.to, -1),
+      };
+
+      return { current: weekCurrent, previous: weekPrevious };
   }
 }
-
-
-
 
 export function floorDate(date: Date) {
   const localDate = addMinutes(date, date.getTimezoneOffset());

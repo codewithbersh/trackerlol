@@ -1,145 +1,93 @@
 import { cn } from "@/lib/utils";
-import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
 import {
-  ArrowDownRight,
-  ArrowUpRight,
+  Package,
+  PackageMinus,
+  PackagePlus,
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
 
+type NetOverallType = {
+  amount: number;
+  percentage: number;
+};
+
 interface NetOverallProps {
-  transactions: TransactionWithCategoryWithAmountAsNumber[];
+  netOverall: NetOverallType;
+  totalIncome: NetOverallType;
+  totalExpense: NetOverallType;
 }
 
-export const NetOverall = ({ transactions }: NetOverallProps) => {
-  const expense = transactions.filter(
-    (transaction) => transaction.type === "EXPENSE"
-  );
-  const totalExpense = expense.reduce(
-    (acc, transaction) => acc + transaction.amount,
-    0
-  );
-  const income = transactions.filter(
-    (transaction) => transaction.type === "INCOME"
-  );
-  const totalIncome = income.reduce(
-    (acc, transaction) => acc + transaction.amount,
-    0
-  );
-
-  const netOverall = totalIncome - totalExpense;
-
-  const summary = [
+export const NetOverall = ({
+  netOverall,
+  totalIncome,
+  totalExpense,
+}: NetOverallProps) => {
+  const cards = [
     {
-      id: "income",
-      title: "Total Income",
-      value: totalIncome,
-      icon: ArrowUpRight,
-    },
-    {
-      id: "expense",
-
-      title: "Total Expense",
-      value: totalExpense,
-      icon: ArrowDownRight,
-    },
-    {
-      id: "overall",
+      isPrimary: true,
+      amount: netOverall.amount,
+      percentage: netOverall.percentage,
       title: "Net Overall",
-      value: netOverall,
-      icon: TrendingDown,
+      icon: Package,
+      percentageIcon: netOverall.percentage >= 0 ? TrendingUp : TrendingDown,
+    },
+    {
+      amount: totalIncome.amount,
+      percentage: totalIncome.percentage,
+      title: "Total Income",
+      icon: PackagePlus,
+      percentageIcon: totalIncome.percentage >= 0 ? TrendingUp : TrendingDown,
+    },
+    {
+      amount: totalExpense.amount,
+      percentage: totalExpense.percentage,
+      title: "Total Expense",
+      icon: PackageMinus,
+      percentageIcon: totalExpense.percentage >= 0 ? TrendingUp : TrendingDown,
     },
   ];
-
   return (
     <>
-      {/* {summary.map((item) => (
+      {cards.map((card) => (
         <div
-          className="border-input border rounded-md bg-accent/50 p-4 space-y-4"
-          key={item.value}
+          key={card.title}
+          className={cn(
+            "col-span-3 flex aspect-square w-full flex-col gap-16 rounded-md border p-4",
+            card.isPrimary && "bg-foreground",
+          )}
         >
-          <div className="flex justify-between w-full">
-            <p className="text-muted-foreground">{item.title}</p>
+          <div
+            className={cn(
+              "w-fit rounded-full p-2",
+              card.isPrimary
+                ? "bg-accent/20 text-primary-foreground"
+                : "bg-accent text-primary",
+            )}
+          >
+            <card.icon className="h-6 w-6" />
+          </div>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2 leading-none text-muted-foreground">
+              <span>{card.percentage.toFixed(0)}%</span>
+              <card.percentageIcon className="h-4 w-4" />
+            </div>
+
             <div
               className={cn(
-                "p-1 rounded-full",
-                item.id === "expense"
-                  ? "bg-destructive/25 text-destructive"
-                  : item.id === "income"
-                  ? "bg-green-500/25 text-green-500"
-                  : item.id === "overall" && item.value < 0
-                  ? "bg-destructive/25 text-destructive"
-                  : "bg-green-500/25 text-green-500"
+                "text-2xl font-semibold",
+                card.isPrimary && "text-primary-foreground",
               )}
             >
-              <item.icon className="w-4 h-4" />
+              $ {Number(card.amount.toFixed(0)).toLocaleString("en-US")}
+            </div>
+
+            <div className="mt-1 font-medium text-muted-foreground">
+              {card.title}
             </div>
           </div>
-          <h1
-            className={cn(
-              "text-2xl font-bold tracking-wide",
-              item.value < 0 && "text-destructive"
-            )}
-          >
-            {item.value < 0 ? "- $" : "$"}{" "}
-            {Math.abs(item.value).toLocaleString("en-US")}
-          </h1>
         </div>
-      ))} */}
-
-      <div className="border-input border-t rounded-md bg-accent/50 p-4 space-y-4 col-span-1">
-        <div className="flex justify-between w-full">
-          <p className="text-muted-foreground">Total Income</p>
-          <div
-            className={cn("p-1 rounded-full bg-green-500/25 text-green-500")}
-          >
-            <ArrowUpRight className="w-4 h-4" />
-          </div>
-        </div>
-        <h1 className={cn("text-2xl font-bold tracking-wide")}>
-          $ {Math.abs(totalIncome).toLocaleString("en-US")}
-        </h1>
-      </div>
-
-      <div className="border-input border-t  rounded-md bg-accent/50 p-4 space-y-4 col-span-1">
-        <div className="flex justify-between w-full">
-          <p className="text-muted-foreground">Total Expense</p>
-          <div
-            className={cn(
-              "p-1 rounded-full bg-destructive/25 text-destructive"
-            )}
-          >
-            <ArrowDownRight className="w-4 h-4" />
-          </div>
-        </div>
-        <h1 className={cn("text-2xl font-bold tracking-wide")}>
-          $ {Math.abs(totalExpense).toLocaleString("en-US")}
-        </h1>
-      </div>
-
-      <div className="border-input border-t  rounded-md bg-accent/50 p-4 space-y-4 col-span-2 sm:col-span-1">
-        <div className="flex justify-between w-full">
-          <p className="text-muted-foreground">Net Overall</p>
-          <div
-            className={cn(
-              "p-1 rounded-full",
-              netOverall >= 0
-                ? "bg-green-400/25 text-green-400"
-                : "bg-destructive/25 text-destructive"
-            )}
-          >
-            {netOverall >= 0 ? (
-              <TrendingUp className="w-4 h-4" />
-            ) : (
-              <TrendingDown className="w-4 h-4" />
-            )}
-          </div>
-        </div>
-        <h1 className={cn("text-2xl font-bold tracking-wide")}>
-          {netOverall >= 0 ? "$" : "-$"}{" "}
-          {Math.abs(netOverall).toLocaleString("en-US")}
-        </h1>
-      </div>
+      ))}
     </>
   );
 };
