@@ -8,7 +8,7 @@ const BudgetsPage = async () => {
       <PageHeading title="Budgets" />
 
       <div className="mt-8 flex flex-col gap-16">
-        <div className="">
+        <div className="flex flex-col gap-6">
           <h1 className="font-semibold">Overall</h1>
           <OverallBudget />
         </div>
