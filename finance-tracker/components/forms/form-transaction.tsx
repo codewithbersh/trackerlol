@@ -23,6 +23,7 @@ import { FieldCategory } from "./field-category";
 import { FieldType } from "./field-type";
 import { FieldAmount } from "./field-amount";
 import { FieldTransactionDate } from "./field-transaction-date";
+import useCategoryData from "@/hooks/use-category-data";
 
 const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -43,6 +44,7 @@ interface TransactionFormProps {
 export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const router = useRouter();
   const { onClose } = useTransactionModal();
+  const { data } = useCategoryData();
 
   const buttonText = initialData ? "Save Changes" : "Add Transaction";
   const toastSuccessMessage = initialData
@@ -160,6 +162,11 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             <FormItem className="col-span-full flex w-full flex-col sm:col-span-1">
               <FormLabel className="w-fit">Category</FormLabel>
               <FieldCategory
+                categories={
+                  form.watch("type") === "EXPENSE"
+                    ? data?.expense
+                    : data?.income
+                }
                 selectedType={form.watch("type")}
                 onChange={field.onChange}
                 value={field.value}

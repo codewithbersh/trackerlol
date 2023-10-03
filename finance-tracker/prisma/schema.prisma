@@ -43,10 +43,11 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  categories    Category[]
-  transactions  Transaction[]
-  overallBudget OverallBudget?
-  receipts      Receipt[]
+  categories     Category[]
+  transactions   Transaction[]
+  overallBudget  OverallBudget?
+  receipts       Receipt[]
+  categoryBudget CategoryBudget[]
 }
 
 model VerificationToken {
@@ -101,6 +102,8 @@ model CategoryBudget {
 
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
 
   limit          Decimal
   duration       Duration

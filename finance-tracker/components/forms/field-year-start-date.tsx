@@ -43,9 +43,6 @@ export const FieldYearStartDate = ({
           mode="single"
           selected={value}
           onSelect={onChange}
-          disabled={(date) =>
-            date > new Date() || date < new Date("1900-01-01")
-          }
           initialFocus
           defaultMonth={value}
         />

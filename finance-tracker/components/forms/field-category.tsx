@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useCategoryModal } from "@/hooks/use-category-modal";
 import { cn } from "@/lib/utils";
 import { Check, ChevronDown } from "lucide-react";
-import useCategoryData from "@/hooks/use-category-data";
-import { Budget } from "@prisma/client";
+import { Category } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +24,7 @@ interface FieldCategoryProps {
   onChange: (value: string) => void;
   value: string | undefined;
   isLoading: boolean;
-  budgets?: Budget[];
+  categories: Category[] | undefined;
 }
 
 export const FieldCategory = ({
@@ -34,24 +32,13 @@ export const FieldCategory = ({
   value,
   isLoading: isSubmitting,
   selectedType,
-  budgets,
+  categories,
 }: FieldCategoryProps) => {
-  const { data: categories } = useCategoryData();
   const [open, setOpen] = useState(false);
 
-  const selectedCategories =
-    selectedType === "EXPENSE" ? categories?.expense : categories?.income;
-
-  const selectedCategory = selectedCategories?.find(
+  const selectedCategory = categories?.find(
     (category) => category.id === value,
   );
-
-  const categoriesList = budgets
-    ? selectedCategories?.filter(
-        (category) =>
-          !budgets.some((budget) => budget.categoryId === category.id),
-      )
-    : selectedCategories;
 
   return (
     <>
@@ -83,27 +70,35 @@ export const FieldCategory = ({
         >
           <Command>
             <CommandInput placeholder="Search category..." />
-            <CommandEmpty>No category found.</CommandEmpty>
-            <CommandGroup heading={selectedType}>
-              {selectedCategories?.map((category) => (
-                <CommandItem
-                  value={category.title}
-                  key={category.id}
-                  onSelect={() => {
-                    onChange(category.id);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      category.id === value ? "opacity-100" : "opacity-0",
-                    )}
-                  />
-                  {category.title}
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            <CommandEmpty className={cn(categories?.length === 0 && "hidden")}>
+              No category found.
+            </CommandEmpty>
+            {categories?.length === 0 ? (
+              <div className="py-6 text-center text-sm">
+                No categories found.
+              </div>
+            ) : (
+              <CommandGroup heading={selectedType}>
+                {categories?.map((category) => (
+                  <CommandItem
+                    value={category.title}
+                    key={category.id}
+                    onSelect={() => {
+                      onChange(category.id);
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        category.id === value ? "opacity-100" : "opacity-0",
+                      )}
+                    />
+                    {category.title}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
           </Command>
         </PopoverContent>
       </Popover>
