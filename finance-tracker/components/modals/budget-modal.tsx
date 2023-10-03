@@ -10,7 +10,7 @@ export const BudgetModal = () => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="py-10">
-      <FormBudget />
+      {/* <FormBudget /> */}
     </Modal>
   );
 };

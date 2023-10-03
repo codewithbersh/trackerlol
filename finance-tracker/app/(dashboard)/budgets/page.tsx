@@ -1,4 +1,5 @@
 import { OverallBudget } from "@/components/budgets/overall-budget";
+import { ModeToggle } from "@/components/mode-toggle";
 import { PageHeading } from "@/components/page-heading";
 
 const BudgetsPage = async () => {
@@ -9,6 +10,7 @@ const BudgetsPage = async () => {
       <div className="space-y-6">
         <h1 className="font-semibold">Overall</h1>
         <OverallBudget />
+        {/* <ModeToggle /> */}
       </div>
     </div>
   );

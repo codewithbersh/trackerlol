@@ -70,9 +70,14 @@ export const FormOverallBudget = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     //@ts-ignore
-    defaultValues: initialData || {
-      duration: "MONTHLY",
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          monthStartDate: initialData.monthStartDate?.toString(),
+        }
+      : {
+          duration: "MONTHLY",
+        },
   });
 
   const selectedDuration = form.watch("duration");

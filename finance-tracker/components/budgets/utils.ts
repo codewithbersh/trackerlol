@@ -96,7 +96,6 @@ export function getStartDate({
 }
 
 export function getWeekDateRange(weekStartDay: string) {
-  // week start day can be monday tuesday whatever
   const today = new Date();
   const startDay = weekStartDays.find((day) => day.label === weekStartDay)!;
 
@@ -123,29 +122,4 @@ export function getWeekDateRange(weekStartDay: string) {
 
     return { from, to };
   }
-
-  // const today = new Date().getDay();
-  // const startDay = weekStartDays.find(
-  //   (day) => day.label === weekStartDay,
-  // )!.value;
-
-  // if (startDay < today) {
-  //   const from = subWeeks(
-  //     startOfWeek(new Date(), { weekStartsOn: startDay }),
-  //     1,
-  //   );
-  //   const to = endOfWeek(from, { weekStartsOn: startDay });
-  //   return { from, to };
-  // } else {
-  //   const from = floorDate(
-  //     addDays(startOfWeek(new Date(), { weekStartsOn: startDay }), 1),
-  //   );
-  //   const to = subSeconds(
-  //     addDays(floorDate(endOfWeek(from, { weekStartsOn: startDay })), 1),
-  //     1,
-  //   );
-  //   console.log("else: ", from, to);
-
-  //   return { from, to };
-  // }
 }
