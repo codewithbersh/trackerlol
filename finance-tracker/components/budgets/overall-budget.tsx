@@ -83,7 +83,7 @@ export const OverallBudget = async () => {
         >
           <TriangleUpIcon className="h-6 w-6" />
           <div className="text-2xl font-semibold leading-none">
-            {(100 - percentage).toFixed(0)}%
+            {Math.abs(100 - percentage).toFixed(0)}%
           </div>
         </div>
       </div>

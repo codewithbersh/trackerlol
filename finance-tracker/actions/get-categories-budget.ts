@@ -14,5 +14,8 @@ export const getCategoriesBudget = cache(async () => {
     where: {
       userId: user.id,
     },
+    include: {
+      category: true,
+    },
   });
 });

@@ -5,10 +5,11 @@ interface GetTransactionsTotalProps {
   from: Date;
   to: Date;
   userId: string;
+  categoryId?: string;
 }
 
 export const getTransactionsTotal = cache(
-  async ({ from, to, userId }: GetTransactionsTotalProps) => {
+  async ({ from, to, userId, categoryId }: GetTransactionsTotalProps) => {
     return await prismadb.transaction.aggregate({
       where: {
         userId,
@@ -17,6 +18,7 @@ export const getTransactionsTotal = cache(
           lt: to,
         },
         type: "EXPENSE",
+        categoryId,
       },
       _sum: {
         amount: true,

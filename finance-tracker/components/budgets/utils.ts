@@ -9,10 +9,12 @@ import {
   endOfMonth,
   format,
   isToday,
+  isYesterday,
   startOfMonth,
   startOfWeek,
   subSeconds,
 } from "date-fns";
+import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 
 export function getDateRange(dateObj: Date) {
   const month = format(dateObj, "MMMM");
@@ -29,7 +31,9 @@ export function getDateRange(dateObj: Date) {
   };
 }
 
-export function getTransactionDateRange(budget: OverallBudget) {
+export function getTransactionDateRange(
+  budget: OverallBudget | CategoryBudgetWithLimitAsNumber,
+) {
   switch (budget.duration) {
     case "WEEKLY":
       const { from, to } = getWeekDateRange(budget.weekStartDay!);
@@ -106,7 +110,7 @@ export function getWeekDateRange(weekStartDay: string) {
   const endOfThisWeek = subSeconds(addWeeks(startDayOfThisWeek, 1), 1);
 
   if (startDayOfThisWeek > startOfThisWeek) {
-    if (isToday(startDayOfThisWeek)) {
+    if (isToday(startDayOfThisWeek) || isYesterday(startDayOfThisWeek)) {
       const from = startDayOfThisWeek;
       const to = subSeconds(addWeeks(from, 1), 1);
 

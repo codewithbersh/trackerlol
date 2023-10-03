@@ -1,12 +1,12 @@
-import { CategoryBudget } from "@prisma/client";
+import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 import { create } from "zustand";
 
 interface UseCategoryBudgetStore {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  budget: CategoryBudget | null;
-  setBudget: (budget: CategoryBudget | null) => void;
+  budget: CategoryBudgetWithLimitAsNumber | null;
+  setBudget: (budget: CategoryBudgetWithLimitAsNumber | null) => void;
 }
 
 export const useCategoryBudget = create<UseCategoryBudgetStore>((set) => ({

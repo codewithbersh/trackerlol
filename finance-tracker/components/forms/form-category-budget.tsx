@@ -6,7 +6,9 @@ import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { useOverallBudget } from "@/hooks/use-overall-budget-modal";
+import useCategoryData from "@/hooks/use-category-data";
+import useCategoryBudgetsData from "@/hooks/use-category-budget-data";
+import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
 
 import {
   Form,
@@ -21,10 +23,7 @@ import { FieldTimeFrame } from "./field-time-frame";
 import { FieldWeekStartDay } from "./field-week-start-day";
 import { FieldMonthStartDate } from "./field-month-start-date";
 import { FieldYearStartDate } from "./field-year-start-date";
-import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
 import { FieldCategory } from "./field-category";
-import useCategoryData from "@/hooks/use-category-data";
-import useCategoryBudgetsData from "@/hooks/use-category-budget-data";
 
 const defaultProps = z.object({
   limit: z.coerce.number(),
@@ -117,8 +116,9 @@ export const FormCategoryBudget = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`/api/overall-budget/${id}`);
+      await axios.delete(`/api/category-budgets/${id}`);
       toast.success("Budget has been deleted.");
+      refetchCategoryBudgets();
       router.refresh();
       onClose();
     } catch (error) {
@@ -140,11 +140,13 @@ export const FormCategoryBudget = () => {
               <FormLabel>Category</FormLabel>
               <FormControl>
                 <FieldCategory
-                  categories={filteredCategories}
+                  categories={
+                    initialData ? [initialData.category] : filteredCategories
+                  }
                   value={field.value}
                   onChange={field.onChange}
                   selectedType="EXPENSE"
-                  isLoading={isLoading}
+                  isLoading={isLoading || initialData ? true : false}
                 />
               </FormControl>
             </FormItem>
