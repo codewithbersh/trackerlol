@@ -1,9 +1,9 @@
 "use client";
 
 import { Plus } from "lucide-react";
+import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
 
 import { Button } from "@/components/ui/button";
-import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
 
 export const NewCategoryBudget = () => {
   const { onOpen, setBudget } = useCategoryBudget();
