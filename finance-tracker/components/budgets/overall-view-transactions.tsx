@@ -5,7 +5,7 @@ import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 
-interface ViewTransactionsButtonProps {
+interface OverallViewTransactionsProps {
   slug?: string;
   range: {
     from: Date;
@@ -13,10 +13,10 @@ interface ViewTransactionsButtonProps {
   };
 }
 
-export const ViewTransactionsButton = ({
+export const OverallViewTransactions = ({
   slug,
   range,
-}: ViewTransactionsButtonProps) => {
+}: OverallViewTransactionsProps) => {
   const router = useRouter();
   return (
     <div className="flex items-center justify-center pt-2">

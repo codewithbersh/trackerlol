@@ -6,11 +6,11 @@ import { OverallBudgetWithLimitAsNumber } from "@/types/types";
 
 import { Button } from "@/components/ui/button";
 
-interface EditOverallBudgetProps {
+interface OverallBudgetActionProps {
   budget: OverallBudgetWithLimitAsNumber;
 }
 
-export const EditOverallBudget = ({ budget }: EditOverallBudgetProps) => {
+export const OverallBudgetAction = ({ budget }: OverallBudgetActionProps) => {
   const { onOpen, setBudget } = useOverallBudget();
 
   return (

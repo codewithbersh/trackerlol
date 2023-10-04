@@ -11,7 +11,7 @@ import { getStartDate } from "./utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 
-interface CategoryBudgetClientProps {
+interface CategoriesItemClientProps {
   budget: CategoryBudgetWithLimitAsNumber;
   percentage: number;
   total: number;
@@ -23,14 +23,14 @@ interface CategoryBudgetClientProps {
   };
 }
 
-export const CategoryBudgetClient = ({
+export const CategoriesItemClient = ({
   budget,
   percentage,
   total,
   spendingLimitLeft,
   daysLeft,
   range,
-}: CategoryBudgetClientProps) => {
+}: CategoriesItemClientProps) => {
   const { onOpen, setBudget } = useCategoryBudget();
   const router = useRouter();
   return (

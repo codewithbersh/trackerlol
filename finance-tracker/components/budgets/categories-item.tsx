@@ -3,13 +3,13 @@ import { getBudgetDateRange } from "./utils";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { differenceInCalendarDays } from "date-fns";
 
-import { CategoryBudgetClient } from "./category-budget-client";
+import { CategoriesItemClient } from "./categories-item-client";
 
-interface CategoryBudgetProps {
+interface CategoriesItemProps {
   budget: CategoryBudgetWithLimitAsNumber;
 }
 
-export const CategoryBudget = async ({ budget }: CategoryBudgetProps) => {
+export const CategoriesItem = async ({ budget }: CategoriesItemProps) => {
   const { from, to } = getBudgetDateRange({ budget });
   const { _sum: total } = await getTransactionsTotal({
     from,
@@ -23,7 +23,7 @@ export const CategoryBudget = async ({ budget }: CategoryBudgetProps) => {
 
   const spendingLimitLeft = Number(budget.limit) - Number(total.amount);
   return (
-    <CategoryBudgetClient
+    <CategoriesItemClient
       budget={budget}
       percentage={percentage}
       daysLeft={daysLeft}

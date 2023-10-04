@@ -5,7 +5,7 @@ import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
 
 import { Button } from "@/components/ui/button";
 
-export const NewCategoryBudget = () => {
+export const CategoriesAction = () => {
   const { onOpen, setBudget } = useCategoryBudget();
   return (
     <Button

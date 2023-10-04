@@ -1,5 +1,7 @@
-import { CategoriesBudget } from "@/components/budgets/categories-budget";
-import { OverallBudget } from "@/components/budgets/overall-budget";
+import { Suspense } from "react";
+
+import { Categories } from "@/components/budgets/categories";
+import { Overall } from "@/components/budgets/overall";
 import { PageHeading } from "@/components/page-heading";
 
 const BudgetsPage = async () => {
@@ -8,11 +10,13 @@ const BudgetsPage = async () => {
       <PageHeading title="Budgets" />
 
       <div className="mt-8 flex flex-col gap-16">
-        <div className="flex flex-col gap-6">
-          <h1 className="font-semibold">Overall</h1>
-          <OverallBudget />
-        </div>
-        <CategoriesBudget />
+        <Suspense fallback={<p>Loading...</p>}>
+          <Overall />
+        </Suspense>
+
+        <Suspense fallback={<p>Loading...</p>}>
+          <Categories />
+        </Suspense>
       </div>
     </div>
   );
