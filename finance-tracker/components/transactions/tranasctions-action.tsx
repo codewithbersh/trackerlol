@@ -5,7 +5,7 @@ import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 import { Button } from "@/components/ui/button";
 
-export const AddTransactionButton = () => {
+export const TransactionsAction = () => {
   const { onOpen, setTransaction } = useTransactionModal();
   return (
     <div className="lg:flex lg:items-center lg:gap-4">

@@ -22,21 +22,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-interface FilterCategoryProps {
-  categories: Category[];
+interface FilterByCategoryProps {
+  income: Category[];
+  expense: Category[];
+  category: Category | undefined;
 }
 
-export const FilterCategory = ({ categories }: FilterCategoryProps) => {
+export const FilterByCategory = ({
+  income,
+  expense,
+  category,
+}: FilterByCategoryProps) => {
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
-  const categoryParams = searchParams.get("category")?.toLowerCase();
-  const isValidCategory = categoryParams
-    ? categories.some((category) => category.slug === categoryParams)
-    : false;
-  const category = categories.find(
-    (category) => category.slug === categoryParams,
-  );
 
   const onSelect = (value: string) => {
     const current = queryString.parse(searchParams.toString());
@@ -58,9 +57,6 @@ export const FilterCategory = ({ categories }: FilterCategoryProps) => {
     router.push(url);
   };
 
-  const expense = categories.filter((category) => category.type === "EXPENSE");
-  const income = categories.filter((category) => category.type === "INCOME");
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -73,8 +69,8 @@ export const FilterCategory = ({ categories }: FilterCategoryProps) => {
           }}
         >
           <LayoutGrid className="h-4 w-4 opacity-50" />
-          {isValidCategory ? (
-            <div className="flex items-center gap-2 leading-none">
+          {category ? (
+            <div className="flex min-h-[20px] items-center gap-2 leading-none">
               <span>{category?.emoji}</span>
               <span>{category?.title}</span>
             </div>
@@ -89,45 +85,45 @@ export const FilterCategory = ({ categories }: FilterCategoryProps) => {
           <CommandInput placeholder="Search category..." />
           <CommandEmpty>No category found.</CommandEmpty>
           <CommandGroup heading="Expense">
-            {expense.map((category) => (
+            {expense.map((expenseCategory) => (
               <CommandItem
-                value={category.slug}
-                key={category.id}
+                value={expenseCategory.slug}
+                key={expenseCategory.id}
                 onSelect={() => {
-                  onSelect(category.slug);
+                  onSelect(expenseCategory.slug);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    category.slug === categoryParams
+                    expenseCategory.slug === category?.slug
                       ? "opacity-100"
                       : "opacity-0",
                   )}
                 />
-                {category.title}
+                {expenseCategory.title}
               </CommandItem>
             ))}
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading="Income">
-            {income.map((category) => (
+            {income.map((incomeCategory) => (
               <CommandItem
-                value={category.slug}
-                key={category.id}
+                value={incomeCategory.slug}
+                key={incomeCategory.id}
                 onSelect={() => {
-                  onSelect(category.slug);
+                  onSelect(incomeCategory.slug);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    category.slug === categoryParams
+                    incomeCategory.slug === category?.slug
                       ? "opacity-100"
                       : "opacity-0",
                   )}
                 />
-                {category.title}
+                {incomeCategory.title}
               </CommandItem>
             ))}
           </CommandGroup>

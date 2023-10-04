@@ -5,7 +5,7 @@ import { useFilterTransactionsStore } from "@/hooks/use-filter-transactions";
 
 import { Button } from "@/components/ui/button";
 
-export const FiltersMobile = () => {
+export const FiltersInMobileAction = () => {
   const { onOpen } = useFilterTransactionsStore();
   return (
     <div className="w-full sm:hidden">

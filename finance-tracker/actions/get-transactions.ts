@@ -1,8 +1,12 @@
-import { TransactionType } from "@prisma/client";
 import prismadb from "@/lib/prismadb";
 import { getCurrentUser } from "./get-current-user";
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import {
+  GroupedTransactionsType,
+  TransactionWithCategoryWithAmountAsNumber,
+} from "@/types/types";
+import { endOfMonth, format, startOfMonth } from "date-fns";
 
 interface GetTransactionsProps {
   to?: Date;
@@ -23,14 +27,10 @@ export const getTransactions = cache(
       where: {
         userId: user.id,
         date: {
-          gte: from,
-          lte: to,
+          gte: from ?? startOfMonth(new Date()),
+          lte: to ?? endOfMonth(new Date()),
         },
-        type: type
-          ? type.toUpperCase() === "EXPENSE" || type.toUpperCase() === "INCOME"
-            ? (type.toUpperCase() as TransactionType)
-            : undefined
-          : undefined,
+        type: type as "INCOME" | "EXPENSE" | undefined,
         category: {
           slug,
         },
@@ -48,6 +48,40 @@ export const getTransactions = cache(
       amount: Number(transaction.amount),
     }));
 
-    return formattedTransactions;
+    const groupedMap: Record<
+      string,
+      TransactionWithCategoryWithAmountAsNumber[]
+    > = {};
+
+    for (const transaction of formattedTransactions) {
+      const date = format(transaction.date, "EEE, MMM d");
+
+      if (!groupedMap[date]) {
+        groupedMap[date] = [];
+      }
+      groupedMap[date].push(transaction);
+    }
+
+    const grouped = Object.entries(groupedMap).map(([date, transactions]) => ({
+      date,
+      transactions,
+    }));
+
+    const formattedGroup: GroupedTransactionsType[] = [];
+
+    for (const group of grouped) {
+      const sum = group.transactions.reduce((total, transaction) => {
+        return (
+          total +
+          (transaction.type === "INCOME"
+            ? transaction.amount
+            : -1 * transaction.amount)
+        );
+      }, 0);
+
+      formattedGroup.push({ ...group, sum: sum });
+    }
+
+    return formattedGroup;
   },
 );

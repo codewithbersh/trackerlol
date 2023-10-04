@@ -1,10 +1,7 @@
 "use client";
 
 import { useFilterTransactionsStore } from "@/hooks/use-filter-transactions";
-import { Category } from "@prisma/client";
 
-import { Filters } from "@/components/transactions/filters";
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -12,15 +9,15 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { ValidateSearchParamsType } from "@/components/transactions/utils";
+import { FiltersInMobile } from "@/components/transactions/filters-in-mobile";
 
 interface FilterTransactionsSheetProps {
-  categories: Category[];
-  hasValidQuery: boolean;
+  filters: ValidateSearchParamsType;
 }
 
 export const FilterTransactionsSheet = ({
-  categories,
-  hasValidQuery,
+  filters,
 }: FilterTransactionsSheetProps) => {
   const { isOpen, onClose } = useFilterTransactionsStore();
   return (
@@ -30,12 +27,7 @@ export const FilterTransactionsSheet = ({
           <SheetTitle>Apply Filters</SheetTitle>
           <SheetDescription>Filter transactions</SheetDescription>
         </SheetHeader>
-        <div className="flex flex-col gap-4 py-8">
-          <Filters categories={categories} hasValidQuery={hasValidQuery} />
-        </div>
-        <Button className="w-full" onClick={onClose}>
-          Close
-        </Button>
+        <FiltersInMobile filters={filters} />
       </SheetContent>
     </Sheet>
   );

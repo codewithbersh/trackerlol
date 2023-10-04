@@ -1,83 +1,34 @@
-import {
-  groupTransactionsByDate,
-  isValidDateFormat,
-  validateCategoryQuery,
-  validateTypeQuery,
-} from "@/lib/utils";
-import { getTransactions } from "@/actions/get-transactions";
 import { getCategories } from "@/actions/get-categories";
-import { parseISO } from "date-fns";
+import { Suspense } from "react";
 
-import { AddTransactionButton } from "@/components/transactions/add-transaction-button";
 import { PageHeading } from "@/components/page-heading";
+import { TransactionsAction } from "@/components/transactions/tranasctions-action";
 import { Filters } from "@/components/transactions/filters";
-import { GroupedTransactions } from "@/components/transactions/grouped-transactions";
-import { FiltersMobile } from "@/components/transactions/filters-mobile";
-import { FilterTransactionsSheet } from "@/components/modals/filter-transactions-sheet";
+import { validateSearchparams } from "@/components/transactions/utils";
+import { Transactions } from "@/components/transactions/transactions";
 
 interface TransactionsPageProps {
-  searchParams: {
-    categoryId: string;
-    from: string;
-    to: string;
-    type: string;
-    category: string;
-  };
+  searchParams: { [key: string]: string | undefined };
 }
 
-const TransactionsPage = async ({
-  searchParams: { from, to, type, category },
-}: TransactionsPageProps) => {
-  const formattedFrom = isValidDateFormat(from) ? parseISO(from) : undefined;
-  const formattedTo = isValidDateFormat(to) ? parseISO(to) : undefined;
-
-  const { categories } = await getCategories();
-
-  const typeQuery = validateTypeQuery(type);
-  const categoryQuery = validateCategoryQuery(categories, category);
-
-  const transactions = await getTransactions({
-    from: formattedFrom,
-    to: formattedTo,
-    type,
-    slug: categoryQuery?.slug,
+const TransactionsPage = async ({ searchParams }: TransactionsPageProps) => {
+  const categories = await getCategories();
+  const filters = validateSearchparams({
+    searchParams,
+    categories,
   });
-
-  const groupedTransactions = groupTransactionsByDate(transactions);
-
-  const hasValidQuery =
-    formattedFrom !== undefined ||
-    formattedTo !== undefined ||
-    typeQuery !== undefined ||
-    categoryQuery !== undefined;
 
   return (
     <div className="mt-[60px] flex  flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
       <PageHeading title="Transactions">
-        <AddTransactionButton />
+        <TransactionsAction />
       </PageHeading>
 
-      <div className="py-8">
-        <div className="hidden w-fit gap-4 sm:flex">
-          <Filters categories={categories} hasValidQuery={hasValidQuery} />
-        </div>
-        <FiltersMobile />
-      </div>
+      <Filters filters={filters} />
 
-      {groupedTransactions.length === 0 && (
-        <div className="py-12 text-center text-sm text-muted-foreground">
-          No transactions found.
-        </div>
-      )}
-      <div className="space-y-16">
-        {groupedTransactions.map((group) => (
-          <GroupedTransactions group={group} key={group.date} />
-        ))}
-      </div>
-      <FilterTransactionsSheet
-        categories={categories}
-        hasValidQuery={hasValidQuery}
-      />
+      <Suspense fallback={<p>Loading...</p>}>
+        <Transactions filters={filters.filters} />
+      </Suspense>
     </div>
   );
 };

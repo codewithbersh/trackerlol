@@ -1,16 +1,27 @@
-import { getOverallBudget } from "@/actions/get-overall-budget";
-import { Prisma, Transaction } from "@prisma/client";
+import { Category, Prisma, Transaction } from "@prisma/client";
 import { LucideIcon } from "lucide-react";
 
 type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
+export type GroupedTransactionsType = {
+  date: string;
+  sum: number;
+  transactions: TransactionWithCategoryWithAmountAsNumber[];
+};
+
 export type Route = {
   icon: LucideIcon;
   label: string;
   href: string;
   active: boolean;
+};
+
+export type CategoriesByType = {
+  categories: Category[];
+  income: Category[];
+  expense: Category[];
 };
 
 export type TransactionWithCategory = Prisma.TransactionGetPayload<{

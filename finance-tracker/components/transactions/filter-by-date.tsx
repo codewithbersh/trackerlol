@@ -3,7 +3,7 @@
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, ChevronDown } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { cn, stringToDate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import queryString from "query-string";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -16,17 +16,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 
-export function FilterDate({
+interface FilterByDateProps {
+  filterDateRange: {
+    from: Date | undefined;
+    to: Date | undefined;
+  };
+  className?: string;
+}
+
+export function FilterByDate({
+  filterDateRange: { from, to },
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: FilterByDateProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const from = stringToDate(searchParams.get("from"));
-  const to = stringToDate(searchParams.get("to"));
-  const [date, setDate] = useState<DateRange | undefined>({
-    from,
-    to,
-  });
+
+  const [date, setDate] = useState<DateRange | undefined>({ from, to });
 
   const onSelect = (range: DateRange | undefined) => {
     const current = queryString.parse(searchParams.toString());

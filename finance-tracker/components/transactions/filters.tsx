@@ -1,30 +1,18 @@
-import { Category } from "@prisma/client";
-import { X } from "lucide-react";
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
-import { FilterCategory } from "./filter-category";
-import { FilterDate } from "./filter-date";
-import { FilterType } from "./filter-type";
+import { ValidateSearchParamsType } from "./utils";
+import { FiltersInMobileAction } from "./filters-in-mobile-action";
+import { FiltersInDesktop } from "./filters-in-desktop";
+import { FilterTransactionsSheet } from "@/components/modals/filter-transactions-sheet";
 
 interface FiltersProps {
-  categories: Category[];
-  hasValidQuery: boolean;
+  filters: ValidateSearchParamsType;
 }
 
-export const Filters = ({ categories, hasValidQuery }: FiltersProps) => {
+export const Filters = ({ filters }: FiltersProps) => {
   return (
-    <>
-      <FilterType />
-      <FilterCategory categories={categories} />
-      <FilterDate />
-      {hasValidQuery && (
-        <Link href="/transactions" passHref>
-          <Button variant="ghost" className="gap-2">
-            Reset <X className="h-4 w-4" />
-          </Button>
-        </Link>
-      )}
-    </>
+    <div className="py-8">
+      <FiltersInDesktop filters={filters} />
+      <FiltersInMobileAction />
+      <FilterTransactionsSheet filters={filters} />
+    </div>
   );
 };

@@ -148,3 +148,14 @@ export const weekStartDays: WeekDayType[] = [
     label: "SATURDAY",
   },
 ];
+
+export const TRANSACTION_TYPES = [
+  {
+    label: "Expense",
+    value: "expense",
+  },
+  {
+    label: "Income",
+    value: "income",
+  },
+];
