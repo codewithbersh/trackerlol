@@ -2,7 +2,9 @@ import { cache } from "react";
 import { getCurrentUser } from "./get-current-user";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
-import { getAnalyticsDateRange, toTitleCase } from "@/lib/utils";
+import { toTitleCase } from "@/lib/utils";
+
+import { getBudgetDateRange } from "@/components/budgets/utils";
 
 export const getOverallLimit = cache(async () => {
   const user = await getCurrentUser();
@@ -16,14 +18,18 @@ export const getOverallLimit = cache(async () => {
     },
   });
 
-  const { current } = getAnalyticsDateRange(overallLimit?.duration);
+  if (!overallLimit) {
+    return null;
+  }
+
+  const { from, to } = getBudgetDateRange({ budget: overallLimit });
 
   const amount = await prismadb.transaction.aggregate({
     where: {
       userId: user.id,
       date: {
-        gte: current.from,
-        lt: current.to,
+        gte: from,
+        lt: to,
       },
       type: "EXPENSE",
     },

@@ -53,7 +53,7 @@ export const NetOverall = ({
         <div
           key={card.title}
           className={cn(
-            "col-span-3 flex aspect-square w-full flex-col gap-16 rounded-md border p-4",
+            "col-span-full flex w-full  flex-col gap-16 rounded-md border p-4 sm:col-span-6 md:col-span-3",
             card.isPrimary && "bg-foreground",
           )}
         >
@@ -67,9 +67,9 @@ export const NetOverall = ({
           >
             <card.icon className="h-6 w-6" />
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="mt-auto flex flex-col gap-3">
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              <span>{card.percentage.toFixed(0)}%</span>
+              <span>{Math.abs(card.percentage).toFixed(0)}%</span>
               <card.percentageIcon className="h-4 w-4" />
             </div>
 

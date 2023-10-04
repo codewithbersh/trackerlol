@@ -57,3 +57,10 @@ export type CategoryBudgetWithLimitAsNumber = Omit<
 > & {
   limit: number;
 };
+
+export type TopCategory = {
+  id: string;
+  name: string;
+  color: string;
+  value: number;
+};

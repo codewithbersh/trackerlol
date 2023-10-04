@@ -146,7 +146,7 @@ export const FormCategoryBudget = () => {
                   value={field.value}
                   onChange={field.onChange}
                   selectedType="EXPENSE"
-                  isLoading={isLoading || initialData ? true : false}
+                  isLoading={isLoading}
                 />
               </FormControl>
             </FormItem>

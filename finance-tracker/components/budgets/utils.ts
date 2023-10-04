@@ -141,30 +141,3 @@ export function getBudgetDateRange({
 }
 
 type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-function getWeekBudgetDateRange({
-  starting,
-  today,
-}: {
-  starting: DayOfWeek;
-  today: DayOfWeek;
-}) {
-  if (starting >= today) {
-    const from = startOfWeek(new Date(), { weekStartsOn: starting });
-    const to = endOfWeek(new Date(), { weekStartsOn: starting });
-
-    console.log(from);
-    console.log(to);
-    console.log("hello");
-    return { from, to };
-  } else {
-    console.log("hi");
-    const from = startOfWeek(new Date(), { weekStartsOn: starting });
-    const to = endOfWeek(new Date(), { weekStartsOn: starting });
-
-    console.log(from);
-    console.log(to);
-
-    return { from, to };
-  }
-}

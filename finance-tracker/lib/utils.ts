@@ -101,12 +101,12 @@ export const validateCategoryQuery = (
 
 export function getRangeDefaultValue(range: string | undefined) {
   switch (range?.toLowerCase()) {
-    case "month":
-      return "month";
+    case "week":
+      return "week";
     case "year":
       return "year";
     default:
-      return "week";
+      return "month";
   }
 }
 
@@ -191,7 +191,31 @@ export function getAnalyticsDateRange(range: string | undefined) {
         to: subDays(todayEndOfDay, 1),
       };
       return { current: dayCurrent, previous: dayPrevious };
-    case "month":
+    case "week":
+      const weekCurrent = {
+        from: startOfWeek(todayStartOfDay),
+        to: endOfWeek(todayEndOfDay),
+      };
+
+      const weekPrevious = {
+        from: subWeeks(weekCurrent.from, 1),
+        to: subWeeks(weekCurrent.to, 1),
+      };
+
+      return { current: weekCurrent, previous: weekPrevious };
+    case "year":
+      const yearCurrent = {
+        from: startOfYear(todayStartOfDay),
+        to: endOfYear(todayEndOfDay),
+      };
+
+      const yearPrevious = {
+        from: subYears(yearCurrent.from, 1),
+        to: subYears(yearCurrent.to, 1),
+      };
+
+      return { current: yearCurrent, previous: yearPrevious };
+    default:
       const monthCurrent = {
         from: startOfMonth(todayStartOfDay),
         to: endOfMonth(todayStartOfDay),
@@ -206,30 +230,6 @@ export function getAnalyticsDateRange(range: string | undefined) {
         current: monthCurrent,
         previous: monthPrevious,
       };
-    case "year":
-      const yearCurrent = {
-        from: startOfYear(todayStartOfDay),
-        to: endOfYear(todayEndOfDay),
-      };
-
-      const yearPrevious = {
-        from: subYears(yearCurrent.from, 1),
-        to: subYears(yearCurrent.to, 1),
-      };
-
-      return { current: yearCurrent, previous: yearPrevious };
-    default:
-      const weekCurrent = {
-        from: startOfWeek(todayStartOfDay),
-        to: endOfWeek(todayEndOfDay),
-      };
-
-      const weekPrevious = {
-        from: subWeeks(weekCurrent.from, 1),
-        to: subWeeks(weekCurrent.to, 1),
-      };
-
-      return { current: weekCurrent, previous: weekPrevious };
   }
 }
 
