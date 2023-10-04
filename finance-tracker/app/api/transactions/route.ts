@@ -21,6 +21,7 @@ export async function POST(req: Request) {
   if (!amount) {
     return new NextResponse("Amount is required", { status: 401 });
   }
+
   const transaction = await prismadb.transaction.create({
     data: {
       userId: user.id,

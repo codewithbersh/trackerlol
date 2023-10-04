@@ -4,11 +4,11 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { format } from "date-fns";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { TransactionWithAmountAsNumber } from "@/types/types";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
+import useCategoryData from "@/hooks/use-category-data";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +23,6 @@ import { FieldCategory } from "./field-category";
 import { FieldType } from "./field-type";
 import { FieldAmount } from "./field-amount";
 import { FieldTransactionDate } from "./field-transaction-date";
-import useCategoryData from "@/hooks/use-category-data";
 
 const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -66,16 +65,17 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const date = new Date(values.date.toLocaleDateString());
     try {
       if (initialData) {
         await axios.patch(`/api/transactions/${initialData.id}`, {
           ...values,
-          date: format(values.date, "yyyy-MM-dd'T'HH:mm:ss'.000Z'"),
+          date,
         });
       } else {
         await axios.post("/api/transactions", {
           ...values,
-          date: format(values.date, "yyyy-MM-dd'T'HH:mm:ss'.000Z'"),
+          date,
         });
       }
 

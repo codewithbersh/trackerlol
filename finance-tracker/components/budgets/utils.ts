@@ -6,12 +6,16 @@ import {
   addMonths,
   addWeeks,
   addYears,
+  endOfDay,
   endOfMonth,
+  endOfWeek,
   format,
   isToday,
   isYesterday,
   startOfMonth,
   startOfWeek,
+  subDays,
+  subMonths,
   subSeconds,
 } from "date-fns";
 import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
@@ -112,17 +116,95 @@ export function getWeekDateRange(weekStartDay: string) {
   if (startDayOfThisWeek > startOfThisWeek) {
     if (isToday(startDayOfThisWeek) || isYesterday(startDayOfThisWeek)) {
       const from = startDayOfThisWeek;
-      const to = subSeconds(addWeeks(from, 1), 1);
-
+      const to = addDays(subSeconds(addWeeks(from, 1), 1), -1);
+      console.log("here");
       return { from, to };
     } else {
+      console.log("there");
       const from = addWeeks(startDayOfThisWeek, -1);
       const to = subSeconds(startDayOfThisWeek, 1);
       return { from, to };
     }
   } else {
+    console.log("where");
     const from = startDayOfThisWeek;
     const to = endOfThisWeek;
+
+    return { from, to };
+  }
+}
+
+export function getBudgetDateRange({
+  budget,
+}: {
+  budget: OverallBudget | CategoryBudgetWithLimitAsNumber;
+}) {
+  if (budget.duration === "WEEKLY") {
+    const budgetStartingDay = weekStartDays.find(
+      (day) => day.label === budget.weekStartDay,
+    );
+
+    const from = startOfWeek(new Date(), {
+      weekStartsOn: budgetStartingDay?.value,
+    });
+    const to = endOfWeek(new Date(), {
+      weekStartsOn: budgetStartingDay?.value,
+    });
+
+    return { from, to };
+  } else if (budget.duration === "MONTHLY") {
+    const budgetStartingDay = budget.monthStartDate;
+    const today = new Date(new Date().toLocaleDateString());
+    const startingDay = addDays(
+      startOfMonth(new Date()),
+      budgetStartingDay! - 1,
+    );
+    const firstDayOfMonth = startOfMonth(today);
+    const firstDayOfLastMonth = startOfMonth(subMonths(firstDayOfMonth, 1));
+
+    if (today >= startingDay) {
+      const to = subDays(addMonths(startingDay, 1), 1);
+      return { from: startingDay, to };
+    } else {
+      const from = addDays(firstDayOfLastMonth, budgetStartingDay! - 1);
+      const to = subDays(addMonths(from, 1), 1);
+      return { from, to };
+    }
+  } else if (budget.duration === "YEARLY") {
+    const from = budget.yearStartDate!;
+    const to = subDays(addYears(budget.yearStartDate!, 1), 1);
+    return { from, to };
+  } else {
+    const from = new Date(new Date().toLocaleDateString());
+    const to = endOfDay(new Date(from));
+    return { from, to };
+  }
+}
+
+type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+function getWeekBudgetDateRange({
+  starting,
+  today,
+}: {
+  starting: DayOfWeek;
+  today: DayOfWeek;
+}) {
+  if (starting >= today) {
+    const from = startOfWeek(new Date(), { weekStartsOn: starting });
+    const to = endOfWeek(new Date(), { weekStartsOn: starting });
+
+    console.log(from);
+    console.log(to);
+    console.log("hello");
+    return { from, to };
+  } else {
+    console.log("hi");
+    const from = startOfWeek(new Date(), { weekStartsOn: starting });
+    const to = endOfWeek(new Date(), { weekStartsOn: starting });
+
+    console.log(from);
+    console.log(to);
 
     return { from, to };
   }

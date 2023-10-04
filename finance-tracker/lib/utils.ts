@@ -22,6 +22,7 @@ import {
   addMonths,
   addYears,
   addWeeks,
+  parse,
 } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
@@ -52,7 +53,8 @@ export function groupTransactionsByDate(
   > = {};
 
   for (const transaction of transactions) {
-    const date = new Date(transaction.date).toISOString().split("T")[0];
+    const date = format(transaction.date, "yyyy-MM-dd");
+
     if (!groupedMap[date]) {
       groupedMap[date] = [];
     }
@@ -245,4 +247,9 @@ export function ceilingDate(date: Date) {
     999,
   );
   return endOfDay(endOfDayDate);
+}
+
+export function isValidDateFormat(dateString: string) {
+  const parsedDate = parse(dateString, "yyyy-MM-dd", new Date());
+  return isValid(parsedDate);
 }

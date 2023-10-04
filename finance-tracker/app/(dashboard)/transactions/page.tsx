@@ -1,11 +1,12 @@
 import {
   groupTransactionsByDate,
-  stringToDate,
+  isValidDateFormat,
   validateCategoryQuery,
   validateTypeQuery,
 } from "@/lib/utils";
 import { getTransactions } from "@/actions/get-transactions";
 import { getCategories } from "@/actions/get-categories";
+import { parseISO } from "date-fns";
 
 import { AddTransactionButton } from "@/components/transactions/add-transaction-button";
 import { PageHeading } from "@/components/page-heading";
@@ -27,10 +28,8 @@ interface TransactionsPageProps {
 const TransactionsPage = async ({
   searchParams: { from, to, type, category },
 }: TransactionsPageProps) => {
-  const dateRangeQuery = {
-    from: stringToDate(from),
-    to: stringToDate(to),
-  };
+  const formattedFrom = isValidDateFormat(from) ? parseISO(from) : undefined;
+  const formattedTo = isValidDateFormat(to) ? parseISO(to) : undefined;
 
   const { categories } = await getCategories();
 
@@ -38,8 +37,8 @@ const TransactionsPage = async ({
   const categoryQuery = validateCategoryQuery(categories, category);
 
   const transactions = await getTransactions({
-    from,
-    to,
+    from: formattedFrom,
+    to: formattedTo,
     type,
     slug: categoryQuery?.slug,
   });
@@ -47,8 +46,8 @@ const TransactionsPage = async ({
   const groupedTransactions = groupTransactionsByDate(transactions);
 
   const hasValidQuery =
-    dateRangeQuery.from !== undefined ||
-    dateRangeQuery.to !== undefined ||
+    formattedFrom !== undefined ||
+    formattedTo !== undefined ||
     typeQuery !== undefined ||
     categoryQuery !== undefined;
 

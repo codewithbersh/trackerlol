@@ -4,7 +4,7 @@ import { getOverallBudget } from "@/actions/get-overall-budget";
 import { NoOverallBudget } from "./no-overall-budget";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { getCurrentUser } from "@/actions/get-current-user";
-import { getStartDate, getTransactionDateRange } from "./utils";
+import { getBudgetDateRange, getStartDate } from "./utils";
 import { differenceInCalendarDays } from "date-fns";
 import { TriangleUpIcon } from "@radix-ui/react-icons";
 
@@ -23,7 +23,8 @@ export const OverallBudget = async () => {
     return <NoOverallBudget />;
   }
 
-  const { from, to } = getTransactionDateRange(budget);
+  budget.duration;
+  const { from, to } = getBudgetDateRange({ budget });
   const { _sum: total } = await getTransactionsTotal({
     userId: user.id,
     from,
@@ -32,7 +33,7 @@ export const OverallBudget = async () => {
 
   const percentage = (Number(total.amount) / Number(budget.limit)) * 100;
 
-  const daysLeft = differenceInCalendarDays(to, new Date());
+  const daysLeft = differenceInCalendarDays(to, new Date()) + 1;
 
   const spendingLimitLeft = Number(budget.limit) - Number(total.amount);
 
