@@ -7,7 +7,6 @@ import {
   addWeeks,
   addYears,
   endOfDay,
-  endOfMonth,
   endOfWeek,
   format,
   isToday,
@@ -33,46 +32,6 @@ export function getDateRange(dateObj: Date) {
     from: floorDate(addDays(fromDate, 1)),
     to: subSeconds(addDays(floorDate(toDate), 1), 1),
   };
-}
-
-export function getTransactionDateRange(
-  budget: OverallBudget | CategoryBudgetWithLimitAsNumber,
-) {
-  switch (budget.duration) {
-    case "WEEKLY":
-      const { from, to } = getWeekDateRange(budget.weekStartDay!);
-
-      return { from, to };
-    case "MONTHLY":
-      const today = new Date();
-      const todayDayOfMonth = today.getDate();
-      const startDate = budget.monthStartDate!;
-
-      const firstDayOfThisMonth = startOfMonth(today);
-      const firstDayOfNextMonth = endOfMonth(today);
-
-      const firstDayOfLastMonth = addMonths(firstDayOfThisMonth, -1);
-
-      if (todayDayOfMonth >= startDate) {
-        return {
-          from: addDays(firstDayOfThisMonth, startDate),
-          to: firstDayOfNextMonth,
-        };
-      } else {
-        return {
-          from: floorDate(addDays(firstDayOfLastMonth, startDate)),
-          to: subSeconds(floorDate(addDays(firstDayOfThisMonth, startDate)), 1),
-        };
-      }
-
-    case "YEARLY":
-      return getDateRange(budget.yearStartDate!);
-    default:
-      return {
-        from: floorDate(new Date()),
-        to: subSeconds(floorDate(addDays(new Date(), 1)), 1),
-      };
-  }
 }
 
 interface GetStartDateProps {

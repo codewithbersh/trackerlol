@@ -17,12 +17,12 @@ import {
   setMinutes,
   setSeconds,
   setMilliseconds,
-  addDays,
-  subSeconds,
-  addMonths,
-  addYears,
-  addWeeks,
   parse,
+  startOfDay,
+  subDays,
+  subMonths,
+  subYears,
+  subWeeks,
 } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
@@ -178,27 +178,28 @@ export function getCategoryBySlug(
 }
 
 export function getAnalyticsDateRange(range: string | undefined) {
-  const today = new Date();
+  const todayStartOfDay = startOfDay(new Date());
+  const todayEndOfDay = endOfDay(new Date());
   switch (range?.toLowerCase()) {
     case "day":
       const dayCurrent = {
-        from: floorDate(new Date()),
-        to: subSeconds(addDays(floorDate(new Date()), 1), 1),
+        from: todayStartOfDay,
+        to: todayEndOfDay,
       };
       const dayPrevious = {
-        from: addDays(dayCurrent.from, -1),
-        to: addDays(dayCurrent.to, -1),
+        from: subDays(todayStartOfDay, 1),
+        to: subDays(todayEndOfDay, 1),
       };
       return { current: dayCurrent, previous: dayPrevious };
     case "month":
       const monthCurrent = {
-        from: floorDate(startOfMonth(today)),
-        to: subSeconds(addDays(floorDate(endOfMonth(today)), 1), 1),
+        from: startOfMonth(todayStartOfDay),
+        to: endOfMonth(todayStartOfDay),
       };
 
       const monthPrevious = {
-        from: addMonths(monthCurrent.from, -1),
-        to: addMonths(monthCurrent.to, -1),
+        from: subMonths(monthCurrent.from, 1),
+        to: subMonths(monthCurrent.to, 1),
       };
 
       return {
@@ -207,28 +208,25 @@ export function getAnalyticsDateRange(range: string | undefined) {
       };
     case "year":
       const yearCurrent = {
-        from: floorDate(startOfYear(today)),
-        to: subSeconds(addDays(floorDate(endOfYear(today)), 1), 1),
+        from: startOfYear(todayStartOfDay),
+        to: endOfYear(todayEndOfDay),
       };
 
       const yearPrevious = {
-        from: addYears(yearCurrent.from, 1),
-        to: addYears(yearCurrent.to, 1),
+        from: subYears(yearCurrent.from, 1),
+        to: subYears(yearCurrent.to, 1),
       };
 
       return { current: yearCurrent, previous: yearPrevious };
     default:
       const weekCurrent = {
-        from: floorDate(startOfWeek(today, { weekStartsOn: 0 })),
-        to: subSeconds(
-          addDays(floorDate(endOfWeek(today, { weekStartsOn: 0 })), 1),
-          1,
-        ),
+        from: startOfWeek(todayStartOfDay),
+        to: endOfWeek(todayEndOfDay),
       };
 
       const weekPrevious = {
-        from: addWeeks(weekCurrent.from, -1),
-        to: addWeeks(weekCurrent.to, -1),
+        from: subWeeks(weekCurrent.from, 1),
+        to: subWeeks(weekCurrent.to, 1),
       };
 
       return { current: weekCurrent, previous: weekPrevious };
