@@ -1,3 +1,4 @@
+import { getNetOverall } from "@/actions/get-net-overall";
 import { cn } from "@/lib/utils";
 import {
   Package,
@@ -7,22 +8,15 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-type NetOverallType = {
-  amount: number;
-  percentage: number;
-};
-
-interface NetOverallProps {
-  netOverall: NetOverallType;
-  totalIncome: NetOverallType;
-  totalExpense: NetOverallType;
+interface SummaryProps {
+  range: string | undefined;
 }
 
-export const NetOverall = ({
-  netOverall,
-  totalIncome,
-  totalExpense,
-}: NetOverallProps) => {
+export const Summary = async ({ range }: SummaryProps) => {
+  const { netOverall, totalIncome, totalExpense } = await getNetOverall({
+    range,
+  });
+
   const cards = [
     {
       isPrimary: true,

@@ -14,7 +14,6 @@ const BudgetsPage = async () => {
         </div>
         <CategoriesBudget />
       </div>
-      {/* <ModeToggle /> */}
     </div>
   );
 };

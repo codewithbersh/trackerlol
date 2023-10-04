@@ -6,31 +6,32 @@ import {
   CircularProgressbar as ProgressBar,
   buildStyles,
 } from "react-circular-progressbar";
-import { ProgressProvider } from "./progress-provider";
 
-interface CircularProgressbarProps {
+import { CircularProgressBarProvider } from "@/components/providers/circular-progress-bar-provider";
+
+interface CircularProgressBarProps {
   value: number;
   className: string;
   pathColor: string;
   text?: string;
 }
 
-export const CircularProgressbar = ({
+export const CircularProgressBar = ({
   value: valueEnd,
   className,
   pathColor,
   text,
-}: CircularProgressbarProps) => {
+}: CircularProgressBarProps) => {
   return (
-    <ProgressProvider valueStart={0} valueEnd={valueEnd}>
+    <CircularProgressBarProvider valueStart={0} valueEnd={valueEnd}>
       {(value: number) => (
         <ProgressBar
           value={value}
-          className={cn("w-fit h-fit", className)}
-          styles={buildStyles({ pathColor, trailColor: "#737373" })}
+          className={cn("h-fit w-fit ", className)}
+          styles={buildStyles({ pathColor, trailColor: "#262626" })}
           text={text}
         />
       )}
-    </ProgressProvider>
+    </CircularProgressBarProvider>
   );
 };

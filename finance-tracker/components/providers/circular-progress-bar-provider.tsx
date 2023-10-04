@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 
-interface ProgressProvider {
+interface CircularProgressBarProviderProps {
   valueStart: number;
   valueEnd: number;
   children: any;
 }
 
-export const ProgressProvider = ({
+export const CircularProgressBarProvider = ({
   valueStart,
   valueEnd,
   children,
-}: ProgressProvider) => {
+}: CircularProgressBarProviderProps) => {
   const [value, setValue] = useState(valueStart);
   useEffect(() => {
-    setValue(valueEnd);
+    setTimeout(() => {
+      setValue(valueEnd);
+    }, 1000);
   }, [valueEnd]);
 
   return children(value);

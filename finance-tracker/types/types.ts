@@ -51,6 +51,10 @@ export type OverallBudgetWithLimitAsNumber = Omit<
   limit: number;
 };
 
+export type CategoryBudgetWithCategory = Prisma.CategoryBudgetGetPayload<{
+  include: { category: true };
+}>;
+
 export type CategoryBudgetWithLimitAsNumber = Omit<
   Prisma.CategoryBudgetGetPayload<{ include: { category: true } }>,
   "limit"

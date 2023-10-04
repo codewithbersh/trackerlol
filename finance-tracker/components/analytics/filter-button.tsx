@@ -28,11 +28,11 @@ const filterAnalytics = [
   },
 ];
 
-interface AnalyticsButtonProps {
+interface FilterButtonProps {
   range: string | undefined;
 }
 
-export const AnalyticsButton = ({ range }: AnalyticsButtonProps) => {
+export const FilterButton = ({ range }: FilterButtonProps) => {
   const defaultValue = getRangeDefaultValue(range);
   const router = useRouter();
 
@@ -43,7 +43,7 @@ export const AnalyticsButton = ({ range }: AnalyticsButtonProps) => {
         onValueChange={(value) => router.push(`/analytics?range=${value}`)}
       >
         <SelectTrigger
-          className={cn(buttonVariants({ variant: "outline" }), "w-fit gap-2")}
+          className={cn(buttonVariants({ variant: "default" }), "w-fit gap-2")}
         >
           <CalendarDays className="h-4 w-4" />
           <SelectValue placeholder="Select date" />

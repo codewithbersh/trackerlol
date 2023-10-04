@@ -1,8 +1,6 @@
 import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 import { getBudgetDateRange } from "./utils";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
-import { getCurrentUser } from "@/actions/get-current-user";
-import { redirect } from "next/navigation";
 import { differenceInCalendarDays } from "date-fns";
 
 import { CategoryBudgetClient } from "./category-budget-client";
@@ -12,13 +10,8 @@ interface CategoryBudgetProps {
 }
 
 export const CategoryBudget = async ({ budget }: CategoryBudgetProps) => {
-  const user = await getCurrentUser();
-  if (!user) {
-    return redirect("/login");
-  }
   const { from, to } = getBudgetDateRange({ budget });
   const { _sum: total } = await getTransactionsTotal({
-    userId: user.id,
     from,
     to,
     categoryId: budget.categoryId,

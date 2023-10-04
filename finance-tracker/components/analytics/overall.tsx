@@ -1,9 +1,9 @@
 import { getOverallLimit } from "@/actions/get-overall-limit";
 
 import { Progress } from "@/components/ui/progress";
-import { NoOverallBudget } from "@/components/budgets/no-overall-budget";
+import { AddOverallBudget } from "@/components/add-overall-budget";
 
-export const OverallBudget = async () => {
+export const Overall = async () => {
   const budget = await getOverallLimit();
 
   return (
@@ -29,7 +29,7 @@ export const OverallBudget = async () => {
         </div>
       ) : (
         <div className="grid h-full w-full place-items-center">
-          <NoOverallBudget />
+          <AddOverallBudget />
         </div>
       )}
     </div>

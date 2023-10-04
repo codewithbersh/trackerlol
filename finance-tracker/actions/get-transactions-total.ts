@@ -1,18 +1,25 @@
 import { cache } from "react";
 import prismadb from "@/lib/prismadb";
+import { getCurrentUser } from "./get-current-user";
+import { redirect } from "next/navigation";
 
 interface GetTransactionsTotalProps {
   from: Date;
   to: Date;
-  userId: string;
   categoryId?: string;
 }
 
 export const getTransactionsTotal = cache(
-  async ({ from, to, userId, categoryId }: GetTransactionsTotalProps) => {
+  async ({ from, to, categoryId }: GetTransactionsTotalProps) => {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return redirect("/login");
+    }
+
     return await prismadb.transaction.aggregate({
       where: {
-        userId,
+        userId: user.id,
         date: {
           gte: from,
           lt: to,

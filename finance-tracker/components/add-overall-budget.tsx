@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-export const NoOverallBudget = () => {
+export const AddOverallBudget = () => {
   const { onOpen, setBudget } = useOverallBudget();
 
   return (

@@ -1,11 +1,11 @@
-import { getNetOverall } from "@/actions/get-net-overall";
-import { getTopCategories } from "@/actions/get-top-categories";
+import { Suspense } from "react";
 
-import { AnalyticsButton } from "@/components/analytics/analytics-button";
-import { NetOverall } from "@/components/analytics/net-overall";
-import { OverallBudget } from "@/components/analytics/overall-budget";
-import { TopCategories } from "@/components/analytics/top-categories";
 import { PageHeading } from "@/components/page-heading";
+import { FilterButton } from "@/components/analytics/filter-button";
+import { Summary } from "@/components/analytics/summary";
+import { Overall } from "@/components/analytics/overall";
+import { Categories } from "@/components/analytics/categories";
+import { Budgets } from "@/components/analytics/budgets";
 
 interface AnalyticsPageProps {
   searchParams: { [key: string]: string | undefined };
@@ -13,26 +13,29 @@ interface AnalyticsPageProps {
 
 const AnalyticsPage = async ({ searchParams }: AnalyticsPageProps) => {
   const range = searchParams.range;
-  const { netOverall, totalIncome, totalExpense } = await getNetOverall({
-    range,
-  });
-
-  const topCategories = await getTopCategories(range);
 
   return (
     <div className="mt-[60px] flex  flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
       <PageHeading title="Analytics">
-        <AnalyticsButton range={range} />
+        <FilterButton range={range} />
       </PageHeading>
 
       <div className="mt-8 grid w-full grid-cols-12 gap-4">
-        <NetOverall
-          netOverall={netOverall}
-          totalIncome={totalIncome}
-          totalExpense={totalExpense}
-        />
-        <OverallBudget />
-        <TopCategories topCategories={topCategories} />
+        <Suspense fallback={<p>Loading...</p>}>
+          <Summary range={range} />
+        </Suspense>
+
+        <Suspense fallback={<p>Loading...</p>}>
+          <Overall />
+        </Suspense>
+
+        <Suspense fallback={<p>Loading...</p>}>
+          <Categories range={range} />
+        </Suspense>
+
+        <Suspense fallback={<p>Loading...</p>}>
+          <Budgets />
+        </Suspense>
       </div>
     </div>
   );

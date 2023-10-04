@@ -1,7 +1,6 @@
 import { cn, toTitleCase } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { getOverallBudget } from "@/actions/get-overall-budget";
-import { NoOverallBudget } from "./no-overall-budget";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { getCurrentUser } from "@/actions/get-current-user";
 import { getBudgetDateRange, getStartDate } from "./utils";
@@ -11,6 +10,7 @@ import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { Progress } from "@/components/ui/progress";
 import { EditOverallBudget } from "./edit-overall-budget-budget";
 import { ViewTransactionsButton } from "./view-transactions-button";
+import { AddOverallBudget } from "@/components/add-overall-budget";
 
 export const OverallBudget = async () => {
   const user = await getCurrentUser();
@@ -20,13 +20,12 @@ export const OverallBudget = async () => {
   const budget = await getOverallBudget();
 
   if (!budget) {
-    return <NoOverallBudget />;
+    return <AddOverallBudget />;
   }
 
   budget.duration;
   const { from, to } = getBudgetDateRange({ budget });
   const { _sum: total } = await getTransactionsTotal({
-    userId: user.id,
     from,
     to,
   });

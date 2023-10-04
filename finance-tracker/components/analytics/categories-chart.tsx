@@ -4,11 +4,11 @@ import { TopCategory } from "@/types/types";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
-interface TopCategoriesChart {
-  topCategories: TopCategory[];
+interface CategoriesChartProps {
+  categories: TopCategory[];
 }
 
-export const TopCategoriesChart = ({ topCategories }: TopCategoriesChart) => {
+export const CategoriesChart = ({ categories }: CategoriesChartProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -20,18 +20,19 @@ export const TopCategoriesChart = ({ topCategories }: TopCategoriesChart) => {
   }
 
   return (
-    <ResponsiveContainer width={160} height={160}>
+    <ResponsiveContainer width={160} className="aspect-square">
       <PieChart>
         <Pie
-          data={topCategories}
+          data={categories}
           innerRadius={60}
           outerRadius={80}
           fill="#8884d8"
           paddingAngle={5}
           dataKey="value"
+          strokeWidth={0}
         >
-          {topCategories.map((topCategory, index) => (
-            <Cell key={`cell-${index}`} fill={topCategory.color} />
+          {categories.map((category, index) => (
+            <Cell key={`cell-${index}`} fill={category.color} />
           ))}
         </Pie>
       </PieChart>
