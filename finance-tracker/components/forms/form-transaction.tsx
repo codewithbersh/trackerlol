@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { TransactionWithAmountAsNumber } from "@/types/types";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 import useCategoryData from "@/hooks/use-category-data";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -196,6 +197,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
               type="button"
               onClick={() => handleDelete(initialData.id)}
               variant="outline-destructive"
+              disabled={isLoading}
             >
               Delete
             </Button>
@@ -205,10 +207,12 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             type="button"
             onClick={onClose}
             className="ml-auto"
+            disabled={isLoading}
           >
             Cancel
           </Button>
-          <Button type="submit" className="w-fit" disabled={isLoading}>
+          <Button type="submit" className="w-fit gap-2" disabled={isLoading}>
+            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
             {buttonText}
           </Button>
         </div>

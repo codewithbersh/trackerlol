@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import useCategoryData from "@/hooks/use-category-data";
 import useCategoryBudgetsData from "@/hooks/use-category-budget-data";
 import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
+import { Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -163,6 +164,7 @@ export const FormCategoryBudget = () => {
                   onValueChange={field.onChange}
                   value={field.value}
                   decimalScale={2}
+                  disabled={isLoading}
                 />
               </FormControl>
             </FormItem>
@@ -247,6 +249,7 @@ export const FormCategoryBudget = () => {
               variant="outline-destructive"
               type="button"
               onClick={() => handleDelete(initialData.id)}
+              disabled={isLoading}
             >
               Delete
             </Button>
@@ -256,10 +259,14 @@ export const FormCategoryBudget = () => {
             variant="ghost"
             className="ml-auto"
             onClick={onClose}
+            disabled={isLoading}
           >
             Cancel
           </Button>
-          <Button>{buttonText}</Button>
+          <Button disabled={isLoading} className="gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            {buttonText}
+          </Button>
         </div>
       </form>
     </Form>

@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useReceiptModal } from "@/hooks/use-receipt-modal";
 import { useRouter } from "next/navigation";
 import useTransactionsData from "@/hooks/use-transactions-data";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -38,6 +39,7 @@ export const FormReceipt = () => {
     },
   });
 
+  const isLoading = form.formState.isSubmitting;
   const toastSuccess = initialData ? "Receipt Updated." : "Receipt Uploaded.";
   const buttonText = initialData ? "Save Changes" : "Add Receipt";
 
@@ -116,6 +118,7 @@ export const FormReceipt = () => {
               variant="outline-destructive"
               type="button"
               onClick={() => handleDelete(initialData.id)}
+              disabled={isLoading}
             >
               Delete
             </Button>
@@ -125,10 +128,14 @@ export const FormReceipt = () => {
             className="ml-auto"
             type="button"
             onClick={onClose}
+            disabled={isLoading}
           >
             Close
           </Button>
-          <Button>{buttonText}</Button>
+          <Button className="gap-2" disabled={isLoading}>
+            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+            {buttonText}
+          </Button>
         </div>
       </form>
     </Form>

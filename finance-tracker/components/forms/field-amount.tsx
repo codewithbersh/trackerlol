@@ -11,6 +11,7 @@ interface InputNumberProps extends NumericFormatProps {
   value: number;
   decimalScale?: number;
   className?: string;
+  disabled: boolean;
 }
 
 export const FieldAmount = ({
@@ -19,6 +20,7 @@ export const FieldAmount = ({
   value,
   decimalScale = 0,
   className,
+  disabled,
 }: InputNumberProps) => {
   return (
     <NumericFormat
@@ -43,6 +45,7 @@ export const FieldAmount = ({
         onValueChange(values.value)
       }
       autoFocus
+      disabled={disabled}
     />
   );
 };

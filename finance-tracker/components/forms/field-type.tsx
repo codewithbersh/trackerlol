@@ -22,7 +22,7 @@ export const FieldType = ({ value, onChange }: FieldTypeProps) => {
     >
       {TRANSACTION_TYPES.map((type) => (
         <div key={type.value} className="w-full">
-          <RadioGroupItem hidden value={type.value} />
+          <RadioGroupItem hidden value={type.value} id={type.value} />
           <Label
             className={cn(
               "w-full cursor-pointer border border-input opacity-50",
@@ -30,6 +30,7 @@ export const FieldType = ({ value, onChange }: FieldTypeProps) => {
               value.toLocaleUpperCase() === type.value.toUpperCase() &&
                 "opacity-100 ring-2 ring-ring ring-offset-2 ring-offset-secondary ",
             )}
+            htmlFor={type.value}
           >
             {type.label}
           </Label>

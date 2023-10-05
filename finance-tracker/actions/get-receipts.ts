@@ -14,14 +14,33 @@ export const getReceipts = cache(async ({ category }: GetReceiptsProps) => {
     redirect("/login");
   }
 
+  if (category) {
+    return await prismadb.receipt.findMany({
+      where: {
+        userId: user.id,
+        transaction: {
+          category: {
+            slug: category,
+          },
+        },
+      },
+      include: {
+        transaction: {
+          include: {
+            category: true,
+          },
+        },
+      },
+
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
+  }
+
   return await prismadb.receipt.findMany({
     where: {
       userId: user.id,
-      transaction: {
-        category: {
-          slug: category,
-        },
-      },
     },
     include: {
       transaction: {
@@ -30,6 +49,7 @@ export const getReceipts = cache(async ({ category }: GetReceiptsProps) => {
         },
       },
     },
+
     orderBy: {
       updatedAt: "desc",
     },

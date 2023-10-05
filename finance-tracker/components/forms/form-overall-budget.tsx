@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useOverallBudget } from "@/hooks/use-overall-budget-modal";
+import { Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -80,6 +81,7 @@ export const FormOverallBudget = () => {
         },
   });
 
+  const isLoading = form.formState.isSubmitting;
   const selectedDuration = form.watch("duration");
   const buttonText = initialData ? "Save Changes" : "Add Budget";
   const toastSuccess = initialData ? "Budget updated." : "Budget created.";
@@ -126,6 +128,7 @@ export const FormOverallBudget = () => {
                   onValueChange={field.onChange}
                   value={field.value}
                   decimalScale={2}
+                  disabled={isLoading}
                 />
               </FormControl>
             </FormItem>
@@ -210,6 +213,7 @@ export const FormOverallBudget = () => {
               variant="outline-destructive"
               type="button"
               onClick={() => handleDelete(initialData.id)}
+              disabled={isLoading}
             >
               Delete
             </Button>
@@ -219,10 +223,14 @@ export const FormOverallBudget = () => {
             variant="ghost"
             className="ml-auto"
             onClick={onClose}
+            disabled={isLoading}
           >
             Cancel
           </Button>
-          <Button>{buttonText}</Button>
+          <Button className="gap-2" disabled={isLoading}>
+            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+            {buttonText}
+          </Button>
         </div>
       </form>
     </Form>

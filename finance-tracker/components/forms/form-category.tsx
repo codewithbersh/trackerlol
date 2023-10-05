@@ -185,6 +185,7 @@ export const FormCategory = () => {
               variant="outline-destructive"
               type="button"
               onClick={() => handleDelete(initialData.id)}
+              disabled={isLoading}
             >
               Delete
             </Button>
@@ -194,6 +195,7 @@ export const FormCategory = () => {
             variant="ghost"
             type="button"
             onClick={onClose}
+            disabled={isLoading}
           >
             Cancel
           </Button>
