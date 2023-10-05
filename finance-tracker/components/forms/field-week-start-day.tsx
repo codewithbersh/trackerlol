@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { WeekStartDay } from "@prisma/client";
+import { CHOICES_WEEK_START_DAY } from "@/lib/constants";
 
 import {
   Select,
@@ -10,37 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const weekStartDays = [
-  {
-    value: "SUNDAY",
-    label: "Every Sunday",
-  },
-  {
-    value: "MONDAY",
-    label: "Every Monday",
-  },
-  {
-    value: "TUESDAY",
-    label: "Every Tuesday",
-  },
-  {
-    value: "WEDNESDAY",
-    label: "Every Wednesday",
-  },
-  {
-    value: "THURSDAY",
-    label: "Every Thursday",
-  },
-  {
-    value: "FRIDAY",
-    label: "Every Friday",
-  },
-  {
-    value: "SATURDAY",
-    label: "Every Saturday",
-  },
-];
 
 interface FieldWeekStartDayProps {
   value: WeekStartDay;
@@ -59,7 +29,7 @@ export const FieldWeekStartDay = ({
         <SelectValue placeholder="Select week start day" />
       </SelectTrigger>
       <SelectContent>
-        {weekStartDays.map((day) => (
+        {CHOICES_WEEK_START_DAY.map((day) => (
           <SelectItem key={day.value} value={day.value}>
             {day.label}
           </SelectItem>

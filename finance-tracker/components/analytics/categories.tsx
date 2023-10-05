@@ -28,6 +28,7 @@ export const Categories = async ({ range }: CategoriesProps) => {
             query: {
               from: format(from, "yyyy-MM-dd"),
               to: format(to, "yyyy-MM-dd"),
+              type: "expense",
             },
           }}
           passHref

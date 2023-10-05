@@ -1,38 +1,19 @@
-import { monthStartDates, weekStartDays } from "@/lib/constants";
-import { floorDate, toTitleCase } from "@/lib/utils";
+import { MONTH_START_DATES, WEEK_START_DAYS } from "@/lib/constants";
+import { toTitleCase } from "@/lib/utils";
 import { Duration, OverallBudget } from "@prisma/client";
 import {
   addDays,
   addMonths,
-  addWeeks,
   addYears,
   endOfDay,
   endOfWeek,
   format,
-  isToday,
-  isYesterday,
   startOfMonth,
   startOfWeek,
   subDays,
   subMonths,
-  subSeconds,
 } from "date-fns";
 import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
-
-export function getDateRange(dateObj: Date) {
-  const month = format(dateObj, "MMMM");
-  const day = format(dateObj, "d");
-
-  const nextYear = addYears(new Date(), 1);
-
-  const fromDate = new Date(`${month} ${day}, ${new Date().getFullYear()}`);
-  const toDate = new Date(`${month} ${day}, ${nextYear.getFullYear()}`);
-
-  return {
-    from: floorDate(addDays(fromDate, 1)),
-    to: subSeconds(addDays(floorDate(toDate), 1), 1),
-  };
-}
 
 interface GetStartDateProps {
   duration: Duration;
@@ -51,7 +32,7 @@ export function getStartDate({
     case "WEEKLY":
       return `Every ${toTitleCase(weekStartDay)}`;
     case "MONTHLY":
-      const val = monthStartDates.find(
+      const val = MONTH_START_DATES.find(
         (date) => date.value === monthStartDate.toString(),
       );
       return val?.label;
@@ -62,44 +43,13 @@ export function getStartDate({
   }
 }
 
-export function getWeekDateRange(weekStartDay: string) {
-  const today = new Date();
-  const startDay = weekStartDays.find((day) => day.label === weekStartDay)!;
-
-  const startOfThisWeek = floorDate(startOfWeek(today, { weekStartsOn: 1 }));
-  const startDayOfThisWeek = floorDate(
-    addDays(startOfThisWeek, startDay.value),
-  );
-  const endOfThisWeek = subSeconds(addWeeks(startDayOfThisWeek, 1), 1);
-
-  if (startDayOfThisWeek > startOfThisWeek) {
-    if (isToday(startDayOfThisWeek) || isYesterday(startDayOfThisWeek)) {
-      const from = startDayOfThisWeek;
-      const to = addDays(subSeconds(addWeeks(from, 1), 1), -1);
-      console.log("here");
-      return { from, to };
-    } else {
-      console.log("there");
-      const from = addWeeks(startDayOfThisWeek, -1);
-      const to = subSeconds(startDayOfThisWeek, 1);
-      return { from, to };
-    }
-  } else {
-    console.log("where");
-    const from = startDayOfThisWeek;
-    const to = endOfThisWeek;
-
-    return { from, to };
-  }
-}
-
 export function getBudgetDateRange({
   budget,
 }: {
   budget: OverallBudget | CategoryBudgetWithLimitAsNumber;
 }) {
   if (budget.duration === "WEEKLY") {
-    const budgetStartingDay = weekStartDays.find(
+    const budgetStartingDay = WEEK_START_DAYS.find(
       (day) => day.label === budget.weekStartDay,
     );
 
@@ -139,5 +89,3 @@ export function getBudgetDateRange({
     return { from, to };
   }
 }
-
-type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;

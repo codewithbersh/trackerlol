@@ -1,45 +1,33 @@
 import { cn } from "@/lib/utils";
-import { useId } from "react";
+import { TransactionType } from "@prisma/client";
+import { TRANSACTION_TYPES } from "@/lib/constants";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { buttonVariants } from "@/components/ui/button";
 
 interface FieldTypeProps {
-  value: "EXPENSE" | "INCOME";
-  onChange: (value: "EXPENSE" | "INCOME") => void;
+  value: TransactionType;
+  onChange: (value: TransactionType) => void;
 }
 
 export const FieldType = ({ value, onChange }: FieldTypeProps) => {
-  const transactionTypes = [
-    {
-      label: "Expense",
-      value: "EXPENSE",
-      id: useId(),
-    },
-    {
-      label: "Income",
-      value: "INCOME",
-      id: useId(),
-    },
-  ];
   return (
     <RadioGroup
-      onValueChange={(value: "EXPENSE" | "INCOME") => {
+      onValueChange={(value: TransactionType) => {
         onChange(value);
       }}
       defaultValue={value}
       className="flex gap-4"
     >
-      {transactionTypes.map((type) => (
+      {TRANSACTION_TYPES.map((type) => (
         <div key={type.value} className="w-full">
-          <RadioGroupItem hidden value={type.value} id={type.id} />
+          <RadioGroupItem hidden value={type.value} />
           <Label
-            htmlFor={type.id}
             className={cn(
               "w-full cursor-pointer border border-input opacity-50",
               buttonVariants({ variant: "default" }),
-              value === type.value &&
+              value.toLocaleUpperCase() === type.value.toUpperCase() &&
                 "opacity-100 ring-2 ring-ring ring-offset-2 ring-offset-secondary ",
             )}
           >

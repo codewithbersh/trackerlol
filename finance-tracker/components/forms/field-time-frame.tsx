@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Duration } from "@prisma/client";
+import { TRANSACTION_DURATION } from "@/lib/constants";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -10,35 +11,16 @@ interface FieldTimeFrame {
   onChange: (value: Duration) => void;
 }
 
-const transactionTypes = [
-  {
-    label: "Daily",
-    value: "DAILY",
-  },
-  {
-    label: "Weekly",
-    value: "WEEKLY",
-  },
-  {
-    label: "Monthly",
-    value: "MONTHLY",
-  },
-  {
-    label: "Yearly",
-    value: "YEARLY",
-  },
-];
-
 export const FieldTimeFrame = ({ value, onChange }: FieldTimeFrame) => {
   return (
     <RadioGroup
-      onValueChange={(value: "DAILY" | "WEEKLY" | "MONTHLY") => {
+      onValueChange={(value: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") => {
         onChange(value);
       }}
       defaultValue={value}
       className="flex gap-4"
     >
-      {transactionTypes.map((type) => (
+      {TRANSACTION_DURATION.map((type) => (
         <div key={type.value} className="w-full">
           <RadioGroupItem hidden value={type.value} id={type.value} />
           <Label

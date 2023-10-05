@@ -56,7 +56,7 @@ export const FormReceipt = () => {
       onClose();
     } catch (error) {
       await axios.delete(
-        `/api/uploadthing/${values.imageUrl.replace("https://utfs.io/f/", "")}`
+        `/api/uploadthing/${values.imageUrl.replace("https://utfs.io/f/", "")}`,
       );
       toast.error("An error has occured.");
     }
@@ -106,10 +106,10 @@ export const FormReceipt = () => {
             </FormItem>
           )}
         />
-        <div className="w-full flex gap-4">
+        <div className="flex w-full gap-4">
           {initialData && (
             <Button
-              variant="outlineDestructive"
+              variant="outline-destructive"
               type="button"
               onClick={() => handleDelete(initialData.id)}
             >

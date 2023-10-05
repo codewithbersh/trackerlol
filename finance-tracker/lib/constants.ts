@@ -1,4 +1,6 @@
-export const monthStartDates = [
+import { WeekDayType } from "@/types/types";
+
+export const MONTH_START_DATES = [
   {
     value: "1",
     label: "Every 1st",
@@ -113,12 +115,7 @@ export const monthStartDates = [
   },
 ];
 
-type WeekDayType = {
-  value: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  label: string;
-};
-
-export const weekStartDays: WeekDayType[] = [
+export const WEEK_START_DAYS: WeekDayType[] = [
   {
     value: 0,
     label: "SUNDAY",
@@ -149,6 +146,37 @@ export const weekStartDays: WeekDayType[] = [
   },
 ];
 
+export const CHOICES_WEEK_START_DAY = [
+  {
+    value: "SUNDAY",
+    label: "Every Sunday",
+  },
+  {
+    value: "MONDAY",
+    label: "Every Monday",
+  },
+  {
+    value: "TUESDAY",
+    label: "Every Tuesday",
+  },
+  {
+    value: "WEDNESDAY",
+    label: "Every Wednesday",
+  },
+  {
+    value: "THURSDAY",
+    label: "Every Thursday",
+  },
+  {
+    value: "FRIDAY",
+    label: "Every Friday",
+  },
+  {
+    value: "SATURDAY",
+    label: "Every Saturday",
+  },
+];
+
 export const TRANSACTION_TYPES = [
   {
     label: "Expense",
@@ -157,5 +185,24 @@ export const TRANSACTION_TYPES = [
   {
     label: "Income",
     value: "income",
+  },
+];
+
+export const TRANSACTION_DURATION = [
+  {
+    label: "Daily",
+    value: "DAILY",
+  },
+  {
+    label: "Weekly",
+    value: "WEEKLY",
+  },
+  {
+    label: "Monthly",
+    value: "MONTHLY",
+  },
+  {
+    label: "Yearly",
+    value: "YEARLY",
   },
 ];

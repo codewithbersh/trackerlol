@@ -79,3 +79,8 @@ export type TopCategory = {
   color: string;
   value: number;
 };
+
+export type WeekDayType = {
+  value: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  label: string;
+};

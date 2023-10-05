@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, getRangeDefaultValue } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { CalendarDays } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getRangeDefaultValue } from "./utils";
 
 const filterAnalytics = [
   {

@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { monthStartDates } from "@/lib/constants";
+import { MONTH_START_DATES } from "@/lib/constants";
 
 interface FieldMonthStartDate {
   value: string;
@@ -28,7 +28,7 @@ export const FieldMonthStartDate = ({
         <SelectValue placeholder="Select month start date" />
       </SelectTrigger>
       <SelectContent className="max-h-[250px]">
-        {monthStartDates.map((date) => (
+        {MONTH_START_DATES.map((date) => (
           <SelectItem value={date.value} key={date.value}>
             {date.label}
           </SelectItem>

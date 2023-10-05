@@ -74,7 +74,7 @@ export const FilterByType = ({ type: typeParams }: FilterByTypeProps) => {
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4 ",
-                    type.value.toLowerCase() == typeParams?.toLowerCase()
+                    type.value.toUpperCase() == typeParams?.toUpperCase()
                       ? "opacity-100"
                       : "opacity-0",
                   )}

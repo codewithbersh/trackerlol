@@ -1,10 +1,10 @@
 import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { cn, greenToRed } from "@/lib/utils";
-import { getBudgetDateRange } from "../budgets/utils";
 
 import { CircularProgressBar } from "@/components/ui/circular-progress-bar";
-import { ActionTooltip } from "@/components/action-tooltip";
+import { ActionTooltip } from "@/components/ui/action-tooltip";
+import { getBudgetDateRange } from "@/components/budgets/utils";
 
 interface BudgetsCategoryProps {
   budget: CategoryBudgetWithLimitAsNumber;
