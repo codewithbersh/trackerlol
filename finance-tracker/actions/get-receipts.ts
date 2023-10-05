@@ -4,45 +4,34 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 
 interface GetReceiptsProps {
-  categorySlug: string | undefined;
+  category: string | undefined;
 }
 
-export const getReceipts = cache(async ({ categorySlug }: GetReceiptsProps) => {
+export const getReceipts = cache(async ({ category }: GetReceiptsProps) => {
   const user = await getCurrentUser();
 
   if (!user) {
     redirect("/login");
   }
 
-  if (categorySlug) {
-    return await prismadb.receipt.findMany({
-      where: {
-        userId: user.id,
+  return await prismadb.receipt.findMany({
+    where: {
+      userId: user.id,
+      transaction: {
         category: {
-          slug: categorySlug,
+          slug: category,
         },
       },
-      orderBy: {
-        updatedAt: "desc",
-      },
-      include: {
-        category: true,
-      },
-    });
-  } else {
-    return await prismadb.receipt.findMany({
-      where: {
-        userId: user.id,
-        category: {
-          is: null,
+    },
+    include: {
+      transaction: {
+        include: {
+          category: true,
         },
       },
-      orderBy: {
-        updatedAt: "desc",
-      },
-      include: {
-        category: true,
-      },
-    });
-  }
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
 });

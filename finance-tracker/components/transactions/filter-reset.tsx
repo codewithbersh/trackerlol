@@ -3,9 +3,13 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-export const FilterReset = () => {
+interface FilterResetProps {
+  href: string;
+}
+
+export const FilterReset = ({ href }: FilterResetProps) => {
   return (
-    <Link href="/transactions" passHref>
+    <Link href={href} passHref>
       <Button variant="ghost" className="gap-2">
         Reset <X className="h-4 w-4" />
       </Button>

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
-  const { imageUrl, title } = await req.json();
+  const { imageUrl, transactionId } = await req.json();
 
   if (!user) {
     return new NextResponse("User is required", { status: 401 });
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     data: {
       userId: user.id,
       imageUrl,
-      title,
+      transactionId,
     },
   });
 

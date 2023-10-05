@@ -5,17 +5,13 @@ import { utapi } from "uploadthing/server";
 
 export async function PATCH(
   req: Request,
-  { params: { receiptId } }: { params: { receiptId: string } }
+  { params: { receiptId } }: { params: { receiptId: string } },
 ) {
   const user = await getCurrentUser();
-  const { imageUrl, oldImageUrl, title, categoryId } = await req.json();
+  const { imageUrl, transactionId } = await req.json();
 
   if (!user) {
     return new NextResponse("User is required", { status: 401 });
-  }
-
-  if (imageUrl !== oldImageUrl) {
-    await utapi.deleteFiles(oldImageUrl.replace("https://utfs.io/f/", ""));
   }
 
   const receipt = await prismadb.receipt.update({
@@ -25,8 +21,7 @@ export async function PATCH(
     },
     data: {
       imageUrl,
-      title,
-      categoryId,
+      transactionId,
     },
   });
 
@@ -35,7 +30,7 @@ export async function PATCH(
 
 export async function DELETE(
   _req: Request,
-  { params: { receiptId } }: { params: { receiptId: string } }
+  { params: { receiptId } }: { params: { receiptId: string } },
 ) {
   const user = await getCurrentUser();
 

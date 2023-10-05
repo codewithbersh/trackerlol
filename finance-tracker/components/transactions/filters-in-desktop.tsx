@@ -1,5 +1,6 @@
-import { FilterByType } from "./filter-by-type";
 import { ValidateSearchParamsType } from "./utils";
+
+import { FilterByType } from "./filter-by-type";
 import { FilterByCategory } from "./filter-by-category";
 import { FilterByDate } from "./filter-by-date";
 import { FilterReset } from "./filter-reset";
@@ -20,7 +21,7 @@ export const FiltersInDesktop = async ({
         category={filters.category}
       />
       <FilterByDate filterDateRange={{ from: filters.from, to: filters.to }} />
-      {hasValidFilter && <FilterReset />}
+      {hasValidFilter && <FilterReset href="/transactions" />}
     </div>
   );
 };

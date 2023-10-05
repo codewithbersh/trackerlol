@@ -30,7 +30,7 @@ export const FiltersInMobile = ({ filters }: FiltersInMobileProps) => {
             to: filters.filters.to,
           }}
         />
-        {filters.hasValidFilter && <FilterReset />}
+        {filters.hasValidFilter && <FilterReset href="/href" />}
       </div>
       <Button className="w-full" onClick={onClose}>
         Close

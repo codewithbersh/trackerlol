@@ -71,7 +71,6 @@ model Category {
   color          String
   transactions   Transaction[]
   categoryBudget CategoryBudget?
-  receipts       Receipt[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -92,6 +91,7 @@ model Transaction {
   category   Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String
   amount     Decimal
+  receipts   Receipt[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -137,10 +137,9 @@ model Receipt {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  imageUrl   String    @db.Text
-  title      String
-  category   Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId String?
+  imageUrl      String       @db.Text
+  transaction   Transaction? @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  transactionId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

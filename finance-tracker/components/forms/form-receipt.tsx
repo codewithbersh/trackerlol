@@ -7,9 +7,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useReceiptModal } from "@/hooks/use-receipt-modal";
 import { useRouter } from "next/navigation";
+import useTransactionsData from "@/hooks/use-transactions-data";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -18,14 +18,16 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { FieldImageUpload } from "./field-image-upload";
+import { FieldTransactions } from "./field-transactions";
 
 const formSchema = z.object({
   imageUrl: z.string().min(1),
-  title: z.string(),
+  transactionId: z.string().optional().nullable(),
 });
 
 export const FormReceipt = () => {
   const { onClose, receipt: initialData, setReceipt } = useReceiptModal();
+  const { data: transactions } = useTransactionsData();
 
   const router = useRouter();
 
@@ -33,7 +35,6 @@ export const FormReceipt = () => {
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       imageUrl: "",
-      title: "",
     },
   });
 
@@ -41,23 +42,21 @@ export const FormReceipt = () => {
   const buttonText = initialData ? "Save Changes" : "Add Receipt";
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("submit");
     try {
       if (initialData) {
         await axios.patch(`/api/receipts/${initialData.id}`, {
           ...values,
           oldImageUrl: initialData.imageUrl,
         });
+        onClose();
       } else {
-        await axios.post("/api/receipts", values);
+        const res = await axios.post("/api/receipts", values);
+        setReceipt(res.data);
       }
+
       toast.success(toastSuccess);
       router.refresh();
-      onClose();
     } catch (error) {
-      await axios.delete(
-        `/api/uploadthing/${values.imageUrl.replace("https://utfs.io/f/", "")}`,
-      );
       toast.error("An error has occured.");
     }
   };
@@ -79,18 +78,6 @@ export const FormReceipt = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Receipt title" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="imageUrl"
           render={({ field }) => (
             <FormItem>
@@ -101,6 +88,23 @@ export const FormReceipt = () => {
                   value={field.value}
                   onChange={field.onChange}
                   triggerSubmit={form.handleSubmit(onSubmit)}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="transactionId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Transaction</FormLabel>
+              <FormControl>
+                <FieldTransactions
+                  transactions={transactions}
+                  value={field.value}
+                  onChange={field.onChange}
                 />
               </FormControl>
             </FormItem>

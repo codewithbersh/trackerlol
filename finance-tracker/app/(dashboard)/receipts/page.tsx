@@ -1,38 +1,29 @@
-import { getCategoriesWithReceiptCount } from "@/actions/get-categories";
-import { getReceipts } from "@/actions/get-receipts";
+import { Suspense } from "react";
 
-import { ReceiptButton } from "@/components/receipt-button";
-import { FilterReceiptDropdown } from "@/components/receipts/filter-receipt-dropdown";
-import { Receipt } from "@/components/receipts/receipt";
+import { PageHeading } from "@/components/page-heading";
+import { Receipts } from "@/components/receipts/receipts";
+import { ReceiptsAction } from "@/components/receipts/receipts-action";
+import { Filters } from "@/components/receipts/filters";
 
 interface ReceiptsPageProps {
   searchParams: { [key: string]: string | undefined };
 }
 
 const ReceiptsPage = async ({ searchParams }: ReceiptsPageProps) => {
-  const categories = await getCategoriesWithReceiptCount();
-
-  const paramsIsValid = categories.categories.some(
-    (category) => category.slug === searchParams.category?.toLowerCase()
-  );
-
-  const receipts = await getReceipts({
-    categorySlug: paramsIsValid ? searchParams.category : undefined,
-  });
-
   return (
-    <div className="flex flex-col gap-8 py-24">
-      <ReceiptButton />
-      <FilterReceiptDropdown categories={categories} />
-      <div className="w-full grid grid-cols-2 md:grid-cols-3 justify-between gap-4 ">
-        {receipts.length === 0 && (
-          <div className="w-full text-center col-span-3 text-muted-foreground py-12">
-            No receipts found.
-          </div>
-        )}
-        {receipts?.map((receipt) => (
-          <Receipt receipt={receipt} key={receipt.id} categories={categories} />
-        ))}
+    <div className="mt-[60px] flex  flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
+      <PageHeading title="Receipts">
+        <ReceiptsAction />
+      </PageHeading>
+
+      <div className="mt-16 flex flex-col gap-8">
+        <Suspense fallback={<p>Loading...</p>}>
+          <Filters searchParams={searchParams} />
+        </Suspense>
+
+        <Suspense fallback={<p>Loading...</p>}>
+          <Receipts searchParams={searchParams} />
+        </Suspense>
       </div>
     </div>
   );

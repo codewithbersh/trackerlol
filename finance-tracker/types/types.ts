@@ -1,7 +1,7 @@
 import { Category, Prisma, Transaction } from "@prisma/client";
 import { LucideIcon } from "lucide-react";
 
-type Prettify<T> = {
+export type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
@@ -39,21 +39,6 @@ export type TransactionWithCategoryWithAmountAsNumber = Prettify<
     amount: number;
   }
 >;
-
-export type ReceiptWithCategory = Prisma.ReceiptGetPayload<{
-  include: { category: true };
-}>;
-
-export type CategoryWithReceiptCount = {
-  id: string;
-  title: string;
-  color: string;
-  type: "EXPENSE" | "INCOME";
-  slug: string;
-  _count: {
-    receipts: number;
-  };
-};
 
 export type OverallBudgetWithLimitAsNumber = Omit<
   Prisma.OverallBudgetGetPayload<{}>,

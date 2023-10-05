@@ -13,7 +13,7 @@ interface FieldImageUploadProps {
   value: string;
   onChange: (value?: string) => void;
   triggerSubmit: (
-    e?: BaseSyntheticEvent<object, any, any> | undefined
+    e?: BaseSyntheticEvent<object, any, any> | undefined,
   ) => Promise<void>;
 }
 
@@ -26,15 +26,15 @@ export const FieldImageUpload = ({
   if (value) {
     return (
       <div className="relative">
-        <div className="w-full overflow-y-auto aspect-[4/3] rounded-md relative group">
+        <div className="group relative aspect-[4/3] w-full overflow-y-auto rounded-md">
           <Image src={value} alt="" width={1024} height={1024} sizes="50vw" />
         </div>
         <Button
-          className="absolute -right-2 -top-2 p-0 w-6 h-6"
+          className="absolute -right-2 -top-2 h-6 w-6 p-0"
           variant="default"
           onClick={() => onChange("")}
         >
-          <X className="w-4 h-4" />
+          <X className="h-4 w-4" />
         </Button>
       </div>
     );
@@ -55,7 +55,8 @@ export const FieldImageUpload = ({
         label: "text-primary",
         uploadIcon: "w-12 h-12 text-muted-foreground",
         container: "max-h-[250px] px-8 py-4 rounded-2xl w-full  mx-auto",
-        button: "bg-primary px-4 py-2 rounded-full leading-none ",
+        button:
+          "bg-primary px-4 py-2 rounded-md leading-none text-primary-foreground ",
         allowedContent: "mb-4",
       }}
     />

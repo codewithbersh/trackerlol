@@ -70,7 +70,7 @@ function validateTypeParams(params: string | undefined) {
   return undefined;
 }
 
-function validateCategoryParams({
+export function validateCategoryParams({
   params,
   categories,
 }: {

@@ -1,4 +1,4 @@
-import { Category, CategoryBudget } from "@prisma/client";
+import { CategoryBudget } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchCategoryBudgets = async () => {
