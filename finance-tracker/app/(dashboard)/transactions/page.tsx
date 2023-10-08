@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { PageHeading } from "@/components/page-heading";
 import { TransactionsAction } from "@/components/transactions/tranasctions-action";
 import { Filters } from "@/components/transactions/filters";
-import { validateSearchparams } from "@/components/transactions/utils";
+import { validateSearchParams } from "@/components/transactions/utils";
 import { Transactions } from "@/components/transactions/transactions";
 
 interface TransactionsPageProps {
@@ -13,7 +13,7 @@ interface TransactionsPageProps {
 
 const TransactionsPage = async ({ searchParams }: TransactionsPageProps) => {
   const categories = await getCategories();
-  const filters = validateSearchparams({
+  const filters = validateSearchParams({
     searchParams,
     categories,
   });

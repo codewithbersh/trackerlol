@@ -20,7 +20,7 @@ interface ValidateSearchParamsProps {
   categories: CategoriesByType;
 }
 
-export function validateSearchparams({
+export function validateSearchParams({
   searchParams,
   categories,
 }: ValidateSearchParamsProps) {
