@@ -16,7 +16,7 @@ const ReceiptsPage = async ({ searchParams }: ReceiptsPageProps) => {
         <ReceiptsAction />
       </PageHeading>
 
-      <div className="mt-16 flex flex-col gap-8">
+      <div className="mt-8 flex flex-col gap-8">
         <Suspense fallback={<p>Loading...</p>}>
           <Filters searchParams={searchParams} />
         </Suspense>
