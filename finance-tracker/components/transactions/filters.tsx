@@ -9,7 +9,7 @@ interface FiltersProps {
 
 export const Filters = ({ filters }: FiltersProps) => {
   return (
-    <div className="py-8">
+    <div>
       <FiltersInDesktop filters={filters} />
       <FiltersInMobileAction />
       <FilterTransactionsSheet filters={filters} />

@@ -9,7 +9,7 @@ const BudgetsPage = async () => {
     <div className="mt-[60px] flex  flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
       <PageHeading title="Budgets" />
 
-      <div className="mt-8 flex flex-col gap-16">
+      <div className="mt-8 space-y-16">
         <Suspense fallback={<p>Loading...</p>}>
           <Overall />
         </Suspense>

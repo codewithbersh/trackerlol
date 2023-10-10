@@ -6,17 +6,9 @@ import { OverallBudget } from "./overall-budget";
 export const Overall = async () => {
   const budget = await getOverallBudget();
 
-  return (
-    <>
-      {budget ? (
-        <>
-          <OverallBudget budget={budget} />
-        </>
-      ) : (
-        <>
-          <AddOverallBudget />
-        </>
-      )}
-    </>
-  );
+  if (!budget) {
+    return <AddOverallBudget />;
+  }
+
+  return <OverallBudget budget={budget} />;
 };

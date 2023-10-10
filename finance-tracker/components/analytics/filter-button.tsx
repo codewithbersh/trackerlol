@@ -44,7 +44,10 @@ export const FilterButton = ({ range }: FilterButtonProps) => {
         onValueChange={(value) => router.push(`/analytics?range=${value}`)}
       >
         <SelectTrigger
-          className={cn(buttonVariants({ variant: "default" }), "w-fit gap-2")}
+          className={cn(
+            buttonVariants({ variant: "default", size: "default" }),
+            "h-9 w-fit gap-2",
+          )}
         >
           <CalendarDays className="h-4 w-4" />
           <SelectValue placeholder="Select date" />

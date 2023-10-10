@@ -24,11 +24,13 @@ const TransactionsPage = async ({ searchParams }: TransactionsPageProps) => {
         <TransactionsAction />
       </PageHeading>
 
-      <Filters filters={filters} />
+      <div className="mt-8 space-y-8">
+        <Filters filters={filters} />
 
-      <Suspense fallback={<p>Loading...</p>}>
-        <Transactions filters={filters.filters} />
-      </Suspense>
+        <Suspense fallback={<p>Loading...</p>}>
+          <Transactions filters={filters.filters} />
+        </Suspense>
+      </div>
     </div>
   );
 };
