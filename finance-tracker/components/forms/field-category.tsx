@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn, toTitleCase } from "@/lib/utils";
 import { Check, ChevronDown, Plus, Settings2 } from "lucide-react";
 import { Category } from "@prisma/client";
+import { useCategoryModal } from "@/hooks/use-category-modal";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +20,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useCategoryModal } from "@/hooks/use-category-modal";
 
 interface FieldCategoryProps {
   selectedType: "INCOME" | "EXPENSE";
@@ -86,7 +86,7 @@ export const FieldCategory = ({
                 No categories found.
               </div>
             ) : (
-              <CommandGroup heading={selectedType}>
+              <CommandGroup heading={toTitleCase(selectedType)}>
                 {categories?.map((category) => (
                   <CommandItem
                     value={category.title}
