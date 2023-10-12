@@ -1,11 +1,12 @@
 import { Suspense } from "react";
 
 import { PageHeading } from "@/components/page-heading";
-import { FilterButton } from "@/components/analytics/filter-button";
-import { Summary } from "@/components/analytics/summary";
-import { Overall } from "@/components/analytics/overall";
-import { Categories } from "@/components/analytics/categories";
-import { Budgets } from "@/components/analytics/budgets";
+
+import { FilterButton } from "./_components/filter-button";
+import { Summary } from "./_components/summary";
+import { Overall } from "./_components/overall";
+import { Categories } from "./_components/categories";
+import { Budgets } from "./_components/budgets";
 
 interface AnalyticsPageProps {
   searchParams: { [key: string]: string | undefined };
