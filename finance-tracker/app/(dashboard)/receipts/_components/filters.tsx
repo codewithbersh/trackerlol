@@ -1,8 +1,7 @@
 import { getCategories } from "@/actions/get-categories";
-
-import { FilterByCategory } from "@/components/transactions/filter-by-category";
-import { validateCategoryParams } from "@/components/transactions/utils";
-import { FilterReset } from "@/components/transactions/filter-reset";
+import { validateCategoryParams } from "@/app/(dashboard)/transactions/_components/utils";
+import { FilterByCategory } from "@/app/(dashboard)/transactions/_components/filter-by-category";
+import { FilterReset } from "@/app/(dashboard)/transactions/_components/filter-reset";
 
 interface FiltersProps {
   searchParams: { [key: string]: string | undefined };

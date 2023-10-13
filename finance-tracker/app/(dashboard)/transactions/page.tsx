@@ -1,11 +1,12 @@
 import { getCategories } from "@/actions/get-categories";
 import { Suspense } from "react";
 
+import { validateSearchParams } from "./_components/utils";
+import { TransactionsAction } from "./_components/tranasctions-action";
+import { Filters } from "./_components/filters";
+import { Transactions } from "./_components/transactions";
+
 import { PageHeading } from "@/components/page-heading";
-import { TransactionsAction } from "@/components/transactions/tranasctions-action";
-import { Filters } from "@/components/transactions/filters";
-import { validateSearchParams } from "@/components/transactions/utils";
-import { Transactions } from "@/components/transactions/transactions";
 
 interface TransactionsPageProps {
   searchParams: { [key: string]: string | undefined };

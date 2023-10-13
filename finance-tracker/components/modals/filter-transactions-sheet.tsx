@@ -2,6 +2,9 @@
 
 import { useFilterTransactionsStore } from "@/hooks/use-filter-transactions";
 
+import { ValidateSearchParamsType } from "@/app/(dashboard)/transactions/_components/utils";
+import { FiltersInMobile } from "@/app/(dashboard)/transactions/_components/filters-in-mobile";
+
 import {
   Sheet,
   SheetContent,
@@ -9,8 +12,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { ValidateSearchParamsType } from "@/components/transactions/utils";
-import { FiltersInMobile } from "@/components/transactions/filters-in-mobile";
 
 interface FilterTransactionsSheetProps {
   filters: ValidateSearchParamsType;

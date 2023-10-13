@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 
+import { ReceiptsAction } from "./_components/receipts-action";
+import { Filters } from "./_components/filters";
+import { Receipts } from "./_components/receipts";
+
 import { PageHeading } from "@/components/page-heading";
-import { Receipts } from "@/components/receipts/receipts";
-import { ReceiptsAction } from "@/components/receipts/receipts-action";
-import { Filters } from "@/components/receipts/filters";
 
 interface ReceiptsPageProps {
   searchParams: { [key: string]: string | undefined };

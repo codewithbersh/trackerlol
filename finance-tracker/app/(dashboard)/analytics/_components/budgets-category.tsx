@@ -4,7 +4,7 @@ import { cn, greenToRed } from "@/lib/utils";
 
 import { CircularProgressBar } from "@/components/ui/circular-progress-bar";
 import { ActionTooltip } from "@/components/ui/action-tooltip";
-import { getBudgetDateRange } from "@/components/budgets/utils";
+import { getBudgetDateRange } from "@/app/(dashboard)/budgets/_components/utils";
 
 interface BudgetsCategoryProps {
   budget: CategoryBudgetWithLimitAsNumber;

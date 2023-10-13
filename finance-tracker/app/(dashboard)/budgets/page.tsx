@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 
-import { Categories } from "@/components/budgets/categories";
-import { Overall } from "@/components/budgets/overall";
+import { Overall } from "./_components/overall";
+import { Categories } from "./_components/categories";
+
 import { PageHeading } from "@/components/page-heading";
 
 const BudgetsPage = async () => {

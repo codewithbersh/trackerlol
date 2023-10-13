@@ -3,8 +3,7 @@ import { getCurrentUser } from "./get-current-user";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
 import { toTitleCase } from "@/lib/utils";
-
-import { getBudgetDateRange } from "@/components/budgets/utils";
+import { getBudgetDateRange } from "@/app/(dashboard)/budgets/_components/utils";
 
 export const getOverallLimit = cache(async () => {
   const user = await getCurrentUser();
