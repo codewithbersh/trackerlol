@@ -1,7 +1,7 @@
 import { cache } from "react";
 import prismadb from "@/lib/prismadb";
-import { getCurrentUser } from "./get-current-user";
 import { redirect } from "next/navigation";
+import { getCurrentUser } from "./get-current-user";
 
 interface GetTransactionsTotalProps {
   from: Date;

@@ -1,7 +1,7 @@
+import { redirect } from "next/navigation";
+import { cache } from "react";
 import prismadb from "@/lib/prismadb";
 import { getCurrentUser } from "./get-current-user";
-import { cache } from "react";
-import { redirect } from "next/navigation";
 
 export const getTransaction = cache(
   async ({ transactionId: id }: { transactionId: string }) => {
@@ -22,5 +22,5 @@ export const getTransaction = cache(
     }
 
     return null;
-  }
+  },
 );

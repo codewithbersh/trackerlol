@@ -1,7 +1,7 @@
-import { getCurrentUser } from "./get-current-user";
-import prismadb from "@/lib/prismadb";
-import { redirect } from "next/navigation";
 import { cache } from "react";
+import { redirect } from "next/navigation";
+import prismadb from "@/lib/prismadb";
+import { getCurrentUser } from "./get-current-user";
 
 interface GetReceiptsProps {
   category: string | undefined;
