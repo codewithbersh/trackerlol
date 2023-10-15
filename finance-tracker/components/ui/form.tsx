@@ -17,18 +17,18 @@ const Form = FormProvider;
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName;
 };
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 );
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -67,7 +67,7 @@ type FormItemContextValue = {
 };
 
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 );
 
 const FormItem = React.forwardRef<
@@ -84,6 +84,31 @@ const FormItem = React.forwardRef<
 });
 FormItem.displayName = "FormItem";
 
+const FormLabelHeader = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  const { error, formItemId } = useFormField();
+
+  return (
+    <Label
+      ref={ref}
+      className={cn(
+        "text-lg font-medium",
+        error && "text-destructive",
+        className,
+      )}
+      htmlFor={formItemId}
+      {...props}
+    />
+  );
+});
+FormLabelHeader.displayName = "FormLabelHeader";
+
+const FormLabelGroup = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex flex-col gap-1">{children}</div>;
+};
+
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
@@ -94,9 +119,9 @@ const FormLabel = React.forwardRef<
     <Label
       ref={ref}
       className={cn(
-        "text-muted-foreground font-medium",
+        "font-medium text-muted-foreground",
         error && "text-destructive",
-        className
+        className,
       )}
       htmlFor={formItemId}
       {...props}
@@ -177,5 +202,7 @@ export {
   FormControl,
   FormDescription,
   FormMessage,
+  FormLabelHeader,
+  FormLabelGroup,
   FormField,
 };

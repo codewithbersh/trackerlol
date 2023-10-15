@@ -1,4 +1,5 @@
 import { WeekDayType } from "@/types/types";
+import { Moon, Sun, SunMoon } from "lucide-react";
 
 export const MONTH_START_DATES = [
   {
@@ -204,5 +205,23 @@ export const TRANSACTION_DURATION = [
   {
     label: "Yearly",
     value: "YEARLY",
+  },
+];
+
+export const THEMES = [
+  {
+    value: "light",
+    label: "Light",
+    icon: Sun,
+  },
+  {
+    value: "dark",
+    label: "Dark",
+    icon: Moon,
+  },
+  {
+    value: "system",
+    label: "System",
+    icon: SunMoon,
   },
 ];
