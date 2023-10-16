@@ -9,14 +9,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export const FieldTheme = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const { setTheme, theme } = useTheme();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   if (!isMounted) return null;
-
-  const { setTheme, theme } = useTheme();
 
   const onValueChange = (value: "light" | "dark" | "system") => {
     setTheme(value);
@@ -25,7 +24,7 @@ export const FieldTheme = () => {
   return (
     <RadioGroup
       onValueChange={onValueChange}
-      defaultValue={theme}
+      defaultValue={theme ? theme : "system"}
       className="flex flex-col gap-4"
     >
       {THEMES.map(({ value, label, icon: Icon }) => (

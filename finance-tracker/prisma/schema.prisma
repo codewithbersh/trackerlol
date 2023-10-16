@@ -48,6 +48,7 @@ model User {
   overallBudget  OverallBudget?
   receipts       Receipt[]
   categoryBudget CategoryBudget[]
+  profile        Profile?
 }
 
 model VerificationToken {
@@ -140,6 +141,19 @@ model Receipt {
   imageUrl      String       @db.Text
   transaction   Transaction? @relation(fields: [transactionId], references: [id], onDelete: Cascade)
   transactionId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  currency            String @default("USD")
+  thousandsGroupStyle String @default("en-US")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

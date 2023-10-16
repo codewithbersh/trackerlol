@@ -24,6 +24,10 @@ export type CategoriesByType = {
   expense: Category[];
 };
 
+export type UserWithProfile = Prisma.UserGetPayload<{
+  include: { profile: true };
+}>;
+
 export type TransactionWithCategory = Prisma.TransactionGetPayload<{
   include: { category: true };
 }>;
