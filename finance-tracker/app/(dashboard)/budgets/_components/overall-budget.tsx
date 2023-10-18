@@ -1,9 +1,10 @@
-import { cn, toTitleCase } from "@/lib/utils";
+import { cn, formatCurrency, toTitleCase } from "@/lib/utils";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { getBudgetDateRange, getStartDate } from "./utils";
 import { differenceInCalendarDays } from "date-fns";
 import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { OverallBudget as OverallBudgetType } from "@prisma/client";
+import { getUserWithProfile } from "@/actions/get-user-with-profile";
 
 import { Progress } from "@/components/ui/progress";
 import { OverallBudgetAction } from "./overall-budget-action";
@@ -19,12 +20,19 @@ export const OverallBudget = async ({ budget }: OverallBudgetProps) => {
     from,
     to,
   });
+  const { profile } = await getUserWithProfile();
 
   const percentage = (Number(total.amount) / Number(budget.limit)) * 100;
 
   const daysLeft = differenceInCalendarDays(to, new Date()) + 1;
 
   const spendingLimitLeft = Number(budget.limit) - Number(total.amount);
+
+  const totalAmount = formatCurrency({
+    profile,
+    amount: total.amount ? Number(total.amount) : 0,
+  });
+  const budgetLimit = formatCurrency({ profile, amount: Number(budget.limit) });
 
   return (
     <div className="flex flex-col gap-6">
@@ -45,12 +53,12 @@ export const OverallBudget = async ({ budget }: OverallBudgetProps) => {
             <div className="flex  flex-1 flex-col gap-3 leading-none text-muted-foreground">
               <div className="flex items-center justify-between text-sm font-medium text-primary">
                 <div>
-                  <span className="hidden sm:inline">Current: </span>${" "}
-                  {Number(total.amount).toLocaleString("en-US")}
+                  <span className="hidden sm:inline">Current: </span>
+                  {totalAmount}
                 </div>
                 <div>
-                  <span className="hidden sm:inline">Target: </span>${" "}
-                  {Number(budget.limit).toLocaleString("en-US")}
+                  <span className="hidden sm:inline">Target: </span>{" "}
+                  {budgetLimit}
                 </div>
               </div>
               <Progress
@@ -59,7 +67,7 @@ export const OverallBudget = async ({ budget }: OverallBudgetProps) => {
               />
               <div className="flex items-center justify-between text-sm">
                 <div>
-                  $ {Math.abs(spendingLimitLeft).toLocaleString("en-US")}{" "}
+                  {formatCurrency({ profile, amount: spendingLimitLeft })}{" "}
                   {spendingLimitLeft >= 0 ? "under" : "over"}
                 </div>
                 <div>

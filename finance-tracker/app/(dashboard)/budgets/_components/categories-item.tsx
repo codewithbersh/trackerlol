@@ -2,6 +2,7 @@ import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 import { getBudgetDateRange } from "./utils";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { differenceInCalendarDays } from "date-fns";
+import { getUserWithProfile } from "@/actions/get-user-with-profile";
 
 import { CategoriesItemClient } from "./categories-item-client";
 
@@ -16,6 +17,7 @@ export const CategoriesItem = async ({ budget }: CategoriesItemProps) => {
     to,
     categoryId: budget.categoryId,
   });
+  const { profile } = await getUserWithProfile();
 
   const percentage = (Number(total.amount) / Number(budget.limit)) * 100;
 
@@ -30,6 +32,7 @@ export const CategoriesItem = async ({ budget }: CategoriesItemProps) => {
       spendingLimitLeft={spendingLimitLeft}
       total={Number(total.amount)}
       range={{ from, to }}
+      profile={profile}
     />
   );
 };

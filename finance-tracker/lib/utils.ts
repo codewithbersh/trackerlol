@@ -1,3 +1,4 @@
+import { Profile } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import {
   endOfMonth,
@@ -118,3 +119,29 @@ export function greenToRed(percentage: number) {
 
   return "#" + redHex + greenHex + "00";
 }
+
+export const formatCurrency = ({
+  profile,
+  amount,
+  signDisplay = "auto",
+}: {
+  profile: Profile | null;
+  amount: number;
+  signDisplay?: "auto" | "never";
+}) => {
+  if (!profile) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2,
+      signDisplay: signDisplay,
+    }).format(amount);
+  }
+
+  return new Intl.NumberFormat(profile.thousandsGroupStyle, {
+    style: "currency",
+    currency: profile.currency,
+    maximumFractionDigits: profile.displayCents ? 2 : 0,
+    signDisplay: signDisplay,
+  }).format(amount);
+};

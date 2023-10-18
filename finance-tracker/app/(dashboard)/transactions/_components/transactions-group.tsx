@@ -2,6 +2,7 @@
 
 import { GroupedTransactionsType } from "@/types/types";
 import { Profile } from "@prisma/client";
+import { formatCurrency } from "@/lib/utils";
 
 import { TransactionsGroupItem } from "./transactions-group-item";
 
@@ -18,17 +19,7 @@ export const TransactionsGroup = ({
     (a, b) => Number(b.updatedAt) - Number(a.updatedAt),
   );
 
-  const formattedSum = profile
-    ? new Intl.NumberFormat(profile.thousandsGroupStyle, {
-        style: "currency",
-        currency: profile.currency,
-        maximumFractionDigits: profile.displayCents ? 2 : 0,
-      }).format(sum)
-    : new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 2,
-      }).format(sum);
+  const formattedSum = formatCurrency({ profile, amount: sum });
 
   return (
     <div className="space-y-4">

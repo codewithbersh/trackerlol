@@ -1,12 +1,13 @@
 "use client";
 
-import { cn, toTitleCase } from "@/lib/utils";
+import { cn, formatCurrency, toTitleCase } from "@/lib/utils";
 import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { getStartDate } from "./utils";
+import { Profile } from "@prisma/client";
 
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ interface CategoriesItemClientProps {
     from: Date;
     to: Date;
   };
+  profile: Profile | null;
 }
 
 export const CategoriesItemClient = ({
@@ -30,9 +32,11 @@ export const CategoriesItemClient = ({
   spendingLimitLeft,
   daysLeft,
   range,
+  profile,
 }: CategoriesItemClientProps) => {
   const { onOpen, setBudget } = useCategoryBudget();
   const router = useRouter();
+
   return (
     <div
       className="flex cursor-pointer flex-col rounded-sm border p-4 hover:bg-accent/25"
@@ -74,18 +78,22 @@ export const CategoriesItemClient = ({
       <div className="flex flex-1 flex-col gap-1 pt-8 leading-none text-muted-foreground">
         <div className="flex items-center justify-between text-sm font-medium text-primary">
           <div>
-            <span className="hidden sm:inline">Current: </span>${" "}
-            {total.toLocaleString("en-US")}
+            <span className="hidden sm:inline">Current: </span>
+            {formatCurrency({ profile, amount: total })}
           </div>
           <div>
-            <span className="hidden sm:inline">Target: </span>${" "}
-            {Number(budget.limit).toLocaleString("en-US")}
+            <span className="hidden sm:inline">Target: </span>
+            {formatCurrency({ profile, amount: Number(budget.limit) })}
           </div>
         </div>
         <Progress value={percentage > 100 ? 100 : percentage} className="h-2" />
         <div className="flex items-center justify-between text-sm">
           <div>
-            $ {Math.abs(spendingLimitLeft).toLocaleString("en-US")}{" "}
+            {formatCurrency({
+              profile,
+              amount: spendingLimitLeft,
+              signDisplay: "never",
+            })}{" "}
             {spendingLimitLeft >= 0 ? "under" : "over"}
           </div>
           <div>

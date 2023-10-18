@@ -1,10 +1,13 @@
 import { getOverallLimit } from "@/actions/get-overall-limit";
+import { formatCurrency } from "@/lib/utils";
+import { getUserWithProfile } from "@/actions/get-user-with-profile";
 
 import { Progress } from "@/components/ui/progress";
 import { AddOverallBudget } from "@/components/add-overall-budget";
 
 export const Overall = async () => {
   const budget = await getOverallLimit();
+  const { profile } = await getUserWithProfile();
 
   return (
     <div className="col-span-full h-full w-full rounded-md border p-4 sm:col-span-6 md:col-span-3">
@@ -18,12 +21,16 @@ export const Overall = async () => {
             </div>
 
             <div className="space-y-2 leading-none text-muted-foreground">
-              <div>Spent: $ {budget.totalSpent.toLocaleString("en-US")}</div>
+              <div>
+                Spent: {formatCurrency({ profile, amount: budget.totalSpent })}
+              </div>
               <Progress
                 className="h-3"
                 value={budget.percentage > 100 ? 100 : budget.percentage}
               />
-              <div>Target: $ {budget.limit.toLocaleString("en-US")}</div>
+              <div>
+                Target: {formatCurrency({ profile, amount: budget.limit })}
+              </div>
             </div>
           </div>
         </div>

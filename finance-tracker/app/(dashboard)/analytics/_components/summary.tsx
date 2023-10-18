@@ -1,5 +1,6 @@
 import { getNetOverall } from "@/actions/get-net-overall";
-import { cn } from "@/lib/utils";
+import { getUserWithProfile } from "@/actions/get-user-with-profile";
+import { cn, formatCurrency } from "@/lib/utils";
 import {
   Package,
   PackageMinus,
@@ -16,6 +17,7 @@ export const Summary = async ({ range }: SummaryProps) => {
   const { netOverall, totalIncome, totalExpense } = await getNetOverall({
     range,
   });
+  const { profile } = await getUserWithProfile();
 
   const cards = [
     {
@@ -73,7 +75,7 @@ export const Summary = async ({ range }: SummaryProps) => {
                 card.isPrimary && "text-primary-foreground",
               )}
             >
-              $ {Number(card.amount.toFixed(0)).toLocaleString("en-US")}
+              {formatCurrency({ profile, amount: card.amount })}
             </div>
 
             <div className="mt-1 font-medium text-muted-foreground">
