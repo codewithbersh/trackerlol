@@ -27,7 +27,9 @@ export const FieldDisplayCents = ({
       <SelectTrigger className="w-full">
         <div>
           <span>{selected?.label}, </span>
-          <span className="text-muted-foreground">{selected?.placeholder}</span>
+          <span className="text-muted-foreground/50">
+            {selected?.placeholder}
+          </span>
         </div>
       </SelectTrigger>
       <SelectContent>
