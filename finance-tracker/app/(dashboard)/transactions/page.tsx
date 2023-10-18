@@ -20,12 +20,12 @@ const TransactionsPage = async ({ searchParams }: TransactionsPageProps) => {
   });
 
   return (
-    <div className="mt-[60px] flex  flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
+    <div className="mt-[60px] flex flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
       <PageHeading title="Transactions">
         <TransactionsAction />
       </PageHeading>
 
-      <div className="mt-8 space-y-8">
+      <div className="mt-8 h-full space-y-8">
         <Filters filters={filters} />
 
         <Suspense fallback={<p>Loading...</p>}>

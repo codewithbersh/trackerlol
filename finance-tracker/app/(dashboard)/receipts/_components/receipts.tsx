@@ -11,8 +11,8 @@ export const Receipts = async ({ searchParams }: ReceiptsProps) => {
 
   if (receipts.length === 0) {
     return (
-      <div className="grid w-full place-items-center py-8 text-sm text-muted-foreground">
-        No receipt found.
+      <div className=" w-full py-12 text-center text-sm text-muted-foreground">
+        No receipts.
       </div>
     );
   }

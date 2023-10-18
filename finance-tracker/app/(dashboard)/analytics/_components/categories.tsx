@@ -41,25 +41,32 @@ export const Categories = async ({ range }: CategoriesProps) => {
           </Button>
         </Link>
       </div>
-      <div className="flex flex-wrap justify-center gap-8">
-        <CategoriesChart categories={categories} />
-        <div className="flex w-full flex-1 flex-col gap-4">
-          {categories.map((category) => (
-            <div key={category.id} className="flex items-center gap-4">
-              <div
-                className="h-2 w-2 rounded-full"
-                style={{ backgroundColor: category.color }}
-              />
-              <div className="leading-none text-muted-foreground">
-                {category.name}
-              </div>
-              <div className="ml-auto font-semibold leading-none">
-                {category.value.toFixed(0)}%
-              </div>
-            </div>
-          ))}
+
+      {categories.length === 0 ? (
+        <div className="my-auto py-6 text-center text-sm text-muted-foreground">
+          No transactions.
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-wrap justify-center gap-8">
+          <CategoriesChart categories={categories} />
+          <div className="flex w-full flex-1 flex-col gap-4">
+            {categories.map((category) => (
+              <div key={category.id} className="flex items-center gap-4">
+                <div
+                  className="h-2 w-2 rounded-full"
+                  style={{ backgroundColor: category.color }}
+                />
+                <div className="leading-none text-muted-foreground">
+                  {category.name}
+                </div>
+                <div className="ml-auto font-semibold leading-none">
+                  {category.value.toFixed(0)}%
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

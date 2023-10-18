@@ -13,6 +13,12 @@ export const Categories = async () => {
         <CategoriesAction />
       </div>
 
+      {budgets.length === 0 && (
+        <div className="py-12 text-center text-sm text-muted-foreground">
+          No category budgets.
+        </div>
+      )}
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {budgets.map((budget) => (
           <CategoriesItem

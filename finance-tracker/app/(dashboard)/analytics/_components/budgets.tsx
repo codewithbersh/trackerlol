@@ -22,6 +22,11 @@ export const Budgets = async () => {
         </Link>
       </div>
       <div className="my-auto flex flex-wrap justify-between gap-4">
+        {budgets.length === 0 && (
+          <div className="w-full py-6 text-center text-sm text-muted-foreground">
+            No category budgets.
+          </div>
+        )}
         {budgets.splice(0, 5).map((budget) => (
           <BudgetsCategory
             key={budget.id}
