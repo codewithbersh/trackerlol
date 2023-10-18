@@ -21,6 +21,7 @@ import { FieldTheme } from "./field-theme";
 import { FieldCurrency } from "./field-currency";
 import { FieldThousandsGroupStyle } from "./field-thousands-group-style";
 import { FieldDisplayCents } from "./field-display-cents";
+import { FieldAccountOptions } from "./field-account-options";
 
 const FormSchema = z.object({
   currency: z.string(),
@@ -134,6 +135,20 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
                 </FormItem>
               )}
             />
+          </div>
+
+          <div className="mt-16">Account</div>
+          <Separator className="bg-border/50" />
+
+          <div className="mx-auto mt-8 w-full max-w-lg space-y-6">
+            <FormLabelGroup>
+              <FormLabelHeader>Danger Zone</FormLabelHeader>
+              <FormLabel>
+                If you&apos;re unhappy with our app, you can delete and remove
+                your account.
+              </FormLabel>
+            </FormLabelGroup>
+            <FieldAccountOptions />
           </div>
         </div>
 
