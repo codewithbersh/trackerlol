@@ -133,7 +133,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
           name="amount"
           render={({ field }) => (
             <FormItem className="col-span-full">
-              <FormLabel>Amounts</FormLabel>
+              <FormLabel>Amount</FormLabel>
               <FormControl>
                 <FieldAmount
                   onValueChange={field.onChange}
