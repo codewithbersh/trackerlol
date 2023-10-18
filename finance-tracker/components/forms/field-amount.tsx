@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
-import getSymbolFromCurrency from "currency-symbol-map";
 
 interface InputNumberProps {
   maxLength?: number;
@@ -27,11 +26,20 @@ export const FieldAmount = ({
     thousandsGroupStyle === "en-IN" ? "lakh" : "thousand";
   const decimalScale = displayCents ? 2 : 0;
 
-  const prefix = `${getSymbolFromCurrency(currency)} `;
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency,
+  });
+
+  const parts = formatter.formatToParts(0);
+
+  const prefix = `${parts.find((part) => part.type === "currency")?.value} `;
+  const placeholder = `${parts.find((part) => part.type === "currency")
+    ?.value} 0.00`;
 
   return (
     <NumericFormat
-      placeholder="$  0.00"
+      placeholder={placeholder}
       prefix={prefix}
       className={cn(
         "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
