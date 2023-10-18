@@ -1,4 +1,5 @@
 import { getTransactions } from "@/actions/get-transactions";
+import { getUserWithProfile } from "@/actions/get-user-with-profile";
 import { FiltersType } from "./utils";
 
 import { TransactionsGroups } from "./transactions-groups";
@@ -17,9 +18,11 @@ export const Transactions = async ({
     to,
   });
 
+  const user = await getUserWithProfile();
+
   return (
     <div className="space-y-16">
-      <TransactionsGroups transactions={transactions} />
+      <TransactionsGroups transactions={transactions} profile={user.profile} />
     </div>
   );
 };

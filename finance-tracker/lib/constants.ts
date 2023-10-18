@@ -225,3 +225,33 @@ export const THEMES = [
     icon: SunMoon,
   },
 ];
+
+export const THOUSAND_STYLES = [
+  {
+    label: "Default",
+    value: "en-US",
+    numericFormat: "thousand",
+    placeholder: "123,456,789",
+  },
+  {
+    label: "Lakh",
+    value: "en-IN",
+    numericFormat: "lakh",
+    placeholder: "12,34,56,789",
+  },
+];
+
+export const DISPLAY_CENTS = [
+  {
+    value: "true",
+    label: "Display Cents",
+    numericFormat: 2,
+    placeholder: "10.99",
+  },
+  {
+    value: "false",
+    label: "Hide Cents",
+    numericFormat: 0,
+    placeholder: "11",
+  },
+];

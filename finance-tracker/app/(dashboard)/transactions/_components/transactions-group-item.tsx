@@ -2,15 +2,29 @@
 
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
+import { Profile } from "@prisma/client";
 
 interface TransactionsGroupItem {
   transaction: TransactionWithCategoryWithAmountAsNumber;
+  profile: Profile | null;
 }
 
 export const TransactionsGroupItem = ({
   transaction,
+  profile,
 }: TransactionsGroupItem) => {
   const { onOpen, setTransaction } = useTransactionModal();
+  const formattedAmount = profile
+    ? new Intl.NumberFormat(profile.thousandsGroupStyle, {
+        style: "currency",
+        currency: profile.currency,
+        maximumFractionDigits: profile.displayCents ? 2 : 0,
+      }).format(transaction.amount)
+    : new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+      }).format(transaction.amount);
 
   return (
     <div
@@ -43,8 +57,8 @@ export const TransactionsGroupItem = ({
         </div>
 
         <div className="ml-auto shrink-0">
-          <span>{transaction.type === "EXPENSE" ? "-" : ""} $</span>{" "}
-          {Number(transaction.amount).toLocaleString("en-US")}
+          <span>{transaction.type === "EXPENSE" ? "-" : ""}</span>{" "}
+          {formattedAmount}
         </div>
       </div>
     </div>

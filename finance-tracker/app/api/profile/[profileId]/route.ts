@@ -7,7 +7,7 @@ export async function PATCH(
   { params: { profileId } }: { params: { profileId: string } },
 ) {
   const user = await getCurrentUser();
-  const { currency, thousandsGroupStyle } = await req.json();
+  const { currency, thousandsGroupStyle, displayCents } = await req.json();
 
   if (!user) {
     return new NextResponse("User is required", { status: 401 });
@@ -28,6 +28,7 @@ export async function PATCH(
     data: {
       currency,
       thousandsGroupStyle,
+      displayCents,
     },
   });
 

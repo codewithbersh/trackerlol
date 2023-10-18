@@ -19,10 +19,13 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { FieldTheme } from "./field-theme";
 import { FieldCurrency } from "./field-currency";
+import { FieldThousandsGroupStyle } from "./field-thousands-group-style";
+import { FieldDisplayCents } from "./field-display-cents";
 
 const FormSchema = z.object({
   currency: z.string(),
   thousandsGroupStyle: z.string(),
+  displayCents: z.boolean(),
 });
 
 interface FormSettingsProps {
@@ -35,6 +38,7 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
     defaultValues: initialData || {
       currency: "USD",
       thousandsGroupStyle: "en-US",
+      displayCents: false,
     },
   });
 
@@ -52,7 +56,7 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
     }
   };
 
-  const { isDirty, dirtyFields } = form.formState;
+  const { isDirty } = form.formState;
 
   return (
     <Form {...form}>
@@ -83,6 +87,46 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
                     <FormLabel>Select your currency below.</FormLabel>
                   </FormLabelGroup>
                   <FieldCurrency
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="displayCents"
+              render={({ field }) => (
+                <FormItem className="space-y-4">
+                  <FormLabelGroup>
+                    <FormLabelHeader>Number Format</FormLabelHeader>
+                    <FormLabel>
+                      Choose how you want the numbers to show
+                    </FormLabel>
+                  </FormLabelGroup>
+                  <FieldDisplayCents
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="thousandsGroupStyle"
+              render={({ field }) => (
+                <FormItem className="space-y-4">
+                  <FormLabelGroup>
+                    <FormLabelHeader>Thousand Group Style</FormLabelHeader>
+                    <FormLabel>
+                      Define how you want to style thousands.
+                    </FormLabel>
+                  </FormLabelGroup>
+                  <FieldThousandsGroupStyle
                     value={field.value}
                     onChange={field.onChange}
                   />

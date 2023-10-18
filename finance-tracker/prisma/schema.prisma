@@ -152,8 +152,9 @@ model Profile {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
-  currency            String @default("USD")
-  thousandsGroupStyle String @default("en-US")
+  currency            String  @default("USD")
+  thousandsGroupStyle String  @default("en-US")
+  displayCents        Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
