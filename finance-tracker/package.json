@@ -38,6 +38,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "currency-codes": "^2.1.0",
+    "currency-symbol-map": "^5.1.0",
     "date-fns": "^2.30.0",
     "emoji-mart": "^5.5.2",
     "emoji-picker-react": "^4.5.1",

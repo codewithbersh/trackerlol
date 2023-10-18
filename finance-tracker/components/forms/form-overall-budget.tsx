@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useOverallBudget } from "@/hooks/use-overall-budget-modal";
 import { Loader2 } from "lucide-react";
+import useProfileData from "@/hooks/use-profile-data";
 
 import {
   Form,
@@ -67,6 +68,7 @@ const formSchema = z.intersection(schemaCond, defaultProps);
 export const FormOverallBudget = () => {
   const { onClose, budget: initialData } = useOverallBudget();
   const router = useRouter();
+  const { data: profile } = useProfileData();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -127,8 +129,10 @@ export const FormOverallBudget = () => {
                 <FieldAmount
                   onValueChange={field.onChange}
                   value={field.value}
-                  decimalScale={2}
                   disabled={isLoading}
+                  thousandsGroupStyle={profile?.thousandsGroupStyle}
+                  displayCents={profile?.displayCents}
+                  currency={profile?.currency}
                 />
               </FormControl>
             </FormItem>

@@ -10,6 +10,7 @@ import { TransactionWithAmountAsNumber } from "@/types/types";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 import useCategoryData from "@/hooks/use-category-data";
 import { Loader2 } from "lucide-react";
+import useProfileData from "@/hooks/use-profile-data";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -45,6 +46,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const router = useRouter();
   const { onClose } = useTransactionModal();
   const { data } = useCategoryData();
+  const { data: profile } = useProfileData();
 
   const buttonText = initialData ? "Save Changes" : "Add Transaction";
   const toastSuccessMessage = initialData
@@ -131,13 +133,15 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
           name="amount"
           render={({ field }) => (
             <FormItem className="col-span-full">
-              <FormLabel>Amount</FormLabel>
+              <FormLabel>Amounts</FormLabel>
               <FormControl>
                 <FieldAmount
                   onValueChange={field.onChange}
                   value={field.value}
-                  decimalScale={2}
                   disabled={isLoading}
+                  thousandsGroupStyle={profile?.thousandsGroupStyle}
+                  displayCents={profile?.displayCents}
+                  currency={profile?.currency}
                 />
               </FormControl>
             </FormItem>

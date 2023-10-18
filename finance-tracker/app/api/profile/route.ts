@@ -29,3 +29,19 @@ export async function POST(req: Request) {
 
   return NextResponse.json(profile);
 }
+
+export async function GET(_req: Request) {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return new NextResponse("User is required", { status: 401 });
+  }
+
+  const profile = await prismadb.profile.findUnique({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  return NextResponse.json(profile);
+}

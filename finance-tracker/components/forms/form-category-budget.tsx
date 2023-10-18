@@ -10,6 +10,7 @@ import useCategoryData from "@/hooks/use-category-data";
 import useCategoryBudgetsData from "@/hooks/use-category-budget-data";
 import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
 import { Loader2 } from "lucide-react";
+import useProfileData from "@/hooks/use-profile-data";
 
 import {
   Form,
@@ -73,6 +74,7 @@ export const FormCategoryBudget = () => {
   const { data: categories } = useCategoryData();
   const { data: categoryBudgets, refetch: refetchCategoryBudgets } =
     useCategoryBudgetsData();
+  const { data: profile } = useProfileData();
 
   const router = useRouter();
 
@@ -163,8 +165,10 @@ export const FormCategoryBudget = () => {
                 <FieldAmount
                   onValueChange={field.onChange}
                   value={field.value}
-                  decimalScale={2}
                   disabled={isLoading}
+                  thousandsGroupStyle={profile?.thousandsGroupStyle}
+                  displayCents={profile?.displayCents}
+                  currency={profile?.currency}
                 />
               </FormControl>
             </FormItem>
