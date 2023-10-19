@@ -142,7 +142,7 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
             />
           </div>
 
-          <div className="mx-auto mt-16">
+          <div className="mx-auto mt-8">
             <Button
               type="submit"
               size="sm"

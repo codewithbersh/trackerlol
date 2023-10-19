@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { FieldThemeLoading } from "../field-theme-loading";
 
 export const FieldTheme = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -15,7 +16,7 @@ export const FieldTheme = () => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return null;
+  if (!isMounted) return <FieldThemeLoading />;
 
   const onValueChange = (value: "light" | "dark" | "system") => {
     setTheme(value);
