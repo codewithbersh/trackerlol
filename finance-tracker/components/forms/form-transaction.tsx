@@ -65,7 +65,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
     mode: "onChange",
   });
 
-  const isLoading = form.formState.isSubmitting;
+  const { isLoading } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const date = new Date(values.date.toLocaleDateString());
@@ -120,7 +120,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
                   value={field.value}
                   onChange={(value) => {
                     field.onChange(value);
-                    form.setValue("categoryId", "");
+                    form.resetField("categoryId");
                   }}
                 />
               </FormControl>
