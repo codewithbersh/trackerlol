@@ -83,8 +83,12 @@ export const FilterByCategory = ({
       <PopoverContent className="max-w-[200px] p-0" align="start">
         <Command>
           <CommandInput placeholder="Search category..." />
-          <CommandEmpty>No category found.</CommandEmpty>
           <CommandGroup heading="Expense">
+            {expense.length === 0 && (
+              <div className="py-2 text-center text-xs text-muted-foreground">
+                No category
+              </div>
+            )}
             {expense.map((expenseCategory) => (
               <CommandItem
                 value={expenseCategory.slug}
@@ -107,6 +111,11 @@ export const FilterByCategory = ({
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading="Income">
+            {income.length === 0 && (
+              <div className="py-2 text-center text-xs text-muted-foreground">
+                No category
+              </div>
+            )}
             {income.map((incomeCategory) => (
               <CommandItem
                 value={incomeCategory.slug}
