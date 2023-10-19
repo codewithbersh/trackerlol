@@ -6,7 +6,7 @@ import {
   GroupedTransactionsType,
   TransactionWithCategoryWithAmountAsNumber,
 } from "@/types/types";
-import { endOfMonth, format, startOfMonth } from "date-fns";
+import { format } from "date-fns";
 
 interface GetTransactionsProps {
   to?: Date;
@@ -27,8 +27,8 @@ export const getTransactions = cache(
       where: {
         userId: user.id,
         date: {
-          gte: from ?? startOfMonth(new Date()),
-          lte: to ?? endOfMonth(new Date()),
+          gte: from ?? undefined,
+          lte: to ?? undefined,
         },
         type: type as "INCOME" | "EXPENSE" | undefined,
         category: {

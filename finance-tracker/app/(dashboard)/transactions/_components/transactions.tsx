@@ -3,7 +3,6 @@ import { getUserWithProfile } from "@/actions/get-user-with-profile";
 import { FiltersType } from "./utils";
 
 import { TransactionsGroups } from "./transactions-groups";
-import { Button } from "@/components/ui/button";
 
 interface TransactionsProps {
   filters: FiltersType;
