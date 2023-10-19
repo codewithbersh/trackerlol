@@ -7,6 +7,7 @@ import { Filters } from "./_components/filters";
 import { Transactions } from "./_components/transactions";
 
 import { PageHeading } from "@/components/page-heading";
+import { Spinner } from "@/components/spinner";
 
 interface TransactionsPageProps {
   searchParams: { [key: string]: string | undefined };
@@ -20,7 +21,7 @@ const TransactionsPage = async ({ searchParams }: TransactionsPageProps) => {
   });
 
   return (
-    <div className="mt-[60px] flex flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
+    <div className="mt-[60px] flex flex-col  py-8 pt-0 sm:mt-16 lg:mt-4">
       <PageHeading title="Transactions">
         <TransactionsAction />
       </PageHeading>
@@ -28,7 +29,7 @@ const TransactionsPage = async ({ searchParams }: TransactionsPageProps) => {
       <div className="mt-8 h-full space-y-8">
         <Filters filters={filters} />
 
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<Spinner variant="large" className="py-8" />}>
           <Transactions filters={filters.filters} />
         </Suspense>
       </div>

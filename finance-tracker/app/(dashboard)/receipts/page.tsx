@@ -5,6 +5,7 @@ import { Filters } from "./_components/filters";
 import { Receipts } from "./_components/receipts";
 
 import { PageHeading } from "@/components/page-heading";
+import { Spinner } from "@/components/spinner";
 
 interface ReceiptsPageProps {
   searchParams: { [key: string]: string | undefined };
@@ -22,7 +23,7 @@ const ReceiptsPage = async ({ searchParams }: ReceiptsPageProps) => {
           <Filters searchParams={searchParams} />
         </Suspense>
 
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<Spinner className="py-8" variant="large" />}>
           <Receipts searchParams={searchParams} />
         </Suspense>
       </div>
