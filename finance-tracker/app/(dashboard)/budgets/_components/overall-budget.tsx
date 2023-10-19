@@ -1,4 +1,4 @@
-import { cn, formatCurrency, toTitleCase } from "@/lib/utils";
+import { cn, formatCurrency, greenToRed, toTitleCase } from "@/lib/utils";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { getBudgetDateRange, getStartDate } from "./utils";
 import { differenceInCalendarDays } from "date-fns";
@@ -60,11 +60,16 @@ export const OverallBudget = async ({ budget }: OverallBudgetProps) => {
             </div>
             <Progress
               value={percentage > 100 ? 100 : percentage}
-              className="h-3"
+              className="h-2"
+              indicatorBgColor={greenToRed(percentage > 100 ? 100 : percentage)}
             />
             <div className="flex items-center justify-between text-sm">
-              <div>
-                {formatCurrency({ profile, amount: spendingLimitLeft })}{" "}
+              <div className={cn(percentage >= 100 && "text-red-500")}>
+                {formatCurrency({
+                  profile,
+                  amount: spendingLimitLeft,
+                  signDisplay: "never",
+                })}{" "}
                 {spendingLimitLeft >= 0 ? "under" : "over"}
               </div>
               <div>

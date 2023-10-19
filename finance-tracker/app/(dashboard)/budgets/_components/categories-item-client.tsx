@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, formatCurrency, toTitleCase } from "@/lib/utils";
+import { cn, formatCurrency, greenToRed, toTitleCase } from "@/lib/utils";
 import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
@@ -86,9 +86,13 @@ export const CategoriesItemClient = ({
             {formatCurrency({ profile, amount: Number(budget.limit) })}
           </div>
         </div>
-        <Progress value={percentage > 100 ? 100 : percentage} className="h-2" />
+        <Progress
+          value={percentage > 100 ? 100 : percentage}
+          className="h-2"
+          indicatorBgColor={greenToRed(percentage > 100 ? 100 : percentage)}
+        />
         <div className="flex items-center justify-between text-sm">
-          <div>
+          <div className={cn(percentage >= 100 && "text-red-500")}>
             {formatCurrency({
               profile,
               amount: spendingLimitLeft,
