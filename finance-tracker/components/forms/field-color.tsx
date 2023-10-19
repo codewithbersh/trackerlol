@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 interface FieldColorProps {
   value: string;
@@ -29,13 +29,13 @@ export const FieldColor = ({
   const colors = type === "EXPENSE" ? expenseColors : incomeColors;
 
   return (
-    <div className="grid w-full grid-cols-5 items-center gap-2 sm:max-h-20">
+    <div className="grid w-full grid-cols-5 items-center gap-1 sm:max-h-20">
       {colors.map((color) => (
         <button
           key={color.value}
           type="button"
           className={cn(
-            " aspect-square w-full max-w-[55px] rounded-full sm:w-5",
+            " aspect-square w-full max-w-[55px] rounded-full sm:w-full",
             categories
               ? categories.some((category) => category.color === color.value) &&
                   "cursor-not-allowed blur-sm"
@@ -53,8 +53,11 @@ export const FieldColor = ({
 
       <Popover>
         <PopoverTrigger asChild>
-          <Button className="aspect-square w-full max-w-[55px] rounded-full p-0 sm:h-5 sm:w-5">
-            <Plus className="aspect-square w-full  text-primary-foreground sm:w-3" />
+          <Button
+            className="aspect-square w-full max-w-[55px] rounded-full border-primary/50 p-0"
+            variant="outline"
+          >
+            <Plus className="aspect-square w-full sm:w-full" />
           </Button>
         </PopoverTrigger>
         <PopoverContent align="end" className="w-fit">

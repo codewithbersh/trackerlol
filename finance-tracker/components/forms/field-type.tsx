@@ -9,18 +9,19 @@ import { buttonVariants } from "@/components/ui/button";
 interface FieldTypeProps {
   value: TransactionType;
   onChange: (value: TransactionType) => void;
+  disabled?: boolean;
 }
 
-export const FieldType = ({ value, onChange }: FieldTypeProps) => {
+export const FieldType = ({ value, onChange, disabled }: FieldTypeProps) => {
   const TRANSACTION_TYPES = [
     {
       label: "Expense",
-      value: "expense",
+      value: "EXPENSE",
       id: useId(),
     },
     {
       label: "Income",
-      value: "income",
+      value: "INCOME",
       id: useId(),
     },
   ];
@@ -34,7 +35,12 @@ export const FieldType = ({ value, onChange }: FieldTypeProps) => {
     >
       {TRANSACTION_TYPES.map((type) => (
         <div key={type.value} className="w-full">
-          <RadioGroupItem hidden value={type.value} id={type.id} />
+          <RadioGroupItem
+            hidden
+            value={type.value}
+            id={type.id}
+            disabled={disabled}
+          />
           <Label
             className={cn(
               "w-full cursor-pointer border border-input opacity-50",

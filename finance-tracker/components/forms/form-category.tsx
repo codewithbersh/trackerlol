@@ -26,11 +26,9 @@ import { FieldColor } from "./field-color";
 
 export const CategoryFormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
-  emoji: z
-    .string({ required_error: "Choose an emoji" })
-    .nonempty("Choose an emoji"),
-  title: z.string().nonempty(),
-  color: z.string().nonempty(),
+  emoji: z.string({ required_error: "Choose an emoji" }).min(1),
+  title: z.string().min(1),
+  color: z.string().min(1),
 });
 
 export const FormCategory = () => {
@@ -85,7 +83,7 @@ export const FormCategory = () => {
   const handleDelete = async (id: string) => {
     try {
       await axios.delete(`/api/categories/${id}`);
-      toast.success("Transaction has been deleted.");
+      toast.success("Category has been deleted.");
       router.refresh();
       onClose();
     } catch (error) {
@@ -112,6 +110,7 @@ export const FormCategory = () => {
                     field.onChange(value);
                     form.setValue("color", "");
                   }}
+                  disabled={initialData ? true : false}
                 />
               </FormControl>
             </FormItem>

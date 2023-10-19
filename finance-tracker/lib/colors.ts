@@ -42,27 +42,6 @@ export const expenseColors = [
     name: "stone-200",
     value: "#e7e5e4",
   },
-
-  {
-    name: "slate-200",
-    value: "#e2e8f0",
-  },
-  {
-    name: "rose-400",
-    value: "#fb7185",
-  },
-  {
-    name: "orange-400",
-    value: "#fb923c",
-  },
-  {
-    name: "yellow-400",
-    value: "#facc15",
-  },
-  {
-    name: "blue-400",
-    value: "#60a5fa",
-  },
 ];
 
 export const incomeColors = [
