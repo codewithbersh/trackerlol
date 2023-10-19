@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { TransactionType } from "@prisma/client";
-import { TRANSACTION_TYPES } from "@/lib/constants";
+import { useId } from "react";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -12,6 +12,18 @@ interface FieldTypeProps {
 }
 
 export const FieldType = ({ value, onChange }: FieldTypeProps) => {
+  const TRANSACTION_TYPES = [
+    {
+      label: "Expense",
+      value: "expense",
+      id: useId(),
+    },
+    {
+      label: "Income",
+      value: "income",
+      id: useId(),
+    },
+  ];
   return (
     <RadioGroup
       onValueChange={(value: TransactionType) => {
@@ -22,7 +34,7 @@ export const FieldType = ({ value, onChange }: FieldTypeProps) => {
     >
       {TRANSACTION_TYPES.map((type) => (
         <div key={type.value} className="w-full">
-          <RadioGroupItem hidden value={type.value} id={type.value} />
+          <RadioGroupItem hidden value={type.value} id={type.id} />
           <Label
             className={cn(
               "w-full cursor-pointer border border-input opacity-50",
@@ -30,7 +42,7 @@ export const FieldType = ({ value, onChange }: FieldTypeProps) => {
               value.toLocaleUpperCase() === type.value.toUpperCase() &&
                 "opacity-100 ring-2 ring-ring ring-offset-2 ring-offset-secondary ",
             )}
-            htmlFor={type.value}
+            htmlFor={type.id}
           >
             {type.label}
           </Label>

@@ -178,17 +178,6 @@ export const CHOICES_WEEK_START_DAY = [
   },
 ];
 
-export const TRANSACTION_TYPES = [
-  {
-    label: "Expense",
-    value: "expense",
-  },
-  {
-    label: "Income",
-    value: "income",
-  },
-];
-
 export const TRANSACTION_DURATION = [
   {
     label: "Daily",

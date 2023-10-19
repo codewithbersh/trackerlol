@@ -4,8 +4,7 @@ import { cn, toTitleCase } from "@/lib/utils";
 import { Check, ChevronDown, LayoutGrid } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
-import { useState } from "react";
-import { TRANSACTION_TYPES } from "@/lib/constants";
+import { useId, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
@@ -23,6 +22,19 @@ export const FilterByType = ({ type: typeParams }: FilterByTypeProps) => {
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const TRANSACTION_TYPES = [
+    {
+      label: "Expense",
+      value: "expense",
+      id: useId(),
+    },
+    {
+      label: "Income",
+      value: "income",
+      id: useId(),
+    },
+  ];
 
   const onSelect = (value: string) => {
     const current = queryString.parse(searchParams.toString());
