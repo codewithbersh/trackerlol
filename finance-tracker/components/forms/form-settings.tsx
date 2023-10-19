@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Profile } from "@prisma/client";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,12 +36,13 @@ interface FormSettingsProps {
 }
 
 export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: initialData || {
       currency: "USD",
       thousandsGroupStyle: "en-US",
-      displayCents: false,
+      displayCents: true,
     },
   });
 
@@ -53,17 +56,19 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
     } catch (error) {
       console.log("[FORM_SETTINGS_ERROR]", error);
     } finally {
-      window.location.reload();
+      toast.success("Settings saved.");
+      form.reset(values);
+      router.refresh();
     }
   };
 
-  const { isDirty } = form.formState;
+  const { isSubmitting, isLoading, isDirty } = form.formState;
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="h-full  w-full space-y-6 lg:relative"
+        className="flex  h-full w-full flex-col gap-6"
       >
         <div className="flex flex-col gap-2">
           <div>General</div>
@@ -104,7 +109,7 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
                   <FormLabelGroup>
                     <FormLabelHeader>Number Format</FormLabelHeader>
                     <FormLabel>
-                      Choose how you want the numbers to show
+                      Choose how you want the numbers to show.
                     </FormLabel>
                   </FormLabelGroup>
                   <FieldDisplayCents
@@ -137,6 +142,17 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
             />
           </div>
 
+          <div className="mx-auto mt-16">
+            <Button
+              type="submit"
+              size="sm"
+              className="mx-auto shrink-0"
+              disabled={isSubmitting || isLoading || !isDirty}
+            >
+              Save Changes
+            </Button>
+          </div>
+
           <div className="mt-16">Account</div>
           <Separator className="bg-border/50" />
 
@@ -151,22 +167,6 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
             <FieldAccountOptions />
           </div>
         </div>
-
-        {isDirty && (
-          <div className="absolute bottom-4 right-1/2 flex min-w-[220px] translate-x-[50%] gap-4 rounded-md bg-secondary p-2 lg:bottom-0">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => form.reset()}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" size="sm" className="shrink-0">
-              Save Changes
-            </Button>
-          </div>
-        )}
       </form>
     </Form>
   );

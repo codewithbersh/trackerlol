@@ -131,7 +131,6 @@ export const FormOverallBudget = () => {
                   value={field.value}
                   disabled={isLoading}
                   thousandsGroupStyle={profile?.thousandsGroupStyle}
-                  displayCents={profile?.displayCents}
                   currency={profile?.currency}
                 />
               </FormControl>
