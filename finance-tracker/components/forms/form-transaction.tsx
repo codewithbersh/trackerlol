@@ -35,7 +35,7 @@ const FormSchema = z.object({
     .string({
       required_error: "Please select a category.",
     })
-    .nonempty("Please select a category"),
+    .min(1),
 });
 
 interface TransactionFormProps {

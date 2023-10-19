@@ -54,6 +54,9 @@ export const FieldTransactionDate = ({
           }}
           initialFocus
           defaultMonth={value || new Date()}
+          disabled={(date) =>
+            date > new Date() || date < new Date("1900-01-01")
+          }
         />
       </PopoverContent>
     </Popover>
