@@ -11,6 +11,7 @@ import { useTransactionModal } from "@/hooks/use-transaction-modal";
 import useCategoryData from "@/hooks/use-category-data";
 import { Loader2 } from "lucide-react";
 import useProfileData from "@/hooks/use-profile-data";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +26,6 @@ import { FieldCategory } from "./field-category";
 import { FieldType } from "./field-type";
 import { FieldAmount } from "./field-amount";
 import { FieldTransactionDate } from "./field-transaction-date";
-import { useState } from "react";
 
 const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
