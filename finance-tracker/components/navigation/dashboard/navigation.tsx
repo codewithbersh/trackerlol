@@ -40,7 +40,6 @@ export const Navigation = () => {
       href: "/receipts",
       active: pathname.toLowerCase().startsWith("/receipts"),
     },
-
     {
       icon: Settings,
       label: "Settings",

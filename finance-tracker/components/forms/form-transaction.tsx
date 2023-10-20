@@ -21,14 +21,12 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { FieldCategory } from "./field-category";
 import { FieldType } from "./field-type";
 import { FieldAmount } from "./field-amount";
 import { FieldTransactionDate } from "./field-transaction-date";
-import { FieldRecurringInterval } from "./field-recurring-interval";
 
-const defaultProps = z.object({
+const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
   amount: z.coerce.number().min(1),
   note: z.string(),
@@ -38,24 +36,7 @@ const defaultProps = z.object({
       required_error: "Please select a category.",
     })
     .min(1),
-  recurring: z.boolean(),
 });
-
-const defaultTransaction = z.object({
-  recurring: z.literal(false),
-});
-
-const recurringTransaction = z.object({
-  recurring: z.literal(true),
-  recurringInterval: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
-});
-
-const schemaCond = z.discriminatedUnion("recurring", [
-  defaultTransaction,
-  recurringTransaction,
-]);
-
-const FormSchema = z.intersection(schemaCond, defaultProps);
 
 interface TransactionFormProps {
   initialData: TransactionWithAmountAsNumber | null;
@@ -74,15 +55,12 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    //@ts-ignore
     defaultValues: initialData || {
       type: "EXPENSE",
       amount: 0,
       categoryId: "",
       note: "",
       date: new Date(),
-      recurring: false,
-      recurringInterval: "MONTHLY",
     },
     mode: "onChange",
   });
@@ -218,42 +196,6 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="recurring"
-          render={({ field }) => (
-            <FormItem className="col-span-full flex items-center gap-2 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={(value) => {
-                    field.onChange(value);
-                    form.resetField("recurringInterval");
-                  }}
-                />
-              </FormControl>
-              <FormLabel className=" leading-none">Mark as recurring</FormLabel>
-            </FormItem>
-          )}
-        />
-
-        {form.watch("recurring") && (
-          <FormField
-            control={form.control}
-            name="recurringInterval"
-            render={({ field }) => (
-              <FormItem className="col-span-full">
-                <FormLabel className="w-fit">Interval</FormLabel>
-                <FieldRecurringInterval
-                  value={field.value}
-                  onChange={field.onChange}
-                  date={form.watch("date")}
-                />
-              </FormItem>
-            )}
-          />
-        )}
 
         <div className="col-span-full mt-6 flex items-center gap-4 ">
           {initialData && (

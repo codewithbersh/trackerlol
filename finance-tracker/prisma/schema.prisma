@@ -94,9 +94,6 @@ model Transaction {
   amount     Decimal
   receipts   Receipt[]
 
-  recurring         Boolean   @default(false)
-  recurringInterval Duration?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

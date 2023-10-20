@@ -7,8 +7,7 @@ export async function PATCH(
   { params: { transactionId } }: { params: { transactionId: string } },
 ) {
   const user = await getCurrentUser();
-  const { type, note, date, categoryId, amount, recurring, recurringInterval } =
-    await req.json();
+  const { type, note, date, categoryId, amount } = await req.json();
 
   if (!user) {
     return new NextResponse("Unauthenticated", { status: 401 });
@@ -36,10 +35,9 @@ export async function PATCH(
       date,
       categoryId,
       amount,
-      recurring,
-      recurringInterval: recurring ? recurringInterval : null,
     },
   });
+
   return NextResponse.json(transaction);
 }
 
