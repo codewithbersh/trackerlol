@@ -4,10 +4,11 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  { params: { transactionId } }: { params: { transactionId: string } }
+  { params: { transactionId } }: { params: { transactionId: string } },
 ) {
   const user = await getCurrentUser();
-  const { type, note, date, categoryId, amount } = await req.json();
+  const { type, note, date, categoryId, amount, recurring, recurringInterval } =
+    await req.json();
 
   if (!user) {
     return new NextResponse("Unauthenticated", { status: 401 });
@@ -35,6 +36,8 @@ export async function PATCH(
       date,
       categoryId,
       amount,
+      recurring,
+      recurringInterval: recurring ? recurringInterval : null,
     },
   });
   return NextResponse.json(transaction);
@@ -42,7 +45,7 @@ export async function PATCH(
 
 export async function DELETE(
   _req: Request,
-  { params: { transactionId } }: { params: { transactionId: string } }
+  { params: { transactionId } }: { params: { transactionId: string } },
 ) {
   const user = await getCurrentUser();
 

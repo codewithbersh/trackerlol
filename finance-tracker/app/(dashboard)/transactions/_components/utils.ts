@@ -1,6 +1,6 @@
 import { CategoriesByType } from "@/types/types";
-import { Category } from "@prisma/client";
-import { isValid, parse, parseISO } from "date-fns";
+import { Category, Duration } from "@prisma/client";
+import { format, getDate, getDay, isValid, parse, parseISO } from "date-fns";
 
 export type FiltersType = {
   from: Date | undefined;
@@ -18,6 +18,27 @@ export type ValidateSearchParamsType = {
 interface ValidateSearchParamsProps {
   searchParams: { [key: string]: string | undefined };
   categories: CategoriesByType;
+}
+
+export function getRecurringIntervalDate({
+  value,
+  date,
+}: {
+  value: Duration | null;
+  date: Date;
+}) {
+  const dayOfMonth = getDate(date);
+
+  switch (value) {
+    case "DAILY":
+      return "Everyday";
+    case "WEEKLY":
+      return `Every ${format(date, "EEEE")}`;
+    case "YEARLY":
+      return `Every ${format(date, "do 'of' MMMM")}`;
+    default:
+      return `Every ${dayOfMonth > 28 ? "28th" : format(date, "do")}`;
+  }
 }
 
 export function validateSearchParams({

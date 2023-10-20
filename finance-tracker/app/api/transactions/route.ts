@@ -4,7 +4,8 @@ import prismadb from "@/lib/prismadb";
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
-  const { type, note, date, categoryId, amount } = await req.json();
+  const { type, note, date, categoryId, amount, recurring, recurringInterval } =
+    await req.json();
 
   if (!user) {
     return new NextResponse("User is required", { status: 401 });
@@ -30,6 +31,8 @@ export async function POST(req: Request) {
       date,
       categoryId,
       amount,
+      recurring,
+      recurringInterval: recurring ? recurringInterval : null,
     },
   });
 
