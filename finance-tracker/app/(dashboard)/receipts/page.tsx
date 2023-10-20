@@ -6,6 +6,7 @@ import { Receipts } from "./_components/receipts";
 
 import { PageHeading } from "@/components/page-heading";
 import { Spinner } from "@/components/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ReceiptsPageProps {
   searchParams: { [key: string]: string | undefined };
@@ -19,7 +20,7 @@ const ReceiptsPage = async ({ searchParams }: ReceiptsPageProps) => {
       </PageHeading>
 
       <div className="mt-8 flex flex-col gap-8">
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<Skeleton className="h-[38px] w-[135px]" />}>
           <Filters searchParams={searchParams} />
         </Suspense>
 
