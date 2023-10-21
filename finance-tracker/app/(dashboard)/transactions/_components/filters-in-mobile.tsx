@@ -3,11 +3,12 @@
 import { ValidateSearchParamsType } from "./utils";
 import { useFilterTransactionsStore } from "@/hooks/use-filter-transactions";
 
-import { Button } from "@/components/ui/button";
 import { FilterByType } from "./filter-by-type";
 import { FilterByCategory } from "./filter-by-category";
 import { FilterByDate } from "./filter-by-date";
 import { FilterReset } from "./filter-reset";
+
+import { Button } from "@/components/ui/button";
 
 interface FiltersInMobileProps {
   filters: ValidateSearchParamsType;

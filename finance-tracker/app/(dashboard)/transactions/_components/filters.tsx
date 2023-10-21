@@ -1,6 +1,7 @@
 import { ValidateSearchParamsType } from "./utils";
 import { FiltersInMobileAction } from "./filters-in-mobile-action";
 import { FiltersInDesktop } from "./filters-in-desktop";
+
 import { FilterTransactionsSheet } from "@/components/modals/filter-transactions-sheet";
 
 interface FiltersProps {
