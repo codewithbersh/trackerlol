@@ -2,11 +2,15 @@
 
 import { cn } from "@/lib/utils";
 import { Route } from "@/types/types";
-import { Layers, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { Raleway } from "next/font/google";
 
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/logo";
+
+const logo = Raleway({ subsets: ["latin"] });
 
 interface SidebarProps {
   className?: string;
@@ -17,23 +21,28 @@ export const Sidebar = ({ className, routes }: SidebarProps) => {
   return (
     <div
       className={cn(
-        "fixed hidden min-h-screen w-[272px] flex-col gap-12 border-r  border-border py-8 lg:flex",
+        "fixed hidden min-h-screen w-[272px] flex-col gap-8 border-r  border-border py-8 lg:flex",
         className,
       )}
     >
-      <div className="flex w-full items-center gap-4 pl-8 pr-4 text-primary blur-sm">
-        <Layers className="h-6 w-6" strokeWidth={2.5} />
-        <h1 className="text-2xl font-bold leading-none">Savvve</h1>
-      </div>
+      <Link
+        className="flex w-fit items-center gap-1 px-4 text-primary hover:opacity-75"
+        href="/"
+      >
+        <Logo className="h-6 w-6" />
+        <h1 className={cn("text-base font-bold leading-none", logo.className)}>
+          Tracker.<span className="text-brand italic">lol</span>
+        </h1>
+      </Link>
       <div className="flex w-full flex-1 flex-col gap-4">
         {routes.map(({ href, icon: Icon, label, active }) => (
           <Link
             href={href}
             key={href}
             className={cn(
-              "transition-color group flex items-center gap-4 px-4 py-2 text-sm font-medium text-muted-foreground duration-300 ease-in-out hover:bg-primary-foreground hover:text-primary",
+              "transition-color group flex items-center gap-4 px-4 py-2 text-sm font-medium text-muted-foreground duration-300 ease-in-out hover:bg-primary/5 hover:text-primary hover:dark:bg-primary-foreground",
               active &&
-                "border-r-brand border-r-2 bg-primary-foreground text-primary",
+                "border-r-brand border-r-2 bg-primary/5 text-primary dark:bg-primary-foreground",
             )}
           >
             <Icon className={cn("h-4 w-4", active && "text-brand  ")} />

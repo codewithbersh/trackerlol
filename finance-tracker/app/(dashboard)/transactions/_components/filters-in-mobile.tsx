@@ -31,7 +31,7 @@ export const FiltersInMobile = ({ filters }: FiltersInMobileProps) => {
             to: filters.filters.to,
           }}
         />
-        {filters.hasValidFilter && <FilterReset href="/href" />}
+        {filters.hasValidFilter && <FilterReset href="/transactions" />}
       </div>
       <Button className="w-full" onClick={onClose}>
         Close
