@@ -63,7 +63,10 @@ export function FilterByDate({
           <Button
             id="date"
             variant={"outline"}
-            className={cn("gap-2  text-left font-normal")}
+            className={cn(
+              "gap-2  text-left font-normal",
+              from && "border-brand text-brand hover:text-brand",
+            )}
           >
             <CalendarIcon className="h-4 w-4 opacity-50" />
             {from ? (

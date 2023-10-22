@@ -62,7 +62,10 @@ export const FilterByCategory = ({
         <Button
           variant="outline"
           role="combobox"
-          className="flex max-h-10 w-full justify-start gap-2"
+          className={cn(
+            "flex max-h-10 w-full justify-start gap-2",
+            category && "border-brand text-brand hover:text-brand",
+          )}
           onClick={() => {
             setOpen(true);
           }}
