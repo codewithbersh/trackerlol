@@ -17,11 +17,11 @@ export const Sidebar = ({ className, routes }: SidebarProps) => {
   return (
     <div
       className={cn(
-        "fixed hidden min-h-screen w-[272px] flex-col gap-12 border-r  border-border px-4 py-8 lg:flex",
+        "fixed hidden min-h-screen w-[272px] flex-col gap-12 border-r  border-border py-8 lg:flex",
         className,
       )}
     >
-      <div className="flex w-full items-center gap-4 px-4 text-primary blur-sm">
+      <div className="flex w-full items-center gap-4 pl-8 pr-4 text-primary blur-sm">
         <Layers className="h-6 w-6" strokeWidth={2.5} />
         <h1 className="text-2xl font-bold leading-none">Savvve</h1>
       </div>
@@ -31,12 +31,12 @@ export const Sidebar = ({ className, routes }: SidebarProps) => {
             href={href}
             key={href}
             className={cn(
-              "flex w-full items-center gap-4 rounded-md p-4 text-sm font-medium leading-none text-muted-foreground transition hover:bg-accent hover:text-primary",
+              "transition-color group flex items-center gap-4 px-4 py-2 text-sm font-medium text-muted-foreground duration-300 ease-in-out hover:bg-primary-foreground hover:text-primary",
               active &&
-                "bg-foreground text-primary-foreground hover:bg-foreground/90 hover:text-primary-foreground/90",
+                "border-r-brand border-r-2 bg-primary-foreground text-primary",
             )}
           >
-            <Icon className="h-4 w-4" />
+            <Icon className={cn("h-4 w-4", active && "text-brand  ")} />
             <span>{label}</span>
           </Link>
         ))}
@@ -44,14 +44,13 @@ export const Sidebar = ({ className, routes }: SidebarProps) => {
         <Button
           variant="link"
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="mt-auto w-fit gap-4 px-4"
+          className="mt-auto w-fit gap-4 px-4 text-muted-foreground hover:text-primary"
+          size="sm"
         >
           <LogOut className="h-4 w-4" />
           <span>Log-out</span>
         </Button>
       </div>
-
-      {/* <ModeToggle /> */}
     </div>
   );
 };
