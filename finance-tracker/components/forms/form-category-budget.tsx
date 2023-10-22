@@ -267,7 +267,7 @@ export const FormCategoryBudget = () => {
             Cancel
           </Button>
           <Button disabled={isLoading} className="gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" />
+            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
             {buttonText}
           </Button>
         </div>
