@@ -23,7 +23,7 @@ export const TransactionsGroup = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between border-b p-4 text-sm font-bold uppercase">
+      <div className="text-brand flex justify-between border-b p-4 text-sm font-bold uppercase">
         <span>{date}</span>
         <span>{formattedSum}</span>
       </div>
