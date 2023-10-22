@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { PageHeading } from "@/components/page-heading";
+import { MainWrapper } from "@/components/main-wrapper";
 
 import { FilterButton } from "./_components/filter-button";
 import { Summary } from "./_components/summary";
@@ -22,34 +23,36 @@ const AnalyticsPage = async ({ searchParams }: AnalyticsPageProps) => {
         <FilterButton range={range} />
       </PageHeading>
 
-      <div className="mt-8 grid w-full grid-cols-12 gap-4">
-        <Suspense
-          fallback={
-            <AnalyticsLoading
-              className="sm:col-span-6 md:col-span-3"
-              numberOfSpinners={3}
-            />
-          }
-        >
-          <Summary range={range} />
-        </Suspense>
+      <MainWrapper>
+        <div className="grid w-full grid-cols-12 gap-4">
+          <Suspense
+            fallback={
+              <AnalyticsLoading
+                className="sm:col-span-6 md:col-span-3"
+                numberOfSpinners={3}
+              />
+            }
+          >
+            <Summary range={range} />
+          </Suspense>
 
-        <Suspense
-          fallback={
-            <AnalyticsLoading className="sm:col-span-6 md:col-span-3" />
-          }
-        >
-          <Overall />
-        </Suspense>
+          <Suspense
+            fallback={
+              <AnalyticsLoading className="sm:col-span-6 md:col-span-3" />
+            }
+          >
+            <Overall />
+          </Suspense>
 
-        <Suspense fallback={<AnalyticsLoading className="md:col-span-6" />}>
-          <Categories range={range} />
-        </Suspense>
+          <Suspense fallback={<AnalyticsLoading className="md:col-span-6" />}>
+            <Categories range={range} />
+          </Suspense>
 
-        <Suspense fallback={<AnalyticsLoading className="md:col-span-6" />}>
-          <Budgets />
-        </Suspense>
-      </div>
+          <Suspense fallback={<AnalyticsLoading className="md:col-span-6" />}>
+            <Budgets />
+          </Suspense>
+        </div>
+      </MainWrapper>
     </div>
   );
 };

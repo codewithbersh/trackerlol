@@ -18,6 +18,7 @@ export const TransactionsAction = () => {
           setTransaction(null);
           onOpen();
         }}
+        variant="brand"
       >
         <Plus className="h-4 w-4" />
         <div>

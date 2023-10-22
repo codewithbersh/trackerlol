@@ -10,6 +10,7 @@ export const ReceiptsAction = () => {
   return (
     <Button
       className="gap-2"
+      variant="brand"
       onClick={() => {
         setReceipt(null);
         onOpen();

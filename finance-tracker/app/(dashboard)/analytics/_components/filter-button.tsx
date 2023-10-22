@@ -45,7 +45,7 @@ export const FilterButton = ({ range }: FilterButtonProps) => {
       >
         <SelectTrigger
           className={cn(
-            buttonVariants({ variant: "default", size: "default" }),
+            buttonVariants({ variant: "brand", size: "default" }),
             "h-9 w-fit gap-2",
           )}
         >
