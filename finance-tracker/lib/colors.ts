@@ -1,46 +1,45 @@
 export const expenseColors = [
   {
-    name: "rose-200",
-    value: "#fecdd3",
+    name: "rose-500",
+    value: "#f43f5e",
   },
   {
-    name: "orange-200",
-    value: "#fed7aa",
-  },
-
-  {
-    name: "yellow-200",
-    value: "#fef08a",
+    name: "pink-500",
+    value: "#ec4899",
   },
 
   {
-    name: "blue-200",
-    value: "#bfdbfe",
+    name: "fuschia-500",
+    value: "#d946ef",
   },
 
   {
-    name: "violet-200",
-    value: "#c7d2fe",
+    name: "purple-500",
+    value: "#a855f7",
   },
 
   {
-    name: "pink-200",
-    value: "#fbcfe8",
+    name: "red-700",
+    value: "#b91c1c",
   },
 
   {
-    name: "teal-200",
-    value: "#99f6e4",
+    name: "indigo-500",
+    value: "#6366f1",
+  },
+  {
+    name: "cyan-500",
+    value: "#06b6d4",
   },
 
   {
-    name: "fuchsia-200",
-    value: "#f5d0fe",
+    name: "teal-500",
+    value: "#14b8a6",
   },
 
   {
-    name: "stone-200",
-    value: "#e7e5e4",
+    name: "yellow-500",
+    value: "#eab308",
   },
 ];
 
