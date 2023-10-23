@@ -127,6 +127,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
                   onChange={(value) => {
                     field.onChange(value);
                     form.resetField("categoryId");
+                    form.setValue("categoryId", "");
                   }}
                 />
               </FormControl>

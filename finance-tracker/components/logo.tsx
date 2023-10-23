@@ -2,7 +2,7 @@ interface LogoProps extends React.HTMLAttributes<SVGElement> {
   color?: string;
 }
 
-export const Logo = ({ color = "#F97316", ...props }: LogoProps) => {
+export const Logo = ({ color = "#3B82F6", ...props }: LogoProps) => {
   return (
     <svg
       width="24"
