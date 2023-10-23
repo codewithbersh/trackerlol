@@ -45,46 +45,46 @@ export const expenseColors = [
 
 export const incomeColors = [
   {
-    name: "lime-200",
-    value: "#d9f99d",
+    name: "lime-500",
+    value: "#84cc16",
   },
   {
-    name: "lime-400",
-    value: "#a3e635",
-  },
-
-  {
-    name: "lime-600",
-    value: "#65a30d",
+    name: "lime-700",
+    value: "#4d7c0f",
   },
 
   {
-    name: "green-200",
-    value: "#bbf7d0",
+    name: "lime-900",
+    value: "#365314",
   },
 
   {
-    name: "green-400",
-    value: "#4ade80",
+    name: "green-500",
+    value: "#22c55e",
   },
 
   {
-    name: "green-600",
-    value: "#16a34a",
+    name: "green-700",
+    value: "#15803d",
   },
 
   {
-    name: "teal-200",
-    value: "#99f6e4",
+    name: "green-900",
+    value: "#14532d",
   },
 
   {
-    name: "teal-400",
-    value: "#2dd4bf",
+    name: "emerald-400",
+    value: "#34d399",
   },
 
   {
-    name: "teal-600",
-    value: "#0d9488",
+    name: "emerald-600",
+    value: "#059669",
+  },
+
+  {
+    name: "emerald-800",
+    value: "#065f46",
   },
 ];
