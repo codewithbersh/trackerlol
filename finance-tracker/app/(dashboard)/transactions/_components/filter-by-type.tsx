@@ -1,7 +1,7 @@
 "use client";
 
 import { cn, toTitleCase } from "@/lib/utils";
-import { Check, ChevronDown, LayoutGrid } from "lucide-react";
+import { Check, ChevronDown, Shapes } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import queryString from "query-string";
 import { useId, useState } from "react";
@@ -70,7 +70,7 @@ export const FilterByType = ({ type: typeParams }: FilterByTypeProps) => {
             setOpen(true);
           }}
         >
-          <LayoutGrid className="h-4 w-4 opacity-50" />
+          <Shapes className="h-4 w-4 opacity-50" />
           {typeParams ? <div>{toTitleCase(typeParams)}</div> : "Type"}
           <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>

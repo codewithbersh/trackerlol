@@ -5,6 +5,7 @@ import {
   Aperture,
   ArrowRightLeft,
   KanbanSquare,
+  LayoutGrid,
   Settings,
   Target,
 } from "lucide-react";
@@ -40,6 +41,13 @@ export const Navigation = () => {
       href: "/receipts",
       active: pathname.toLowerCase().startsWith("/receipts"),
     },
+    {
+      icon: LayoutGrid,
+      label: "Categories",
+      href: "/categories",
+      active: pathname.toLowerCase().startsWith("/categories"),
+    },
+
     {
       icon: Settings,
       label: "Settings",

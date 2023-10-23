@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const spinnerVariants = cva("animate-spin text-muted-foreground", {
   variants: {
@@ -24,7 +24,7 @@ export const Spinner = ({ variant, className, ...props }: SpinnerProps) => {
       className={cn("grid h-full w-full place-items-center", className)}
       {...props}
     >
-      <Loader className={cn(spinnerVariants({ variant }))} />
+      <Loader2 className={cn(spinnerVariants({ variant }))} />
     </div>
   );
 };

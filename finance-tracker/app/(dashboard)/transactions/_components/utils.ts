@@ -1,6 +1,6 @@
 import { CategoriesByType } from "@/types/types";
 import { Category, Duration } from "@prisma/client";
-import { format, getDate, getDay, isValid, parse, parseISO } from "date-fns";
+import { format, getDate, isValid, parse, parseISO } from "date-fns";
 
 export type FiltersType = {
   from: Date | undefined;
@@ -79,7 +79,7 @@ function validateDateParams(params: string | undefined) {
   return undefined;
 }
 
-function validateTypeParams(params: string | undefined) {
+export function validateTypeParams(params: string | undefined) {
   if (!params) {
     return undefined;
   }
