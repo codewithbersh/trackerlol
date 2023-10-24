@@ -13,7 +13,7 @@ export const Benefits = () => {
               <Icon className="h-4 w-4 text-primary/75" />
             </div>
           </div>
-          <p className="max-w-prose text-center text-muted-foreground">
+          <p className="max-w-[320px] text-center text-muted-foreground">
             {description}
           </p>
         </div>
