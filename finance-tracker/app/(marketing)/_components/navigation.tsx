@@ -20,7 +20,7 @@ export const Navigation = ({ isAuthenticated }: NavigationProps) => {
   return (
     <div
       className={cn(
-        "fixed top-4 flex w-[calc(100%-32px)] max-w-[960px] items-center justify-between gap-4 rounded-md py-2 transition-all duration-300 ease-in-out",
+        "fixed top-4 z-[9999] flex w-[calc(100%-32px)] max-w-[960px] items-center justify-between gap-4 rounded-md py-2 transition-all duration-300 ease-in-out",
         scrolled && "bg-accent/50 px-4 backdrop-blur-lg",
       )}
     >

@@ -1,10 +1,15 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 
-export const Hero = () => {
+interface HeroProps {
+  isAuthenticated: boolean;
+}
+
+export const Hero = ({ isAuthenticated }: HeroProps) => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 pt-8 sm:pt-0">
       <div className="space-y-1">
@@ -30,9 +35,18 @@ export const Hero = () => {
 
       <div className="mt-8 flex w-fit gap-4">
         <Button variant="ghost">Learn More</Button>
-        <Button variant="brand">
-          Join — <span className="italic">it&apos;s free</span>{" "}
-          <ArrowRight className="ml-2 h-4 w-4" />
+        <Button variant="brand" asChild>
+          {isAuthenticated ? (
+            <Link href="/transactions">
+              View Dashboard
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          ) : (
+            <Link href="/login">
+              Join — <span className="italic">it&apos;s free</span>{" "}
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          )}
         </Button>
       </div>
 
