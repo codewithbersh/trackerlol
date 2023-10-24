@@ -2,63 +2,37 @@ interface LogoProps extends React.HTMLAttributes<SVGElement> {
   color?: string;
 }
 
-export const Logo = ({ color = "#3B82F6", ...props }: LogoProps) => {
+export const Logo = ({ color = "#4f46e5", ...props }: LogoProps) => {
   return (
     <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clipPath="url(#clip0_646_2480)">
-        <path
-          d="M9.64258 4.92969H13.4138V8.70092"
-          stroke={color}
-          strokeWidth="1.33333"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M7.28476 15.7711L6.81335 15.2997C6.31326 14.7996 6.0323 14.1213 6.0323 13.4141C6.0323 12.7068 6.31326 12.0285 6.81335 11.5284L13.413 4.92878"
-          stroke={color}
-          strokeWidth="1.33333"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M14.3561 19.0712H10.5848V15.2999"
-          stroke={color}
-          strokeWidth="1.33333"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16.7138 8.22956L17.1852 8.70097C17.6853 9.20106 17.9662 9.87934 17.9662 10.5866C17.9662 11.2938 17.6853 11.9721 17.1852 12.4722L10.5855 19.0719"
-          stroke={color}
-          strokeWidth="1.33333"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M14.829 10.1141L13.8862 9.17132C13.3655 8.65063 12.5212 8.65063 12.0006 9.17132L9.17212 11.9998C8.65142 12.5205 8.65142 13.3647 9.17212 13.8854L10.1149 14.8282C10.6356 15.3489 11.4799 15.3489 12.0006 14.8282L14.829 11.9998C15.3497 11.4791 15.3497 10.6348 14.829 10.1141Z"
-          stroke={color}
-          strokeWidth="1.33333"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0_646_2480">
-          <rect
-            width="16"
-            height="16"
-            fill={color}
-            transform="translate(0.685547 12) rotate(-45)"
-          />
-        </clipPath>
-      </defs>
+      <path
+        d="M6.33333 14H5.66667C4.95942 14 4.28115 13.719 3.78105 13.219C3.28095 12.7189 3 12.0406 3 11.3333L3 2"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="square"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.66602 2H10.3327C11.0399 2 11.7182 2.28095 12.2183 2.78105C12.7184 3.28115 12.9993 3.95942 12.9993 4.66667V14"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="square"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.66667 4.66602H7.33333C6.59695 4.66602 6 5.26297 6 5.99935V9.99935C6 10.7357 6.59695 11.3327 7.33333 11.3327H8.66667C9.40305 11.3327 10 10.7357 10 9.99935V5.99935C10 5.26297 9.40305 4.66602 8.66667 4.66602Z"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 };

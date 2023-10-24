@@ -29,7 +29,7 @@ export const Sidebar = ({ className, routes }: SidebarProps) => {
         className="flex w-fit items-center gap-1 px-4 text-primary hover:opacity-75"
         href="/"
       >
-        <Logo className="h-6 w-6" />
+        <Logo className="h-5 w-5" />
         <h1 className={cn("text-base font-bold leading-none", logo.className)}>
           Tracker.<span className="text-brand italic">lol</span>
         </h1>
