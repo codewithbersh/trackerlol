@@ -25,10 +25,7 @@ export const Sidebar = ({ className, routes }: SidebarProps) => {
         className,
       )}
     >
-      <Link
-        className="flex items-center gap-1 px-4 blur-sm hover:opacity-75"
-        href="/"
-      >
+      <Link className="flex items-center gap-1 px-4 hover:opacity-75" href="/">
         <Logo className="h-4 w-4 sm:h-5 sm:w-5" />
         <h1
           className={cn("font-extrabold text-brand sm:text-lg", font.className)}

@@ -19,8 +19,8 @@ export const FinalCallToAction = ({
         Supercharge your finances <br /> with insights.
       </h1>
       <p className="text-center text-muted-foreground">
-        Lorem ipsum dolor sit amet consectur lorem ipsum dolor sit <br /> amet
-        consectur lorem ipsum.
+        Take control of your finances. Simplify money management <br /> and make
+        smarter financial choices.
       </p>
       <Button variant="brand" asChild>
         {isAuthenticated ? (

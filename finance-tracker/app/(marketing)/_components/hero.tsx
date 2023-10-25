@@ -89,7 +89,7 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
           <div className="p-4 md:p-8">
             <FeaturesHeading
               title="Create Categories"
-              description="Lorem ipsum dolor sit aemt consectur lorem ipsum dolor silasd ndsamet consect."
+              description="Organize your expenses with ease by creating custom categories that match your unique financial goals."
             />
           </div>
 
@@ -136,7 +136,7 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
         >
           <FeaturesHeading
             title="Track Anytime, Anywhere"
-            description="Lorem ipsum dolor sit aemt consectur lorem ipsum dolor silasd ndsamet consect."
+            description="Access your financial data from anywhere, at any time, to stay on top of your money management, whether you're at home or on the go."
           />
 
           <div className=" ">
@@ -163,7 +163,7 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
         >
           <FeaturesHeading
             title="Filter Transactions"
-            description="Lorem ipsum dolor sit aemt consectur lorem ipsum dolor silasd ndsamet consect."
+            description="Sift through your transactions effortlessly and gain insights into your spending patterns with our intuitive filtering system."
           />
 
           <div className="flex h-full min-w-[600px] translate-x-[8%] translate-y-6 rounded-md border bg-background p-4">
