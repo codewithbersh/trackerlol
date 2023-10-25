@@ -10,7 +10,7 @@ import { Raleway } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
 
-const logo = Raleway({ subsets: ["latin"] });
+const font = Raleway({ subsets: ["latin"] });
 
 interface SidebarProps {
   className?: string;
@@ -26,12 +26,14 @@ export const Sidebar = ({ className, routes }: SidebarProps) => {
       )}
     >
       <Link
-        className="flex w-fit items-center gap-1 px-4 text-primary hover:opacity-75"
+        className="flex items-center gap-1 px-4 blur-sm hover:opacity-75"
         href="/"
       >
-        <Logo className="h-5 w-5" />
-        <h1 className={cn("text-base font-bold leading-none", logo.className)}>
-          Tracker.<span className="text-brand italic">lol</span>
+        <Logo className="h-4 w-4 sm:h-5 sm:w-5" />
+        <h1
+          className={cn("font-extrabold text-brand sm:text-lg", font.className)}
+        >
+          TRACKERLOL
         </h1>
       </Link>
       <div className="flex w-full flex-1 flex-col gap-4">
@@ -42,7 +44,7 @@ export const Sidebar = ({ className, routes }: SidebarProps) => {
             className={cn(
               "transition-color group flex items-center gap-4 px-4 py-2 text-sm font-medium text-muted-foreground duration-300 ease-in-out hover:bg-primary/5 hover:text-primary hover:dark:bg-primary-foreground",
               active &&
-                "border-r-brand border-r-2 bg-primary/5 text-primary dark:bg-primary-foreground",
+                "border-r-2 border-r-brand bg-primary/5 text-primary dark:bg-primary-foreground",
             )}
           >
             <Icon className={cn("h-4 w-4", active && "text-brand  ")} />

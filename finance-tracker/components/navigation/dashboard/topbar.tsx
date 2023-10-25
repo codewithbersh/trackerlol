@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 
-const logo = Raleway({ subsets: ["latin"] });
+const font = Raleway({ subsets: ["latin"] });
 
 interface TopbarProps {
   routes: Route[];
@@ -32,17 +32,16 @@ export const Topbar = ({ routes }: TopbarProps) => {
   return (
     <div
       className={cn(
-        "fixed  z-50 ml-4 flex w-full max-w-[calc(100%-32px)] items-center justify-between bg-background/50 px-0 py-4 backdrop-blur-md transition-all duration-500 ease-in-out lg:hidden",
-        scrolled && " translate-y-4 rounded-md bg-accent/25 px-4",
+        "fixed  z-50 ml-4 flex w-full max-w-[calc(100%-32px)] items-center justify-between rounded-md bg-background/50 px-0 py-4 backdrop-blur-md transition-all duration-300 ease-in-out lg:hidden",
+        scrolled && " translate-y-4  bg-accent/25 px-4",
       )}
     >
-      <Link
-        className="flex w-fit items-center gap-1 text-primary hover:opacity-75"
-        href="/"
-      >
-        <Logo className="h-6 w-6" />
-        <h1 className={cn("text-base font-bold leading-none", logo.className)}>
-          Tracker.<span className="text-brand italic">lol</span>
+      <Link className="flex items-center gap-1 hover:opacity-75" href="/">
+        <Logo className="h-4 w-4 sm:h-5 sm:w-5" />
+        <h1
+          className={cn("font-extrabold text-brand sm:text-lg", font.className)}
+        >
+          TRACKERLOL
         </h1>
       </Link>
 

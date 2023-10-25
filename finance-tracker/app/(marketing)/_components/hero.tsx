@@ -31,12 +31,13 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
               </div>
             </div>
           </div>
-          <div className="absolute left-1/2 top-1/2 z-0 h-[150px] w-[150px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-brand/25 blur-2xl backdrop-blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 z-0 hidden h-[150px] w-[150px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-gradient-to-t from-brand/25 to-pink-500/25 blur-2xl dark:block" />
+          <div className="absolute left-1/2 top-1/2 z-0 block h-[150px] w-[150px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-gradient-to-t from-background via-background to-pink-500/75 blur-2xl dark:hidden" />
         </div>
 
         <div className="space-y-4">
           <h1
-            className=" animate-fade-up text-center text-4xl font-medium leading-[1.2] tracking-wide text-primary/95 opacity-0 md:text-6xl"
+            className=" animate-fade-up text-center text-4xl font-semibold leading-[1.2] text-primary/95 opacity-0 md:text-6xl"
             style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           >
             The Personal Finance <br className="hidden min-[374px]:block" /> for
