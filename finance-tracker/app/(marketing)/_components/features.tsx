@@ -8,7 +8,10 @@ import { FeaturesHeading } from "./features-heading";
 
 export const Features = () => {
   return (
-    <div className="flex flex-col gap-8 ">
+    <div
+      className="animate-fade-up flex flex-col gap-8 opacity-0 "
+      style={{ animationDelay: "1s", animationFillMode: "forwards" }}
+    >
       <div className="mx-auto flex w-fit flex-col items-center gap-2">
         <button className="rounded-full border bg-accent/50 px-2 py-[2px] text-sm font-medium text-muted-foreground">
           User Friendly

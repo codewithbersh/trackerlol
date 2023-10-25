@@ -2,7 +2,10 @@ import { BENEFITS } from "./config";
 
 export const Benefits = () => {
   return (
-    <div className="grid  grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+    <div
+      className="animate-fade-up  grid grid-cols-1 gap-4 opacity-0 sm:grid-cols-2 md:grid-cols-3"
+      style={{ animationDelay: "1s", animationFillMode: "forwards" }}
+    >
       {BENEFITS.map(({ icon: Icon, description }, index) => (
         <div
           key={index}
