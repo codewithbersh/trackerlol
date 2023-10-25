@@ -23,8 +23,11 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 pt-8 sm:pt-0">
       <div className="space-y-1">
-        <div className="relative mx-auto w-fit">
-          <div className="animate-fade-up relative z-50 mx-auto w-fit rounded-full border-t bg-gradient-to-t from-background to-primary-foreground/50 p-2">
+        <div
+          className="animate-fade-up relative mx-auto w-fit opacity-0"
+          style={{ animationDelay: "0.05s", animationFillMode: "forwards" }}
+        >
+          <div className="relative z-50 mx-auto w-fit rounded-full border-t bg-gradient-to-t from-background to-primary-foreground/50 p-2">
             <div className="rounded-full border-t bg-gradient-to-t from-background to-primary-foreground/50 p-2">
               <div className="rounded-full border-t bg-gradient-to-t from-background to-primary-foreground/50 p-4">
                 <Logo className="h-8 w-8  md:h-12 md:w-12" />
