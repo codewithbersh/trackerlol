@@ -185,7 +185,7 @@ enum TransactionType {
 model Waitlist {
   id String @id @default(uuid())
 
-  email String
+  email String @unique
 
   submittedAt DateTime @default(now())
 }

@@ -13,6 +13,16 @@ export async function POST(req: Request) {
   }
 
   try {
+    const inWaitlist = await prismadb.waitlist.findFirst({
+      where: {
+        email: email.toLowerCase(),
+      },
+    });
+
+    if (inWaitlist) {
+      return NextResponse.json(inWaitlist);
+    }
+
     const waitlist = await prismadb.waitlist.create({
       data: {
         email,

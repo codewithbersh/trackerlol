@@ -20,7 +20,7 @@ export const WaitlistTemplate = ({ email = "Zeno" }: WaitlistTemplateProps) => (
   <Html>
     <Head />
     <Preview>
-      Thanks for joining our waitlist; we'll keep you posted on the launch.
+      Thanks for joining our waitlist; we&apos;ll keep you posted on the launch.
     </Preview>
     <Body style={main}>
       <Container style={container}>
