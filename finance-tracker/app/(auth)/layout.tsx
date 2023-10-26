@@ -4,9 +4,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
-  // if (true) {
-  //   return notFound();
-  // }
+  if (true) {
+    return notFound();
+  }
   return (
     <div className="relative grid h-screen place-items-center">
       <Button
