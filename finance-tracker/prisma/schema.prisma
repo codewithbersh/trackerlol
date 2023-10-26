@@ -181,3 +181,11 @@ enum TransactionType {
   EXPENSE
   INCOME
 }
+
+model Waitlist {
+  id String @id @default(uuid())
+
+  email String
+
+  submittedAt DateTime @default(now())
+}

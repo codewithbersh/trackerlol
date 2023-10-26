@@ -22,7 +22,7 @@ export const FinalCallToAction = ({
         Take control of your finances. Simplify money management <br /> and make
         smarter financial choices.
       </p>
-      <Button variant="brand" asChild>
+      {/* <Button variant="brand" asChild>
         {isAuthenticated ? (
           <Link href="/transaction">
             View Dashboard <ArrowRight className="ml-2 h-4 w-4" />
@@ -32,6 +32,11 @@ export const FinalCallToAction = ({
             Get Started <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         )}
+      </Button> */}
+      <Button variant="brand" asChild>
+        <Link href="/">
+          Join Waitlist <ArrowRight className="ml-2 h-4 w-4" />
+        </Link>
       </Button>
     </div>
   );

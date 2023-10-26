@@ -32,27 +32,14 @@ export const Navigation = ({ isAuthenticated }: NavigationProps) => {
           TRACKERLOL
         </h1>
       </Link>
-      <div className="ml-auto flex items-center gap-4">
-        <Button variant="ghost" asChild>
-          {isAuthenticated ? (
-            <div
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="cursor-pointer"
-            >
-              Logout
-            </div>
-          ) : (
-            <Link href="/login">Login</Link>
-          )}
-        </Button>
-        <Button variant="brand">
-          {isAuthenticated ? (
-            <Link href="/transactions">Dashboard</Link>
-          ) : (
-            <Link href="/login">Get Started</Link>
-          )}
-        </Button>
-      </div>
+
+      <Button variant="secondary" className="ml-auto">
+        {isAuthenticated ? (
+          <Link href="/transactions">Dashboard</Link>
+        ) : (
+          <Link href="/login">Get Started</Link>
+        )}
+      </Button>
     </div>
   );
 };

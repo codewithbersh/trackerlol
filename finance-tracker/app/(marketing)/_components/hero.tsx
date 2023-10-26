@@ -14,6 +14,7 @@ import { COLORS, EMOJIS } from "./config";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { FeaturesHeading } from "./features-heading";
+import { JoinWaitlist } from "./join-waitlist";
 
 interface HeroProps {
   isAuthenticated: boolean;
@@ -22,7 +23,7 @@ interface HeroProps {
 export const Hero = ({ isAuthenticated }: HeroProps) => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 pt-8 sm:pt-0">
-      <div className="space-y-1">
+      <div className="space-y-4">
         <div
           className="animate-fade-up relative mx-auto w-fit opacity-0"
           style={{ animationDelay: "0.05s", animationFillMode: "forwards" }}
@@ -40,14 +41,18 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
 
         <div className="space-y-4">
           <h1
-            className=" animate-fade-up text-center text-4xl font-semibold leading-[1.2] text-primary/95 opacity-0 md:text-6xl"
+            className=" animate-fade-up text-center text-3xl font-medium leading-[1.2] text-primary/95 opacity-0 md:text-5xl"
             style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           >
-            The Personal Finance <br className="hidden min-[374px]:block" /> for
-            the Web
+            {/* The Personal Finance <br className="hidden min-[374px]:block" /> for
+            the Web */}
+            Join the waitlist for the <br />{" "}
+            <span className="bg-gradient-to-r from-pink-400 via-indigo-400 to-indigo-600 bg-clip-text text-transparent">
+              personal finance of the web
+            </span>
           </h1>
           <p
-            className="animate-fade-up mx-auto max-w-[467px] bg-gradient-to-r from-pink-400 via-indigo-400 to-indigo-600 bg-clip-text text-center font-medium text-transparent opacity-0 md:max-w-[550px] md:text-lg"
+            className="animate-fade-up mx-auto max-w-[467px] text-center  font-medium text-indigo-300/75 opacity-0 md:max-w-[550px] md:text-lg"
             style={{ animationDelay: "0.25s", animationFillMode: "forwards" }}
           >
             A simplified finance tracker built for everyone. Navigate your
@@ -56,35 +61,32 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
         </div>
       </div>
 
-      <div className="mt-8 flex w-fit gap-4">
-        <Button
-          className="animate-fade-up opacity-0"
-          variant="ghost"
-          style={{ animationDelay: "0.35s", animationFillMode: "forwards" }}
-        >
-          Learn More
-        </Button>
-        <Button
-          className="animate-fade-up opacity-0"
-          variant="brand"
-          asChild
-          style={{ animationDelay: "0.45s", animationFillMode: "forwards" }}
-        >
-          {isAuthenticated ? (
-            <Link href="/transactions">
-              View Dashboard
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          ) : (
-            <Link href="/login">
-              Join — <span className="italic">it&apos;s free</span>{" "}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          )}
-        </Button>
+      {/* <Button
+        className="animate-fade-up mt-4 opacity-0"
+        variant="brand"
+        asChild
+        style={{ animationDelay: "0.45s", animationFillMode: "forwards" }}
+      >
+        {isAuthenticated ? (
+          <Link href="/transactions">
+            View Dashboard
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        ) : (
+          <Link href="/login">
+            Join — <span className="italic">it&apos;s free</span>{" "}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        )}
+      </Button> */}
+      <div
+        className="animate-fade-up mt-4 w-full max-w-[250px] opacity-0"
+        style={{ animationDelay: "0.45s", animationFillMode: "forwards" }}
+      >
+        <JoinWaitlist />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div className="mt-16 grid grid-cols-1 gap-8 md:mt-24 md:grid-cols-2">
         <div
           style={{ animationDelay: "0.55s", animationFillMode: "forwards" }}
           className=" animate-fade-up group col-span-1 rounded-sm bg-accent/25 pb-4 opacity-0 dark:border-t md:pb-8"
@@ -132,7 +134,6 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
             </div>
           </div>
         </div>
-
         <div
           style={{ animationDelay: "0.65s", animationFillMode: "forwards" }}
           className="animate-fade-up col-span-1 row-span-2 aspect-square h-full max-h-[574px] w-full overflow-hidden rounded-sm bg-accent/25 p-4 opacity-0  dark:border-t md:aspect-auto md:p-8"
@@ -159,7 +160,6 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
             />
           </div>
         </div>
-
         <div
           style={{ animationDelay: "0.75s", animationFillMode: "forwards" }}
           className="animate-fade-up col-span-1 overflow-hidden rounded-sm bg-accent/25 p-4 opacity-0 dark:border-t md:p-8"
