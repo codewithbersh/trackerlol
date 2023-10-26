@@ -15,6 +15,7 @@ import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { FeaturesHeading } from "./features-heading";
 import { JoinWaitlist } from "./join-waitlist";
+import Balancer from "react-wrap-balancer";
 
 interface HeroProps {
   isAuthenticated: boolean;
@@ -22,7 +23,7 @@ interface HeroProps {
 
 export const Hero = ({ isAuthenticated }: HeroProps) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 pt-8 sm:pt-0">
+    <div className="flex flex-col items-center justify-center gap-4">
       <div className="space-y-4">
         <div
           className="animate-fade-up relative mx-auto w-fit opacity-0"
@@ -41,15 +42,17 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
 
         <div className="space-y-4">
           <h1
-            className=" animate-fade-up text-center text-3xl font-medium leading-[1.2] text-primary/95 opacity-0 md:text-5xl"
+            className=" animate-fade-up  text-center text-3xl font-medium leading-[1.2] text-primary/95 opacity-0 sm:text-5xl"
             style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           >
             {/* The Personal Finance <br className="hidden min-[374px]:block" /> for
             the Web */}
-            Join the waitlist for the <br />{" "}
-            <span className="bg-gradient-to-r from-pink-400 via-indigo-400 to-indigo-600 bg-clip-text text-transparent">
-              personal finance of the web
-            </span>
+            <Balancer>
+              Join the waitlist for the{" "}
+              <span className="bg-gradient-to-r from-pink-400 via-indigo-400 to-indigo-600 bg-clip-text text-transparent">
+                personal finance of the web
+              </span>
+            </Balancer>
           </h1>
           <p
             className="animate-fade-up mx-auto max-w-[467px] text-center  font-medium text-indigo-300/75 opacity-0 md:max-w-[550px] md:text-lg"

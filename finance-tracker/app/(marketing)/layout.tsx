@@ -10,7 +10,7 @@ const MarketingLayout = async ({ children }: PropsWithChildren) => {
       {/* <div className="w-full py-4 lg:py-8">
         <Navigation isAuthenticated={!!user} />
       </div> */}
-      <div className="mt-32">{children}</div>
+      <div className="mt-16 md:mt-32">{children}</div>
     </div>
   );
 };
