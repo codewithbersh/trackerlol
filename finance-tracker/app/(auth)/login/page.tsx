@@ -2,7 +2,6 @@ import { getCurrentUser } from "@/actions/get-current-user";
 
 import { UserAuthForm } from "@/components/auth/user-auth-form";
 import { Logo } from "@/components/logo";
-import { Wallet2 } from "lucide-react";
 import { redirect } from "next/navigation";
 
 const LoginPage = async () => {

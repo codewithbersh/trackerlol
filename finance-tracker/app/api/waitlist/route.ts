@@ -1,5 +1,9 @@
+import { WaitlistTemplate } from "@/components/email/waitlist-template";
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   const { email } = await req.json();
@@ -8,11 +12,22 @@ export async function POST(req: Request) {
     return new NextResponse("Email is required", { status: 401 });
   }
 
-  const waitlist = await prismadb.waitlist.create({
-    data: {
-      email,
-    },
-  });
+  try {
+    const waitlist = await prismadb.waitlist.create({
+      data: {
+        email,
+      },
+    });
 
-  return NextResponse.json(waitlist);
+    await resend.emails.send({
+      from: "tracker@brucesalcedo.com",
+      to: email,
+      subject: "Welcome to Tracker - The Finance Tracker for the Web",
+      react: WaitlistTemplate({ email: email }) as React.ReactElement,
+    });
+
+    return NextResponse.json(waitlist);
+  } catch (error) {
+    return NextResponse.json({ error });
+  }
 }
