@@ -6,12 +6,38 @@ import "@/styles/globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import QueryProvider from "@/components/providers/query-provider";
+import { siteConfig } from "@/components/config/site";
 
 const font = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Finance Tracker",
-  description: "Finance Tracking Web Application",
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.title}`,
+  },
+  description: siteConfig.description,
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/favicon-light.ico",
+        href: "/favicon-light.ico",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/favicon-dark.ico",
+        href: "/favicon-dark.ico",
+      },
+    ],
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    siteName: siteConfig.title,
+  },
 };
 
 export default function RootLayout({
