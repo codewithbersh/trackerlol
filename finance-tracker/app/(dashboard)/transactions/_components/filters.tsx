@@ -25,7 +25,11 @@ export const Filters = async ({ searchParams }: FiltersProps) => {
         categories={categories}
       />
       <FiltersInMobileAction />
-      <FilterTransactionsSheet filters={filters} />
+      <FilterTransactionsSheet
+        filters={filters}
+        showReset={showReset}
+        categories={categories}
+      />
     </div>
   );
 };

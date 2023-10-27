@@ -6,9 +6,7 @@ import * as z from "zod";
 import toast from "react-hot-toast";
 import { TransactionWithAmountAsNumber } from "@/types/types";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
-import useCategoryData from "@/hooks/use-category-data";
 import { Loader2 } from "lucide-react";
-import useProfileData from "@/hooks/use-profile-data";
 import { trpc } from "@/app/_trpc/client";
 
 import { Button } from "@/components/ui/button";
@@ -43,8 +41,14 @@ interface TransactionFormProps {
 
 export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const { onClose } = useTransactionModal();
-  const { data } = useCategoryData();
-  const { data: profile } = useProfileData();
+  const { refetch: refetchTransactions } = trpc.getTransactions.useQuery({});
+  const { data: categories, isLoading: isLoadingCategories } =
+    trpc.getCategories.useQuery(undefined, {
+      staleTime: Infinity,
+    });
+  const { data: profile } = trpc.getProfile.useQuery(undefined, {
+    staleTime: Infinity,
+  });
   const { mutate: addTransaction, isLoading: isAdding } =
     trpc.addTransaction.useMutation();
   const { mutate: updateTransaction, isLoading: isUpdating } =
@@ -78,6 +82,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
         {
           onSuccess: ({ success }) => {
             if (success) {
+              refetchTransactions();
               onClose();
               toast.success("Transaction Updated ");
               utils.getTransactions.invalidate();
@@ -93,6 +98,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
         {
           onSuccess: ({ success }) => {
             if (success) {
+              refetchTransactions();
               onClose();
               toast.success("Transaction Added.");
               utils.getTransactions.invalidate();
@@ -111,9 +117,10 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
       {
         onSuccess: ({ success }) => {
           if (success) {
+            refetchTransactions();
+            onClose();
             toast.success("Transaction has been deleted.");
             utils.getTransactions.invalidate();
-            onClose();
           } else {
             toast.error("An error has occured.");
           }
@@ -190,13 +197,14 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
               <FieldCategory
                 categories={
                   form.watch("type") === "EXPENSE"
-                    ? data?.expense
-                    : data?.income
+                    ? categories?.expense
+                    : categories?.income
                 }
                 selectedType={form.watch("type")}
                 onChange={field.onChange}
                 value={field.value}
                 isLoading={isLoading}
+                isLoadingCategories={isLoadingCategories}
               />
             </FormItem>
           )}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn, toTitleCase } from "@/lib/utils";
-import { Check, ChevronDown, Plus, Settings2 } from "lucide-react";
+import { Check, ChevronDown, Loader2, Plus, Settings2 } from "lucide-react";
 import { Category } from "@prisma/client";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 
@@ -27,6 +27,7 @@ interface FieldCategoryProps {
   value: string | undefined;
   isLoading: boolean;
   categories: Category[] | undefined;
+  isLoadingCategories?: boolean;
 }
 
 export const FieldCategory = ({
@@ -35,6 +36,7 @@ export const FieldCategory = ({
   isLoading: isSubmitting,
   selectedType,
   categories,
+  isLoadingCategories,
 }: FieldCategoryProps) => {
   const [open, setOpen] = useState(false);
   const { onOpen, setCategory } = useCategoryModal();
@@ -71,68 +73,74 @@ export const FieldCategory = ({
           className="max-w-[462px]  p-0 sm:max-w-[223px]"
           align="start"
         >
-          <Command>
-            <CommandInput placeholder="Search category..." />
-            <CommandEmpty
-              className={cn(
-                "py-6 text-center text-sm",
-                categories?.length === 0 && "hidden",
-              )}
-            >
-              No category found.
-            </CommandEmpty>
-            {categories?.length === 0 ? (
-              <div className="py-6 text-center text-sm">
-                No categories found.
-              </div>
-            ) : (
-              <CommandGroup heading={toTitleCase(selectedType)}>
-                {categories?.map((category) => (
-                  <CommandItem
-                    value={category.title}
-                    key={category.id}
-                    onSelect={() => {
-                      onChange(category.id);
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        category.id === value ? "opacity-100" : "opacity-0",
-                      )}
-                    />
-                    {category.title}
-                    <Button
-                      className="group ml-auto h-fit w-fit p-1 hover:bg-muted"
-                      variant="ghost"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCategory(category);
-                        onOpen();
+          {isLoadingCategories ? (
+            <div className="grid w-full place-items-center py-6">
+              <Loader2 className="h-4 w-4 animate-spin" />{" "}
+            </div>
+          ) : (
+            <Command>
+              <CommandInput placeholder="Search category..." />
+              <CommandEmpty
+                className={cn(
+                  "py-6 text-center text-sm",
+                  categories?.length === 0 && "hidden",
+                )}
+              >
+                No category found.
+              </CommandEmpty>
+              {categories?.length === 0 ? (
+                <div className="py-6 text-center text-sm">
+                  No categories found.
+                </div>
+              ) : (
+                <CommandGroup heading={toTitleCase(selectedType)}>
+                  {categories?.map((category) => (
+                    <CommandItem
+                      value={category.title}
+                      key={category.id}
+                      onSelect={() => {
+                        onChange(category.id);
+                        setOpen(false);
                       }}
                     >
-                      <Settings2 className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
-                    </Button>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            )}
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          category.id === value ? "opacity-100" : "opacity-0",
+                        )}
+                      />
+                      {category.title}
+                      <Button
+                        className="group ml-auto h-fit w-fit p-1 hover:bg-muted"
+                        variant="ghost"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCategory(category);
+                          onOpen();
+                        }}
+                      >
+                        <Settings2 className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+                      </Button>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
 
-            <CommandSeparator />
-            <CommandGroup>
-              <CommandItem
-                className="flex items-center gap-2"
-                onSelect={() => {
-                  setCategory(null);
-                  onOpen();
-                }}
-              >
-                <Plus className="h-4 w-4" />
-                <div className="text-sm leading-none">New Category</div>
-              </CommandItem>
-            </CommandGroup>
-          </Command>
+              <CommandSeparator />
+              <CommandGroup>
+                <CommandItem
+                  className="flex items-center gap-2"
+                  onSelect={() => {
+                    setCategory(null);
+                    onOpen();
+                  }}
+                >
+                  <Plus className="h-4 w-4" />
+                  <div className="text-sm leading-none">New Category</div>
+                </CommandItem>
+              </CommandGroup>
+            </Command>
+          )}
         </PopoverContent>
       </Popover>
     </>
