@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
 import "@/styles/globals.css";
-import { Analytics } from "@vercel/analytics/react";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import QueryProvider from "@/components/providers/query-provider";
 import { siteConfig } from "@/components/config/site";
+import { Providers } from "@/components/providers/providers";
 
 const font = Inter({ subsets: ["latin"] });
 
@@ -39,6 +39,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     siteName: siteConfig.title,
   },
+  metadataBase: new URL(siteConfig.url),
 };
 
 export default function RootLayout({
@@ -54,7 +55,7 @@ export default function RootLayout({
           font.className,
         )}
       >
-        <QueryProvider>
+        <Providers>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -65,7 +66,7 @@ export default function RootLayout({
             {children}
             <Toaster />
           </ThemeProvider>
-        </QueryProvider>
+        </Providers>
         <Analytics />
       </body>
     </html>

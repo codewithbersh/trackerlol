@@ -10,7 +10,7 @@ export const TransactionsAction = () => {
   return (
     <div className="lg:flex lg:items-center lg:gap-4">
       <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1.5 px-1.5 font-mono font-medium text-muted-foreground opacity-100 lg:inline-flex">
-        <span className="text-xs">⌘</span>J
+        <span className="text-xl">⌘</span>J
       </kbd>
       <Button
         className="gap-2"

@@ -35,12 +35,13 @@ export const FilterByCategory = ({
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const categoryIdParams = searchParams.get("categoryId");
 
   const onSelect = (value: string) => {
     const current = queryString.parse(searchParams.toString());
     const query = {
       ...current,
-      category: value.toLowerCase(),
+      categoryId: value.toLowerCase(),
     };
 
     const url = queryString.stringifyUrl(
@@ -64,6 +65,9 @@ export const FilterByCategory = ({
           role="combobox"
           className={cn(
             "flex max-h-10 w-full justify-start gap-2",
+
+            categoryIdParams &&
+              "border-destructive text-destructive hover:text-destructive",
             category && "border-brand text-brand hover:text-brand",
           )}
           onClick={() => {
@@ -93,16 +97,16 @@ export const FilterByCategory = ({
             )}
             {expense.map((expenseCategory) => (
               <CommandItem
-                value={expenseCategory.slug}
+                value={expenseCategory.id}
                 key={expenseCategory.id}
                 onSelect={() => {
-                  onSelect(expenseCategory.slug);
+                  onSelect(expenseCategory.id);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    expenseCategory.slug === category?.slug
+                    expenseCategory.id === category?.id
                       ? "opacity-100"
                       : "opacity-0",
                   )}
@@ -120,16 +124,16 @@ export const FilterByCategory = ({
             )}
             {income.map((incomeCategory) => (
               <CommandItem
-                value={incomeCategory.slug}
+                value={incomeCategory.id}
                 key={incomeCategory.id}
                 onSelect={() => {
-                  onSelect(incomeCategory.slug);
+                  onSelect(incomeCategory.id);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    incomeCategory.slug === category?.slug
+                    incomeCategory.id === category?.id
                       ? "opacity-100"
                       : "opacity-0",
                   )}

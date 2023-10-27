@@ -62,6 +62,10 @@ export type CategoryBudgetWithLimitAsNumber = Omit<
   limit: number;
 };
 
+export type TransactionsWithCategory = Prisma.TransactionGetPayload<{
+  include: { category: true };
+}>;
+
 export type TopCategory = {
   id: string;
   name: string;

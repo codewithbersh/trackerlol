@@ -125,7 +125,7 @@ export const formatCurrency = ({
   amount,
   signDisplay = "auto",
 }: {
-  profile: Profile | null;
+  profile: Profile | null | undefined;
   amount: number;
   signDisplay?: "auto" | "never";
 }) => {

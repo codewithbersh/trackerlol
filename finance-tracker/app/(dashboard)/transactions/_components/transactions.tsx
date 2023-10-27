@@ -1,24 +1,22 @@
-import { getTransactions } from "@/actions/get-transactions";
-import { getUserWithProfile } from "@/actions/get-user-with-profile";
-import { FiltersType } from "./utils";
+import { serverClient } from "@/app/_trpc/server";
 
-import { TransactionsGroups } from "./transactions-groups";
+import { TransactionsClient } from "./transactions-client";
 
 interface TransactionsProps {
-  filters: FiltersType;
+  searchParams: { [key: string]: string | undefined };
 }
 
-export const Transactions = async ({
-  filters: { from, to, category, type },
-}: TransactionsProps) => {
-  const transactions = await getTransactions({
-    type,
-    slug: category?.slug,
+export const Transactions = async ({ searchParams }: TransactionsProps) => {
+  const { from, to, type, categoryId } = searchParams;
+
+  const transactions = await serverClient.getTransactions({
     from,
     to,
+    type,
+    categoryId,
   });
 
-  const user = await getUserWithProfile();
+  const profile = await serverClient.getProfile();
 
   if (transactions.length === 0) {
     return (
@@ -30,7 +28,11 @@ export const Transactions = async ({
 
   return (
     <div className="space-y-16">
-      <TransactionsGroups transactions={transactions} profile={user.profile} />
+      <TransactionsClient
+        initialData={transactions}
+        searchParams={searchParams}
+        profile={profile}
+      />
     </div>
   );
 };

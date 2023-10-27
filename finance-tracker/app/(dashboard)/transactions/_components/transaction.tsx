@@ -1,19 +1,16 @@
 "use client";
 
+import { TransactionWithCategory, UserProfile } from "@/app/_trpc/client";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
-import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
-import { Profile } from "@prisma/client";
 
-interface TransactionsGroupItem {
-  transaction: TransactionWithCategoryWithAmountAsNumber;
-  profile: Profile | null;
+interface TransactionProps {
+  transaction: TransactionWithCategory;
+  profile: UserProfile;
 }
 
-export const TransactionsGroupItem = ({
-  transaction,
-  profile,
-}: TransactionsGroupItem) => {
+export const Transaction = ({ transaction, profile }: TransactionProps) => {
   const { onOpen, setTransaction } = useTransactionModal();
+
   const formattedAmount = profile
     ? new Intl.NumberFormat(profile.thousandsGroupStyle, {
         style: "currency",

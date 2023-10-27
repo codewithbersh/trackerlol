@@ -1,24 +1,6 @@
-import { CategoriesByType } from "@/types/types";
 import { Category, Duration } from "@prisma/client";
 import { format, getDate, isValid, parse, parseISO } from "date-fns";
-
-export type FiltersType = {
-  from: Date | undefined;
-  to: Date | undefined;
-  type: "EXPENSE" | "INCOME" | undefined;
-  category: Category | undefined;
-};
-
-export type ValidateSearchParamsType = {
-  filters: FiltersType;
-  hasValidFilter: boolean;
-  categories: CategoriesByType;
-};
-
-interface ValidateSearchParamsProps {
-  searchParams: { [key: string]: string | undefined };
-  categories: CategoriesByType;
-}
+import { Categories, TransactionWithCategory } from "@/app/_trpc/client";
 
 export function getRecurringIntervalDate({
   value,
@@ -41,6 +23,22 @@ export function getRecurringIntervalDate({
   }
 }
 
+export type FiltersType = {
+  from: Date | undefined;
+  to: Date | undefined;
+  type: "EXPENSE" | "INCOME" | undefined;
+  category: Categories["categories"][number];
+};
+
+export type ValidateSearchParamsType = {
+  filters: FiltersType;
+};
+
+interface ValidateSearchParamsProps {
+  searchParams: { [key: string]: string | undefined };
+  categories: Categories;
+}
+
 export function validateSearchParams({
   searchParams,
   categories,
@@ -49,24 +47,31 @@ export function validateSearchParams({
   const to = validateDateParams(searchParams.to);
   const type = validateTypeParams(searchParams.type);
   const category = validateCategoryParams({
-    params: searchParams.category,
+    params: searchParams.categoryId,
     categories: categories.categories,
   });
 
-  const hasValidFilter =
-    from !== undefined ||
-    to !== undefined ||
-    type !== undefined ||
-    category !== undefined;
-
   return {
     filters: { from, to, type, category },
-    hasValidFilter,
-    categories,
   } as ValidateSearchParamsType;
 }
 
-function validateDateParams(params: string | undefined) {
+export const hasValidFilters = ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const { from, to, type, categoryId } = searchParams;
+
+  return (
+    validateDateParams(from) !== undefined ||
+    validateDateParams(to) !== undefined ||
+    validateTypeParams(type) !== undefined ||
+    categoryId !== undefined
+  );
+};
+
+export function validateDateParams(params: string | undefined | null) {
   if (!params) {
     return undefined;
   }
@@ -79,13 +84,13 @@ function validateDateParams(params: string | undefined) {
   return undefined;
 }
 
-export function validateTypeParams(params: string | undefined) {
+export function validateTypeParams(params: string | undefined | null) {
   if (!params) {
     return undefined;
   }
 
   if (["EXPENSE", "INCOME"].includes(params.toUpperCase())) {
-    return params.toUpperCase();
+    return params.toUpperCase() as "EXPENSE" | "INCOME";
   }
 
   return undefined;
@@ -98,5 +103,23 @@ export function validateCategoryParams({
   params: string | undefined;
   categories: Category[];
 }) {
-  return categories.find((category) => category.slug === params);
+  return categories.find((category) => category.id === params);
+}
+
+export function groupTransactionsByDate(
+  transactions: TransactionWithCategory[],
+): Record<string, TransactionWithCategory[]> {
+  const groupedTransactions: Record<string, TransactionWithCategory[]> = {};
+
+  transactions.forEach((transaction) => {
+    const date = new Date(transaction.date).toDateString();
+
+    if (!groupedTransactions[date]) {
+      groupedTransactions[date] = [];
+    }
+
+    groupedTransactions[date].push(transaction);
+  });
+
+  return groupedTransactions;
 }

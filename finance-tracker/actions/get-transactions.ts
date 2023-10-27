@@ -13,19 +13,14 @@ interface GetTransactionsProps {
   from?: Date;
   type?: string;
   slug?: string;
+  userId: string;
 }
 
 export const getTransactions = cache(
-  async ({ to, from, type, slug }: GetTransactionsProps) => {
-    const user = await getCurrentUser();
-
-    if (!user) {
-      redirect("/login");
-    }
-
-    const transactions = await prismadb.transaction.findMany({
+  async ({ to, from, type, slug, userId }: GetTransactionsProps) => {
+    return await prismadb.transaction.findMany({
       where: {
-        userId: user.id,
+        userId,
         date: {
           gte: from ?? undefined,
           lte: to ?? undefined,
@@ -43,45 +38,45 @@ export const getTransactions = cache(
       },
     });
 
-    const formattedTransactions = transactions.map((transaction) => ({
-      ...transaction,
-      amount: Number(transaction.amount),
-    }));
+    // const formattedTransactions = transactions.map((transaction) => ({
+    //   ...transaction,
+    //   amount: Number(transaction.amount),
+    // }));
 
-    const groupedMap: Record<
-      string,
-      TransactionWithCategoryWithAmountAsNumber[]
-    > = {};
+    // const groupedMap: Record<
+    //   string,
+    //   TransactionWithCategoryWithAmountAsNumber[]
+    // > = {};
 
-    for (const transaction of formattedTransactions) {
-      const date = format(transaction.date, "EEE, MMM d");
+    // for (const transaction of formattedTransactions) {
+    //   const date = format(transaction.date, "EEE, MMM d");
 
-      if (!groupedMap[date]) {
-        groupedMap[date] = [];
-      }
-      groupedMap[date].push(transaction);
-    }
+    //   if (!groupedMap[date]) {
+    //     groupedMap[date] = [];
+    //   }
+    //   groupedMap[date].push(transaction);
+    // }
 
-    const grouped = Object.entries(groupedMap).map(([date, transactions]) => ({
-      date,
-      transactions,
-    }));
+    // const grouped = Object.entries(groupedMap).map(([date, transactions]) => ({
+    //   date,
+    //   transactions,
+    // }));
 
-    const formattedGroup: GroupedTransactionsType[] = [];
+    // const formattedGroup: GroupedTransactionsType[] = [];
 
-    for (const group of grouped) {
-      const sum = group.transactions.reduce((total, transaction) => {
-        return (
-          total +
-          (transaction.type === "INCOME"
-            ? transaction.amount
-            : -1 * transaction.amount)
-        );
-      }, 0);
+    // for (const group of grouped) {
+    //   const sum = group.transactions.reduce((total, transaction) => {
+    //     return (
+    //       total +
+    //       (transaction.type === "INCOME"
+    //         ? transaction.amount
+    //         : -1 * transaction.amount)
+    //     );
+    //   }, 0);
 
-      formattedGroup.push({ ...group, sum: sum });
-    }
+    //   formattedGroup.push({ ...group, sum: sum });
+    // }
 
-    return formattedGroup;
+    // return formattedGroup;
   },
 );

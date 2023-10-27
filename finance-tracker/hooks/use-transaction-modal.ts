@@ -1,14 +1,12 @@
-import { TransactionWithCategoryWithAmountAsNumber } from "@/types/types";
+import { TransactionWithCategory } from "@/app/_trpc/client";
 import { create } from "zustand";
 
 interface UseTransactionModalState {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  transaction: TransactionWithCategoryWithAmountAsNumber | null;
-  setTransaction: (
-    category: TransactionWithCategoryWithAmountAsNumber | null
-  ) => void;
+  transaction: TransactionWithCategory | null;
+  setTransaction: (category: TransactionWithCategory | null) => void;
 }
 
 export const useTransactionModal = create<UseTransactionModalState>((set) => ({

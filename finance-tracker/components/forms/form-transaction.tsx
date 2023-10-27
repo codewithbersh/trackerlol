@@ -1,17 +1,15 @@
 "use client";
 
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { TransactionWithAmountAsNumber } from "@/types/types";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 import useCategoryData from "@/hooks/use-category-data";
 import { Loader2 } from "lucide-react";
 import useProfileData from "@/hooks/use-profile-data";
-import { useState } from "react";
+import { trpc } from "@/app/_trpc/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -44,16 +42,16 @@ interface TransactionFormProps {
 }
 
 export const FormTransaction = ({ initialData }: TransactionFormProps) => {
-  const router = useRouter();
   const { onClose } = useTransactionModal();
   const { data } = useCategoryData();
   const { data: profile } = useProfileData();
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { mutate: addTransaction } = trpc.addTransaction.useMutation();
+  const { mutate: updateTransaction } = trpc.updateTransaction.useMutation();
+  const { mutate: deleteTransaction, isLoading: isDeleting } =
+    trpc.deleteTransaction.useMutation();
+  const utils = trpc.useUtils();
 
   const buttonText = initialData ? "Save Changes" : "Add Transaction";
-  const toastSuccessMessage = initialData
-    ? "Transaction Updated"
-    : "Transaction Added";
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -72,41 +70,54 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const date = new Date(values.date.toLocaleDateString());
 
-    try {
-      if (initialData) {
-        await axios.patch(`/api/transactions/${initialData.id}`, {
-          ...values,
-          date,
-        });
-      } else {
-        await axios.post("/api/transactions", {
-          ...values,
-          date,
-        });
-      }
-
-      toast.success(toastSuccessMessage);
-      router.refresh();
-      onClose();
-    } catch (error) {
-      toast.error("An error has occured.");
-      console.log("[ADD_TRANSACTION_ERROR]", error);
+    if (initialData) {
+      updateTransaction(
+        { ...values, date, id: initialData.id },
+        {
+          onSuccess: ({ success }) => {
+            if (success) {
+              onClose();
+              toast.success("Transaction Updated ");
+              utils.getTransactions.invalidate();
+            } else {
+              toast("An error has occured.");
+            }
+          },
+        },
+      );
+    } else {
+      addTransaction(
+        { ...values, date },
+        {
+          onSuccess: ({ success }) => {
+            if (success) {
+              onClose();
+              toast.success("Transaction Added.");
+              utils.getTransactions.invalidate();
+            } else {
+              toast.error("An error has occured.");
+            }
+          },
+        },
+      );
     }
   };
 
   const handleDelete = async (id: string) => {
-    setIsDeleting(true);
-    try {
-      await axios.delete(`/api/transactions/${id}`);
-    } catch (error) {
-      toast.error("An error has occured.");
-      console.log("[DELETE_TRANSACTION_ERROR]", error);
-    } finally {
-      setIsDeleting(false);
-      toast.success("Transaction has been deleted.");
-      router.refresh();
-      onClose();
-    }
+    deleteTransaction(
+      { id },
+      {
+        onSuccess: ({ success }) => {
+          if (success) {
+            toast.success("Transaction has been deleted.");
+            utils.getTransactions.invalidate();
+            onClose();
+          } else {
+            toast.error("An error has occured.");
+          }
+        },
+      },
+    );
   };
 
   return (
