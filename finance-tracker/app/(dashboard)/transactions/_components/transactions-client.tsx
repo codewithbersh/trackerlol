@@ -24,6 +24,7 @@ export const TransactionsClient = ({
     initialData: profileInitialData,
     refetchOnMount: false,
     refetchOnReconnect: false,
+    staleTime: Infinity,
   });
 
   const { data: transactions } = trpc.getTransactions.useQuery(
@@ -32,6 +33,7 @@ export const TransactionsClient = ({
       initialData: initialData,
       refetchOnMount: false,
       refetchOnReconnect: false,
+      staleTime: Infinity,
     },
   );
 

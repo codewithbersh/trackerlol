@@ -45,8 +45,10 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const { onClose } = useTransactionModal();
   const { data } = useCategoryData();
   const { data: profile } = useProfileData();
-  const { mutate: addTransaction } = trpc.addTransaction.useMutation();
-  const { mutate: updateTransaction } = trpc.updateTransaction.useMutation();
+  const { mutate: addTransaction, isLoading: isAdding } =
+    trpc.addTransaction.useMutation();
+  const { mutate: updateTransaction, isLoading: isUpdating } =
+    trpc.updateTransaction.useMutation();
   const { mutate: deleteTransaction, isLoading: isDeleting } =
     trpc.deleteTransaction.useMutation();
   const utils = trpc.useUtils();
@@ -65,7 +67,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
     mode: "onChange",
   });
 
-  const { isLoading } = form.formState;
+  const isLoading = isAdding || isUpdating || isDeleting;
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const date = new Date(values.date.toLocaleDateString());
@@ -140,6 +142,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
                     form.resetField("categoryId");
                     form.setValue("categoryId", "");
                   }}
+                  disabled={isLoading}
                 />
               </FormControl>
             </FormItem>
@@ -156,7 +159,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
                 <FieldAmount
                   onValueChange={field.onChange}
                   value={field.value}
-                  disabled={isLoading || isDeleting}
+                  disabled={isLoading}
                   thousandsGroupStyle={profile?.thousandsGroupStyle}
                   currency={profile?.currency}
                 />
@@ -172,11 +175,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             <FormItem className="col-span-full">
               <FormLabel className="w-fit">Note</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Add note"
-                  {...field}
-                  disabled={isLoading || isDeleting}
-                />
+                <Input placeholder="Add note" {...field} disabled={isLoading} />
               </FormControl>
             </FormItem>
           )}
@@ -197,7 +196,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
                 selectedType={form.watch("type")}
                 onChange={field.onChange}
                 value={field.value}
-                isLoading={isLoading || isDeleting}
+                isLoading={isLoading}
               />
             </FormItem>
           )}
@@ -210,7 +209,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             <FormItem className="col-span-full flex flex-col sm:col-span-1">
               <FormLabel>Date</FormLabel>
               <FieldTransactionDate
-                isLoading={isLoading || isDeleting}
+                isLoading={isLoading}
                 value={field.value}
                 onChange={field.onChange}
               />
@@ -224,7 +223,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
               type="button"
               onClick={() => handleDelete(initialData.id)}
               variant="outline-destructive"
-              disabled={isLoading || isDeleting}
+              disabled={isLoading}
             >
               Delete
             </Button>
@@ -234,15 +233,11 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             type="button"
             onClick={onClose}
             className="ml-auto"
-            disabled={isLoading || isDeleting}
+            disabled={isLoading}
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            className="w-fit gap-2"
-            disabled={isLoading || isDeleting}
-          >
+          <Button type="submit" className="w-fit gap-2" disabled={isLoading}>
             {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
             {buttonText}
           </Button>
