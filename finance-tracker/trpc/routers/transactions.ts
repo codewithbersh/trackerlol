@@ -136,3 +136,5 @@ export const transactionRouter = router({
       }
     }),
 });
+
+export const transactionCaller = transactionRouter.createCaller({});

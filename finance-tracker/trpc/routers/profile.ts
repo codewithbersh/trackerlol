@@ -22,3 +22,5 @@ export const profileRouter = router({
     return user.profile;
   }),
 });
+
+export const profileCaller = profileRouter.createCaller({});
