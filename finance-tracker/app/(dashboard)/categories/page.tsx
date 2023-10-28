@@ -14,7 +14,7 @@ interface ReceiptsPageProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-const CategoriesPage = async ({ searchParams }: ReceiptsPageProps) => {
+const CategoriesPage = ({ searchParams }: ReceiptsPageProps) => {
   const type = validateTypeParams(searchParams.type);
 
   return (

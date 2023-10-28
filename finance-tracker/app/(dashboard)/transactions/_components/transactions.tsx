@@ -9,14 +9,14 @@ interface TransactionsProps {
 export const Transactions = async ({ searchParams }: TransactionsProps) => {
   const { from, to, type, categoryId } = searchParams;
 
-  const transactions = await serverClient.getTransactions({
+  const transactions = await serverClient.transaction.get({
     from,
     to,
     type,
     categoryId,
   });
 
-  const profile = await serverClient.getProfile();
+  const profile = await serverClient.profile.get();
 
   if (transactions.length === 0) {
     return (

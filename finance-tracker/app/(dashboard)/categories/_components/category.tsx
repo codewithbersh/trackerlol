@@ -33,7 +33,7 @@ export const Category = ({ category, count }: CategoryProps) => {
           >
             <Link
               className=" line-clamp-1 text-muted-foreground"
-              href={`/transactions?category=${category.slug}`}
+              href={`/transactions?categoryId=${category.id}`}
             >
               ({count}) transaction{count !== 1 && "s"}
             </Link>

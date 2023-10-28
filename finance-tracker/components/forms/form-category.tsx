@@ -2,13 +2,11 @@
 
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
-import axios, { isAxiosError } from "axios";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useCategoryModal } from "@/hooks/use-category-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useCategoryData from "@/hooks/use-category-data";
-import { useRouter } from "next/navigation";
+import { trpc } from "@/app/_trpc/client";
 
 import {
   Form,
@@ -32,9 +30,24 @@ export const CategoryFormSchema = z.object({
 });
 
 export const FormCategory = () => {
+  const utils = trpc.useUtils();
   const { onClose, category: initialData } = useCategoryModal();
-  const { data: categories, refetch } = useCategoryData();
-  const router = useRouter();
+  const { data: categories, refetch } = trpc.category.get.useQuery(undefined, {
+    staleTime: Infinity,
+  });
+  const { refetch: refetchGetCategoriesByCount } =
+    trpc.category.getByCount.useQuery(
+      {},
+      {
+        staleTime: Infinity,
+      },
+    );
+  const { mutate: addCategory, isLoading: isAdding } =
+    trpc.category.add.useMutation();
+  const { mutate: updateCategory, isLoading: isUpdating } =
+    trpc.category.update.useMutation();
+  const { mutate: deleteCategory, isLoading: isDeleting } =
+    trpc.category.delete.useMutation();
 
   const form = useForm<z.infer<typeof CategoryFormSchema>>({
     resolver: zodResolver(CategoryFormSchema),
@@ -46,50 +59,67 @@ export const FormCategory = () => {
     },
   });
 
-  const isLoading = form.formState.isSubmitting;
+  const isLoading =
+    form.formState.isSubmitting || isAdding || isUpdating || isDeleting;
   const currentColor = form.watch("color");
   const currentName = form.watch("title");
   const buttonText = initialData ? "Save Category" : "Add Category";
 
-  async function onSubmit(values: z.infer<typeof CategoryFormSchema>) {
-    try {
-      if (initialData) {
-        await axios.patch(`/api/categories/${initialData.id}`, values);
-        toast.success("Category updated.");
-      } else {
-        await axios.post("/api/categories", values);
-        toast.success("Category added.");
-      }
-      onClose();
-      form.reset();
-      refetch();
-      router.refresh();
-    } catch (error) {
-      if (isAxiosError(error)) {
-        error.response?.data === "Emoji has been used."
-          ? form.setError("emoji", {
-              type: "Emoji Already Exists",
-              message: "Emoji already exists",
-            })
-          : error.response?.data === "Color has been used."
-          ? form.setError("color", { message: "Color already exists." })
-          : toast.error("An error has occured.");
-        console.log(error.response?.data);
-      }
-      console.log("[ADD_CATEGORY_ERROR]", error);
+  const onSubmit = async (values: z.infer<typeof CategoryFormSchema>) => {
+    if (initialData) {
+      updateCategory(
+        { ...values, id: initialData.id },
+        {
+          onSuccess: ({ code, message }) => {
+            if (code === 200) {
+              toast.success(message);
+              utils.category.get.invalidate();
+              utils.category.getByCount.invalidate();
+              refetch();
+              refetchGetCategoriesByCount();
+              onClose();
+            } else {
+              toast.error(message);
+            }
+          },
+        },
+      );
+    } else {
+      addCategory(values, {
+        onSuccess: ({ code, message }) => {
+          if (code === 200) {
+            toast.success(message);
+            utils.category.get.invalidate();
+            utils.category.getByCount.invalidate();
+            refetch();
+            refetchGetCategoriesByCount();
+            onClose();
+          } else {
+            toast.error(message);
+          }
+        },
+      });
     }
-  }
+  };
 
   const handleDelete = async (id: string) => {
-    try {
-      await axios.delete(`/api/categories/${id}`);
-      toast.success("Category has been deleted.");
-      router.refresh();
-      onClose();
-    } catch (error) {
-      toast.error("An error has occured.");
-      console.log("[DELETE_CATEGORY_ERROR]", error);
-    }
+    deleteCategory(
+      { id },
+      {
+        onSuccess: ({ code, message }) => {
+          if (code === 200) {
+            toast.success(message);
+            onClose();
+            utils.category.get.invalidate();
+            utils.category.getByCount.invalidate();
+            refetch();
+            refetchGetCategoriesByCount();
+          } else {
+            toast.error(message);
+          }
+        },
+      },
+    );
   };
 
   return (
@@ -110,7 +140,7 @@ export const FormCategory = () => {
                     field.onChange(value);
                     form.setValue("color", "");
                   }}
-                  disabled={initialData ? true : false}
+                  disabled={isLoading || initialData ? true : false}
                 />
               </FormControl>
             </FormItem>
@@ -164,12 +194,17 @@ export const FormCategory = () => {
                 <FieldColor
                   categories={
                     form.watch("type") === "EXPENSE"
-                      ? categories?.expense
-                      : categories?.income
+                      ? categories?.filter(
+                          (category) => category.type === "EXPENSE",
+                        )
+                      : categories?.filter(
+                          (category) => category.type === "INCOME",
+                        )
                   }
                   onChange={field.onChange}
                   value={field.value}
                   type={form.watch("type")}
+                  isLoading={isLoading}
                 />
               </FormControl>
               <FormMessage />
@@ -203,7 +238,9 @@ export const FormCategory = () => {
             className="w-fit items-center gap-2"
             disabled={isLoading}
           >
-            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+            {(form.formState.isSubmitting || isAdding || isUpdating) && (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            )}
             {buttonText}
           </Button>
         </div>

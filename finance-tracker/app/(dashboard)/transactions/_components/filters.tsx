@@ -1,23 +1,29 @@
-"use client";
-
 import { hasValidFilters, validateSearchParams } from "./utils";
 import { FiltersInMobileAction } from "./filters-in-mobile-action";
 import { FiltersInDesktop } from "./filters-in-desktop";
-import { Categories, trpc } from "@/app/_trpc/client";
 
 import { FilterTransactionsSheet } from "@/components/modals/filter-transactions-sheet";
+import prismadb from "@/lib/prismadb";
+import { getCurrentUser } from "@/actions/get-current-user";
+import { redirect } from "next/navigation";
 
 interface FiltersProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-export const Filters = ({ searchParams }: FiltersProps) => {
-  const { data: categories } = trpc.getCategories.useQuery(undefined, {
-    staleTime: Infinity,
-  });
-  if (!categories) {
-    return null;
+export const Filters = async ({ searchParams }: FiltersProps) => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return redirect("/login");
   }
+
+  const categories = await prismadb.category.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
+
   const filters = validateSearchParams({ searchParams, categories });
   const showReset = hasValidFilters({ searchParams });
 

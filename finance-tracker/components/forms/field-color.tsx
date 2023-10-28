@@ -18,6 +18,7 @@ interface FieldColorProps {
   onChange: (value: string) => void;
   type: "EXPENSE" | "INCOME";
   categories: Category[] | undefined;
+  isLoading: boolean;
 }
 
 export const FieldColor = ({
@@ -25,6 +26,7 @@ export const FieldColor = ({
   onChange,
   type,
   categories,
+  isLoading,
 }: FieldColorProps) => {
   const colors = type === "EXPENSE" ? expenseColors : incomeColors;
 
@@ -44,6 +46,8 @@ export const FieldColor = ({
           disabled={
             categories
               ? categories.some((category) => category.color === color.value)
+              : isLoading
+              ? true
               : true
           }
           style={{ backgroundColor: color.value }}

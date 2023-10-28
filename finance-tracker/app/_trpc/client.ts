@@ -7,6 +7,8 @@ export const trpc = createTRPCReact<AppRouter>({});
 type RouterInput = inferRouterInputs<AppRouter>;
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
-export type TransactionWithCategory = RouterOutput["getTransactions"][number];
-export type UserProfile = RouterOutput["getProfile"];
-export type Categories = RouterOutput["getCategories"];
+export type TransactionWithCategory =
+  RouterOutput["transaction"]["get"][number];
+export type UserProfile = RouterOutput["profile"]["get"];
+export type Categories = RouterOutput["category"]["get"];
+export type CategoriesByCount = RouterOutput["category"]["getByCount"];

@@ -1,14 +1,14 @@
-import { getCategoriesByCount } from "@/actions/get-categories-by-count";
 import { TransactionType } from "@prisma/client";
+import { serverClient } from "@/app/_trpc/server";
 
-import { Category } from "./category";
+import { CategoriesClient } from "./categories-client";
 
 interface CategoriesProps {
   type: TransactionType | undefined;
 }
 
 export const Categories = async ({ type }: CategoriesProps) => {
-  const categories = await getCategoriesByCount({ type });
+  const categories = await serverClient.category.getByCount({ type });
 
   if (!categories || categories.length === 0) {
     return (
@@ -18,15 +18,5 @@ export const Categories = async ({ type }: CategoriesProps) => {
     );
   }
 
-  return (
-    <div className="grid grid-cols-12 gap-4">
-      {categories.map((category) => (
-        <Category
-          category={category.category}
-          count={category.count}
-          key={category.category.id}
-        />
-      ))}
-    </div>
-  );
+  return <CategoriesClient categories={categories} type={type} />;
 };

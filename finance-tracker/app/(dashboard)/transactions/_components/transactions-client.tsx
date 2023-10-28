@@ -20,14 +20,14 @@ export const TransactionsClient = ({
 }: TransactionsClientProps) => {
   const { from, to, type, categoryId } = searchParams;
 
-  const { data: profile } = trpc.getProfile.useQuery(undefined, {
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
     initialData: profileInitialData,
     refetchOnMount: false,
     refetchOnReconnect: false,
     staleTime: Infinity,
   });
 
-  const { data: transactions } = trpc.getTransactions.useQuery(
+  const { data: transactions } = trpc.transaction.get.useQuery(
     { from, to, type, categoryId },
     {
       initialData: initialData,

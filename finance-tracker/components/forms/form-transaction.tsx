@@ -41,20 +41,25 @@ interface TransactionFormProps {
 
 export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const { onClose } = useTransactionModal();
-  const { refetch: refetchTransactions } = trpc.getTransactions.useQuery({});
+  const { refetch: refetchTransactions } = trpc.transaction.get.useQuery(
+    {},
+    {
+      staleTime: Infinity,
+    },
+  );
   const { data: categories, isLoading: isLoadingCategories } =
-    trpc.getCategories.useQuery(undefined, {
+    trpc.category.get.useQuery(undefined, {
       staleTime: Infinity,
     });
-  const { data: profile } = trpc.getProfile.useQuery(undefined, {
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
     staleTime: Infinity,
   });
   const { mutate: addTransaction, isLoading: isAdding } =
-    trpc.addTransaction.useMutation();
+    trpc.transaction.add.useMutation();
   const { mutate: updateTransaction, isLoading: isUpdating } =
-    trpc.updateTransaction.useMutation();
+    trpc.transaction.update.useMutation();
   const { mutate: deleteTransaction, isLoading: isDeleting } =
-    trpc.deleteTransaction.useMutation();
+    trpc.transaction.delete.useMutation();
   const utils = trpc.useUtils();
 
   const buttonText = initialData ? "Save Changes" : "Add Transaction";
@@ -85,7 +90,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
               refetchTransactions();
               onClose();
               toast.success("Transaction Updated ");
-              utils.getTransactions.invalidate();
+              utils.transaction.get.invalidate();
             } else {
               toast("An error has occured.");
             }
@@ -101,7 +106,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
               refetchTransactions();
               onClose();
               toast.success("Transaction Added.");
-              utils.getTransactions.invalidate();
+              utils.transaction.get.invalidate();
             } else {
               toast.error("An error has occured.");
             }
@@ -120,7 +125,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             refetchTransactions();
             onClose();
             toast.success("Transaction has been deleted.");
-            utils.getTransactions.invalidate();
+            utils.transaction.get.invalidate();
           } else {
             toast.error("An error has occured.");
           }
