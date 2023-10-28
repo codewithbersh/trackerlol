@@ -12,7 +12,7 @@ interface FiltersInDesktopProps {
   categories: Categories;
 }
 
-export const FiltersInDesktop = async ({
+export const FiltersInDesktop = ({
   filters: { filters },
   showReset,
   categories,
@@ -21,8 +21,8 @@ export const FiltersInDesktop = async ({
     <div className="hidden w-fit gap-4 sm:flex">
       <FilterByType type={filters.type} />
       <FilterByCategory
-        income={categories.income}
-        expense={categories.expense}
+        income={categories.filter((category) => category.type === "INCOME")}
+        expense={categories.filter((category) => category.type === "EXPENSE")}
         category={filters.category}
       />
       <FilterByDate filterDateRange={{ from: filters.from, to: filters.to }} />

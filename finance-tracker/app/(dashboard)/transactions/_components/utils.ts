@@ -27,7 +27,7 @@ export type FiltersType = {
   from: Date | undefined;
   to: Date | undefined;
   type: "EXPENSE" | "INCOME" | undefined;
-  category: Categories["categories"][number];
+  category: Categories[number];
 };
 
 export type ValidateSearchParamsType = {
@@ -48,7 +48,7 @@ export function validateSearchParams({
   const type = validateTypeParams(searchParams.type);
   const category = validateCategoryParams({
     params: searchParams.categoryId,
-    categories: categories.categories,
+    categories: categories,
   });
 
   return {

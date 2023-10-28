@@ -6,6 +6,7 @@ import {
   validateTypeParams,
 } from "@/app/(dashboard)/transactions/_components/utils";
 import { TRPCError } from "@trpc/server";
+import slugify from "@sindresorhus/slugify";
 
 export const appRouter = router({
   getTransactions: privateProcedure
@@ -152,10 +153,11 @@ export const appRouter = router({
 
     return user.profile;
   }),
+
   getCategories: privateProcedure.query(async ({ ctx }) => {
     const { userId } = ctx;
 
-    const categories = await prismadb.category.findMany({
+    return await prismadb.category.findMany({
       where: {
         userId,
       },
@@ -163,14 +165,58 @@ export const appRouter = router({
         updatedAt: "desc",
       },
     });
-
-    const expense = categories.filter(
-      (category) => category.type === "EXPENSE",
-    );
-    const income = categories.filter((category) => category.type === "INCOME");
-
-    return { income, expense, categories };
   }),
+  addCategory: privateProcedure
+    .input(
+      z.object({
+        type: z.enum(["EXPENSE", "INCOME"]),
+        emoji: z.string(),
+        title: z.string(),
+        color: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { type, emoji, title, color } = input;
+
+      const emojiExists = await prismadb.category.findFirst({
+        where: {
+          userId,
+          emoji,
+        },
+      });
+
+      if (emojiExists) {
+        return { code: 401, message: "Emoji already exists." };
+      }
+
+      const colorExists = await prismadb.category.findFirst({
+        where: {
+          userId,
+          color,
+        },
+      });
+
+      if (colorExists) {
+        return { code: 401, message: "Color already exists." };
+      }
+
+      try {
+        await prismadb.category.create({
+          data: {
+            userId,
+            type,
+            title,
+            emoji,
+            color,
+            slug: slugify(title),
+          },
+        });
+        return { code: 200 };
+      } catch (error) {
+        return { code: 200 };
+      }
+    }),
 });
 
 export type AppRouter = typeof appRouter;

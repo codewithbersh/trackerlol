@@ -28,8 +28,8 @@ export const FiltersInMobile = ({
       <div className="flex flex-col gap-4 py-8">
         <FilterByType type={filters.filters.type} />
         <FilterByCategory
-          income={categories.income}
-          expense={categories.expense}
+          income={categories.filter((category) => category.type === "INCOME")}
+          expense={categories.filter((category) => category.type === "EXPENSE")}
           category={filters.filters.category}
         />
         <FilterByDate

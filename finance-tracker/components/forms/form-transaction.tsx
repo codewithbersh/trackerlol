@@ -197,8 +197,12 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
               <FieldCategory
                 categories={
                   form.watch("type") === "EXPENSE"
-                    ? categories?.expense
-                    : categories?.income
+                    ? categories?.filter(
+                        (category) => category.type === "EXPENSE",
+                      )
+                    : categories?.filter(
+                        (category) => category.type === "INCOME",
+                      )
                 }
                 selectedType={form.watch("type")}
                 onChange={field.onChange}

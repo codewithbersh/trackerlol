@@ -12,7 +12,7 @@ interface TransactionsPageProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-const TransactionsPage = ({ searchParams }: TransactionsPageProps) => {
+const TransactionsPage = async ({ searchParams }: TransactionsPageProps) => {
   return (
     <div className="mt-16 flex flex-col  lg:mt-0">
       <PageHeading title="Transactions">
