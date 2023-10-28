@@ -183,3 +183,5 @@ export const categoryRouter = router({
       }
     }),
 });
+
+export const categoryCaller = categoryRouter.createCaller({});
