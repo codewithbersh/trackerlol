@@ -1,14 +1,21 @@
-import { TransactionType } from "@prisma/client";
-import { serverClient } from "@/app/_trpc/server";
+"use client";
 
-import { CategoriesClient } from "./categories-client";
+import { trpc } from "@/app/_trpc/client";
+import { Category } from "./category";
+import { useSearchParams } from "next/navigation";
+import { validateTypeParams } from "../../transactions/_components/utils";
 
-interface CategoriesProps {
-  type: TransactionType | undefined;
-}
+import { Spinner } from "@/components/spinner";
 
-export const Categories = async ({ type }: CategoriesProps) => {
-  const categories = await serverClient.category.getByCount({ type });
+export const Categories = () => {
+  const type = useSearchParams().get("type");
+
+  const { data: categories, isLoading } = trpc.category.getByCount.useQuery(
+    { type: validateTypeParams(type) },
+    {
+      staleTime: Infinity,
+    },
+  );
 
   if (!categories || categories.length === 0) {
     return (
@@ -18,5 +25,19 @@ export const Categories = async ({ type }: CategoriesProps) => {
     );
   }
 
-  return <CategoriesClient categories={categories} type={type} />;
+  if (isLoading) {
+    return <Spinner className="py-8" variant="large" />;
+  }
+
+  return (
+    <div className="grid grid-cols-12 gap-4">
+      {categories.map((category) => (
+        <Category
+          category={category.category}
+          count={category.count}
+          key={category.category.id}
+        />
+      ))}
+    </div>
+  );
 };

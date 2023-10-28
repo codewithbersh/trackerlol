@@ -1,21 +1,16 @@
-import { Suspense } from "react";
-import { TransactionType } from "@prisma/client";
+import { PageHeading } from "@/components/page-heading";
+import { MainWrapper } from "@/components/main-wrapper";
 
 import { Action } from "./_components/action";
-import { validateTypeParams } from "@/app/(dashboard)/transactions/_components/utils";
 import { Categories } from "./_components/categories";
 import { Filters } from "./_components/filters";
 
-import { PageHeading } from "@/components/page-heading";
-import { Spinner } from "@/components/spinner";
-import { MainWrapper } from "@/components/main-wrapper";
-
-interface ReceiptsPageProps {
-  searchParams: { [key: string]: string | undefined };
+interface CategoriesPageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-const CategoriesPage = ({ searchParams }: ReceiptsPageProps) => {
-  const type = validateTypeParams(searchParams.type);
+const CategoriesPage = ({ searchParams }: CategoriesPageProps) => {
+  const type = searchParams.type;
 
   return (
     <div className="mt-[60px] flex  flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
@@ -25,11 +20,8 @@ const CategoriesPage = ({ searchParams }: ReceiptsPageProps) => {
 
       <MainWrapper>
         <div className="flex flex-col gap-8">
-          <Filters type={type as TransactionType | undefined} />
-
-          <Suspense fallback={<Spinner className="py-8" variant="large" />}>
-            <Categories type={type as TransactionType | undefined} />
-          </Suspense>
+          <Filters type={type} />
+          <Categories />
         </div>
       </MainWrapper>
     </div>

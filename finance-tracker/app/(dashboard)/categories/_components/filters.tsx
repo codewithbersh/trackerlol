@@ -1,16 +1,11 @@
-import { TransactionType } from "@prisma/client";
-
 import { FilterByType } from "@/app/(dashboard)/transactions/_components/filter-by-type";
 import { FilterReset } from "@/app/(dashboard)/transactions/_components/filter-reset";
+import { validateTypeParams } from "../../transactions/_components/utils";
 
-interface FiltersProps {
-  type: TransactionType | undefined;
-}
-
-export const Filters = ({ type }: FiltersProps) => {
+export const Filters = ({ type }: { type: string | string[] | undefined }) => {
   return (
     <div className="flex w-fit items-center gap-4">
-      <FilterByType type={type} />
+      <FilterByType type={validateTypeParams(type)} />
       {type && <FilterReset href="/categories" />}
     </div>
   );

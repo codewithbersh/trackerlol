@@ -84,8 +84,10 @@ export function validateDateParams(params: string | undefined | null) {
   return undefined;
 }
 
-export function validateTypeParams(params: string | undefined | null) {
-  if (!params) {
+export function validateTypeParams(
+  params: string | string[] | undefined | null,
+) {
+  if (typeof params !== "string") {
     return undefined;
   }
 
