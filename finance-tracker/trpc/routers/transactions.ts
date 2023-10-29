@@ -7,7 +7,7 @@ import {
 } from "@/app/(dashboard)/transactions/_components/utils";
 
 export const transactionRouter = router({
-  get: privateProcedure
+  getAll: privateProcedure
     .input(
       z.object({
         from: z.string().optional(),
@@ -44,6 +44,39 @@ export const transactionRouter = router({
       }));
 
       return formattedTransactions;
+    }),
+  getTotal: privateProcedure
+    .input(
+      z.object({
+        from: z.date(),
+        to: z.date(),
+        categoryId: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { from, to, categoryId } = input;
+
+      const total = await prismadb.transaction.aggregate({
+        where: {
+          userId,
+          date: {
+            gte: from,
+            lt: to,
+          },
+          type: "EXPENSE",
+          categoryId,
+        },
+        _sum: {
+          amount: true,
+        },
+      });
+
+      if (total._sum.amount) {
+        return Number(total._sum.amount);
+      } else {
+        return 0;
+      }
     }),
 
   add: privateProcedure

@@ -1,38 +1,61 @@
-import { cn, formatCurrency, greenToRed, toTitleCase } from "@/lib/utils";
-import { getTransactionsTotal } from "@/actions/get-transactions-total";
-import { getBudgetDateRange, getStartDate } from "./utils";
-import { differenceInCalendarDays } from "date-fns";
-import { TriangleUpIcon } from "@radix-ui/react-icons";
-import { OverallBudget as OverallBudgetType } from "@prisma/client";
-import { getUserWithProfile } from "@/actions/get-user-with-profile";
+"use client";
 
-import { Progress } from "@/components/ui/progress";
+import {
+  OverallBudget as OverallBudgetType,
+  UserProfile,
+  trpc,
+} from "@/app/_trpc/client";
+import { AddOverallBudget } from "@/components/add-overall-budget";
+import { Spinner } from "@/components/spinner";
+import { cn, formatCurrency, greenToRed, toTitleCase } from "@/lib/utils";
+import { differenceInCalendarDays } from "date-fns";
+import { getStartDate } from "./utils";
 import { OverallBudgetAction } from "./overall-budget-action";
+import { Progress } from "@/components/ui/progress";
+import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { OverallViewTransactions } from "./overall-view-transactions";
 
 interface OverallBudgetProps {
-  budget: OverallBudgetType;
+  initialData: OverallBudgetType;
+  profile: UserProfile;
 }
 
-export const OverallBudget = async ({ budget }: OverallBudgetProps) => {
-  const { from, to } = getBudgetDateRange({ budget });
-  const { _sum: total } = await getTransactionsTotal({
-    from,
-    to,
-  });
-  const { profile } = await getUserWithProfile();
+export const OverallBudget = ({ profile, initialData }: OverallBudgetProps) => {
+  const { data: overallBudget, isLoading } = trpc.budget.overall.get.useQuery(
+    undefined,
+    {
+      staleTime: Infinity,
+      initialData,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  );
 
-  const percentage = (Number(total.amount) / Number(budget.limit)) * 100;
+  if (isLoading) {
+    return <Spinner className="py-8" variant="large" />;
+  }
+
+  if (!overallBudget) {
+    return <AddOverallBudget />;
+  }
+
+  const {
+    budget,
+    total,
+    range: { from, to },
+  } = overallBudget;
+
+  const percentage = (total / budget.limit) * 100;
 
   const daysLeft = differenceInCalendarDays(to, new Date()) + 1;
 
-  const spendingLimitLeft = Number(budget.limit) - Number(total.amount);
+  const spendingLimitLeft = budget.limit - total;
 
   const totalAmount = formatCurrency({
     profile,
-    amount: total.amount ? Number(total.amount) : 0,
+    amount: total,
   });
-  const budgetLimit = formatCurrency({ profile, amount: Number(budget.limit) });
+  const budgetLimit = formatCurrency({ profile, amount: budget.limit });
 
   return (
     <div className="flex  flex-col gap-16 rounded-md border bg-background p-4 sm:p-8">
@@ -41,9 +64,7 @@ export const OverallBudget = async ({ budget }: OverallBudgetProps) => {
           <h1 className="font-medium">{toTitleCase(budget.duration)}</h1>
           <p className="text-muted-foreground">{getStartDate(budget)}</p>
         </div>
-        <OverallBudgetAction
-          budget={{ ...budget, limit: Number(budget.limit) }}
-        />
+        <OverallBudgetAction budget={budget} />
       </div>
 
       <div>

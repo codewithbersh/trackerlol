@@ -1,5 +1,3 @@
-import { serverClient } from "@/app/_trpc/server";
-
 import { TransactionsClient } from "./transactions-client";
 import { transactionCaller } from "@/trpc/routers/transactions";
 import { profileCaller } from "@/trpc/routers/profile";
@@ -11,7 +9,7 @@ interface TransactionsProps {
 export const Transactions = async ({ searchParams }: TransactionsProps) => {
   const { from, to, type, categoryId } = searchParams;
 
-  const transactions = await transactionCaller.get({
+  const transactions = await transactionCaller.getAll({
     from,
     to,
     type,
@@ -19,14 +17,6 @@ export const Transactions = async ({ searchParams }: TransactionsProps) => {
   });
 
   const profile = await profileCaller.get();
-
-  if (transactions.length === 0) {
-    return (
-      <div className="py-12 text-center text-sm text-muted-foreground">
-        No transactions.
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-16">

@@ -1,10 +1,5 @@
-import { httpBatchLink } from "@trpc/client";
+import "server-only";
+
 import { appRouter } from "@/trpc";
 
-export const serverClient = appRouter.createCaller({
-  links: [
-    httpBatchLink({
-      url: "http://localhost:3000/api/trpc",
-    }),
-  ],
-});
+export const serverTrpc = appRouter.createCaller({});

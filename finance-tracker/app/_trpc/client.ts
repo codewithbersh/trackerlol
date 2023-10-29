@@ -8,7 +8,9 @@ type RouterInput = inferRouterInputs<AppRouter>;
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
 export type TransactionWithCategory =
-  RouterOutput["transaction"]["get"][number];
+  RouterOutput["transaction"]["getAll"][number];
 export type UserProfile = RouterOutput["profile"]["get"];
 export type Categories = RouterOutput["category"]["get"];
 export type CategoriesByCount = RouterOutput["category"]["getByCount"];
+export type OverallBudget = RouterOutput["budget"]["overall"]["get"];
+export type CategoriesBudgets = RouterOutput["budget"]["categories"]["getAll"];

@@ -23,6 +23,7 @@ import { FieldTimeFrame } from "./field-time-frame";
 import { FieldWeekStartDay } from "./field-week-start-day";
 import { FieldMonthStartDate } from "./field-month-start-date";
 import { FieldYearStartDate } from "./field-year-start-date";
+import { trpc } from "@/app/_trpc/client";
 
 const defaultProps = z.object({
   limit: z.coerce.number(),
@@ -48,7 +49,7 @@ const weeklySchema = z.object({
 
 const monthlySchema = z.object({
   duration: z.literal("MONTHLY"),
-  monthStartDate: z.string().nonempty(),
+  monthStartDate: z.string(),
 });
 
 const yearlySchema = z.object({
@@ -68,7 +69,11 @@ const formSchema = z.intersection(schemaCond, defaultProps);
 export const FormOverallBudget = () => {
   const { onClose, budget: initialData } = useOverallBudget();
   const router = useRouter();
-  const { data: profile } = useProfileData();
+
+  const utils = trpc.useUtils();
+  const { data: profile } = trpc.profile.get.useQuery();
+  const { mutate: addOverallBudget } = trpc.budget.overall.add.useMutation();
+  const { refetch, isFetching } = trpc.budget.overall.get.useQuery();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,19 +94,34 @@ export const FormOverallBudget = () => {
   const toastSuccess = initialData ? "Budget updated." : "Budget created.";
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      if (initialData) {
-        await axios.patch(`/api/overall-budget/${initialData.id}`, values);
-      } else {
-        await axios.post("/api/overall-budget", values);
-      }
-      router.refresh();
-      onClose();
-      toast.success(toastSuccess);
-    } catch (error) {
-      console.log("[CREATE_OVERALLBUDGET_ERROR]", error);
-      toast.error("An error has occured.");
+    if (initialData) {
+    } else {
+      addOverallBudget(values, {
+        onSuccess: ({ code, message }) => {
+          if (code === 200) {
+            refetch();
+            utils.budget.overall.get.invalidate();
+            toast.success(message);
+            onClose();
+          } else {
+            toast.error(message);
+          }
+        },
+      });
     }
+    // try {
+    //   if (initialData) {
+    //     await axios.patch(`/api/overall-budget/${initialData.id}`, values);
+    //   } else {
+    //     await axios.post("/api/overall-budget", values);
+    //   }
+    //   router.refresh();
+    //   onClose();
+    //   toast.success(toastSuccess);
+    // } catch (error) {
+    //   console.log("[CREATE_OVERALLBUDGET_ERROR]", error);
+    //   toast.error("An error has occured.");
+    // }
   };
 
   const handleDelete = async (id: string) => {

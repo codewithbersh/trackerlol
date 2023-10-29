@@ -26,6 +26,7 @@ import { FieldWeekStartDay } from "./field-week-start-day";
 import { FieldMonthStartDate } from "./field-month-start-date";
 import { FieldYearStartDate } from "./field-year-start-date";
 import { FieldCategory } from "./field-category";
+import { trpc } from "@/app/_trpc/client";
 
 const defaultProps = z.object({
   limit: z.coerce.number(),
@@ -71,10 +72,27 @@ const formSchema = z.intersection(schemaCond, defaultProps);
 
 export const FormCategoryBudget = () => {
   const { onClose, budget: initialData } = useCategoryBudget();
-  const { data: categories } = useCategoryData();
+  const utils = trpc.useUtils();
+
+  const { data: categories } = trpc.category.get.useQuery(undefined, {
+    staleTime: Infinity,
+  });
   const { data: categoryBudgets, refetch: refetchCategoryBudgets } =
-    useCategoryBudgetsData();
-  const { data: profile } = useProfileData();
+    trpc.budget.categories.getAll.useQuery(undefined, {
+      staleTime: Infinity,
+    });
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
+    staleTime: Infinity,
+  });
+  const { refetch: refetchCategoriesBudgets } =
+    trpc.budget.categories.getAll.useQuery(undefined, {
+      staleTime: Infinity,
+    });
+
+  const { mutate: addCategoryBudget } =
+    trpc.budget.categories.add.useMutation();
+  const { mutate: updateCategoryBudget } =
+    trpc.budget.categories.update.useMutation();
 
   const router = useRouter();
 
@@ -93,27 +111,43 @@ export const FormCategoryBudget = () => {
 
   const selectedDuration = form.watch("duration");
   const buttonText = initialData ? "Save Changes" : "Add Budget";
-  const toastSuccess = initialData ? "Budget updated." : "Budget created.";
   const isLoading = form.formState.isSubmitting;
-  const filteredCategories = categories?.expense.filter(
+  const filteredCategories = categories?.filter(
     (category) =>
       !categoryBudgets?.some((budget) => budget.categoryId === category.id),
   );
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      if (initialData) {
-        await axios.patch(`/api/category-budgets/${initialData.id}`, values);
-      } else {
-        await axios.post("/api/category-budgets", values);
-      }
-      refetchCategoryBudgets();
-      router.refresh();
-      onClose();
-      toast.success(toastSuccess);
-    } catch (error) {
-      console.log("[CREATE_CATEGORY_BUDGET_ERROR]", error);
-      toast.error("An error has occured.");
+    if (initialData) {
+      updateCategoryBudget(
+        { ...values, id: initialData.id },
+        {
+          onSuccess: ({ code, message }) => {
+            if (code === 200) {
+              utils.transaction.getTotal.invalidate({
+                categoryId: values.categoryId,
+              });
+              toast.success(message);
+              refetchCategoriesBudgets();
+              onClose();
+            } else {
+              toast.error(message);
+            }
+          },
+        },
+      );
+    } else {
+      addCategoryBudget(values, {
+        onSuccess: ({ code, message }) => {
+          if (code === 200) {
+            toast.success(message);
+            refetchCategoriesBudgets();
+            onClose();
+          } else {
+            toast.error(message);
+          }
+        },
+      });
     }
   };
 

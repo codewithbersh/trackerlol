@@ -27,7 +27,7 @@ export const TransactionsClient = ({
     staleTime: Infinity,
   });
 
-  const { data: transactions } = trpc.transaction.get.useQuery(
+  const { data: transactions } = trpc.transaction.getAll.useQuery(
     { from, to, type, categoryId },
     {
       initialData: initialData,
@@ -38,6 +38,14 @@ export const TransactionsClient = ({
   );
 
   const groupedTransactions = groupTransactionsByDate(transactions);
+
+  if (transactions.length === 0) {
+    return (
+      <div className="py-12 text-center text-sm text-muted-foreground">
+        No transactions.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-16">

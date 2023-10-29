@@ -43,11 +43,11 @@ export function getStartDate({
   }
 }
 
-export function getBudgetDateRange({
-  budget,
-}: {
+interface GetBudgetDateRangeProps {
   budget: OverallBudget | CategoryBudgetWithLimitAsNumber;
-}) {
+}
+
+export function getBudgetDateRange({ budget }: GetBudgetDateRangeProps) {
   if (budget.duration === "WEEKLY") {
     const budgetStartingDay = WEEK_START_DAYS.find(
       (day) => day.label === budget.weekStartDay,

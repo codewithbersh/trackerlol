@@ -22,6 +22,7 @@ import { FieldCategory } from "./field-category";
 import { FieldType } from "./field-type";
 import { FieldAmount } from "./field-amount";
 import { FieldTransactionDate } from "./field-transaction-date";
+import { getQueryKey } from "@trpc/react-query";
 
 const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -41,7 +42,7 @@ interface TransactionFormProps {
 
 export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const { onClose } = useTransactionModal();
-  const { refetch: refetchTransactions } = trpc.transaction.get.useQuery(
+  const { refetch: refetchTransactions } = trpc.transaction.getAll.useQuery(
     {},
     {
       staleTime: Infinity,
@@ -54,6 +55,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const { data: profile } = trpc.profile.get.useQuery(undefined, {
     staleTime: Infinity,
   });
+
   const { mutate: addTransaction, isLoading: isAdding } =
     trpc.transaction.add.useMutation();
   const { mutate: updateTransaction, isLoading: isUpdating } =
@@ -90,7 +92,9 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
               refetchTransactions();
               onClose();
               toast.success("Transaction Updated ");
-              utils.transaction.get.invalidate();
+              utils.transaction.getTotal.invalidate({
+                categoryId: values.categoryId,
+              });
             } else {
               toast("An error has occured.");
             }
@@ -103,10 +107,18 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
         {
           onSuccess: ({ success }) => {
             if (success) {
+              const queryKey = getQueryKey(
+                trpc.transaction.getTotal,
+                { categoryId: values.categoryId },
+                "query",
+              );
+
               refetchTransactions();
               onClose();
               toast.success("Transaction Added.");
-              utils.transaction.get.invalidate();
+              utils.transaction.getTotal.invalidate({
+                categoryId: values.categoryId,
+              });
             } else {
               toast.error("An error has occured.");
             }
@@ -125,7 +137,7 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
             refetchTransactions();
             onClose();
             toast.success("Transaction has been deleted.");
-            utils.transaction.get.invalidate();
+            utils.transaction.getAll.invalidate();
           } else {
             toast.error("An error has occured.");
           }
