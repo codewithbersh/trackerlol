@@ -41,10 +41,8 @@ export const CategoriesItem = ({ budget, profile }: CategoriesItemProps) => {
     },
   );
 
-  const percentage = (total ?? 0 / budget.limit) * 100;
-
+  const percentage = ((total ? total : 0) / budget.limit) * 100;
   const daysLeft = differenceInCalendarDays(to, new Date()) + 1;
-
   const spendingLimitLeft = budget.limit - (total ?? 0);
 
   return (
@@ -127,7 +125,7 @@ export const CategoriesItem = ({ budget, profile }: CategoriesItemProps) => {
           onClick={(e) => {
             e.stopPropagation();
             router.push(
-              `/transactions?category=${budget.category.slug}&from=${format(
+              `/transactions?categoryId=${budget.category.id}&from=${format(
                 from,
                 "yyyy-MM-dd",
               )}&to=${format(to, "yyyy-MM-dd")}`,

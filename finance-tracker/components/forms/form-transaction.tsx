@@ -90,11 +90,12 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
           onSuccess: ({ success }) => {
             if (success) {
               refetchTransactions();
-              onClose();
-              toast.success("Transaction Updated ");
               utils.transaction.getTotal.invalidate({
                 categoryId: values.categoryId,
               });
+              utils.budget.overall.invalidate();
+              onClose();
+              toast.success("Transaction Updated ");
             } else {
               toast("An error has occured.");
             }
@@ -107,18 +108,13 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
         {
           onSuccess: ({ success }) => {
             if (success) {
-              const queryKey = getQueryKey(
-                trpc.transaction.getTotal,
-                { categoryId: values.categoryId },
-                "query",
-              );
-
               refetchTransactions();
-              onClose();
-              toast.success("Transaction Added.");
               utils.transaction.getTotal.invalidate({
                 categoryId: values.categoryId,
               });
+              utils.budget.overall.invalidate();
+              toast.success("Transaction Added.");
+              onClose();
             } else {
               toast.error("An error has occured.");
             }
@@ -128,16 +124,19 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, categoryId: string) => {
     deleteTransaction(
       { id },
       {
         onSuccess: ({ success }) => {
           if (success) {
             refetchTransactions();
+            utils.transaction.getTotal.invalidate({
+              categoryId,
+            });
+            utils.budget.overall.invalidate();
             onClose();
             toast.success("Transaction has been deleted.");
-            utils.transaction.getAll.invalidate();
           } else {
             toast.error("An error has occured.");
           }
@@ -250,7 +249,9 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
           {initialData && (
             <Button
               type="button"
-              onClick={() => handleDelete(initialData.id)}
+              onClick={() =>
+                handleDelete(initialData.id, initialData.categoryId)
+              }
               variant="outline-destructive"
               disabled={isLoading}
             >

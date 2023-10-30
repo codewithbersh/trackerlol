@@ -26,8 +26,6 @@ export const OverallBudget = ({ profile, initialData }: OverallBudgetProps) => {
     {
       staleTime: Infinity,
       initialData,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
     },
   );
 
