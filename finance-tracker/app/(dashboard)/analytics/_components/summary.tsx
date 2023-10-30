@@ -1,5 +1,6 @@
-import { getNetOverall } from "@/actions/get-net-overall";
-import { getUserWithProfile } from "@/actions/get-user-with-profile";
+"use client";
+
+import { trpc } from "@/app/_trpc/client";
 import { cn, formatCurrency } from "@/lib/utils";
 import {
   Package,
@@ -13,34 +14,39 @@ interface SummaryProps {
   range: string | undefined;
 }
 
-export const Summary = async ({ range }: SummaryProps) => {
-  const { netOverall, totalIncome, totalExpense } = await getNetOverall({
+export const Summary = ({ range }: SummaryProps) => {
+  const { data } = trpc.analytics.get.netOverall.useQuery({
     range,
   });
-  const { profile } = await getUserWithProfile();
+  const { data: profile } = trpc.profile.get.useQuery();
+
+  if (!data || !profile) return null;
 
   const cards = [
     {
       isPrimary: true,
-      amount: netOverall.amount,
-      percentage: netOverall.percentage,
+      amount: data.netOverall.amount,
+      percentage: data.netOverall.percentage,
       title: "Net Overall",
       icon: Package,
-      percentageIcon: netOverall.percentage >= 0 ? TrendingUp : TrendingDown,
+      percentageIcon:
+        data.netOverall.percentage >= 0 ? TrendingUp : TrendingDown,
     },
     {
-      amount: totalIncome.amount,
-      percentage: totalIncome.percentage,
+      amount: data.totalIncome.amount,
+      percentage: data.totalIncome.percentage,
       title: "Total Income",
       icon: PackagePlus,
-      percentageIcon: totalIncome.percentage >= 0 ? TrendingUp : TrendingDown,
+      percentageIcon:
+        data.totalIncome.percentage >= 0 ? TrendingUp : TrendingDown,
     },
     {
-      amount: totalExpense.amount,
-      percentage: totalExpense.percentage,
+      amount: data.totalExpense.amount,
+      percentage: data.totalExpense.percentage,
       title: "Total Expense",
       icon: PackageMinus,
-      percentageIcon: totalExpense.percentage >= 0 ? TrendingUp : TrendingDown,
+      percentageIcon:
+        data.totalExpense.percentage >= 0 ? TrendingUp : TrendingDown,
     },
   ];
   return (

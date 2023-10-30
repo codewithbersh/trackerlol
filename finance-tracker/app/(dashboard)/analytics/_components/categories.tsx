@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { getTopCategories } from "@/actions/get-top-categories";
 import { format } from "date-fns";
@@ -6,17 +8,22 @@ import { Eye } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { CategoriesChart } from "./categories-chart";
+import { trpc } from "@/app/_trpc/client";
 
 interface CategoriesProps {
   range: string | undefined;
 }
 
-export const Categories = async ({ range }: CategoriesProps) => {
-  const categories = await getTopCategories(range);
+export const Categories = ({ range }: CategoriesProps) => {
+  const { data: categories } = trpc.analytics.get.topCategories.useQuery({
+    range,
+  });
 
   const {
     current: { from, to },
   } = getAnalyticsDateRange(range);
+
+  if (!categories) return null;
 
   return (
     <div className="col-span-full space-y-8 rounded-md border p-4 md:col-span-6">
@@ -42,7 +49,7 @@ export const Categories = async ({ range }: CategoriesProps) => {
         </Link>
       </div>
 
-      {categories.length === 0 ? (
+      {categories?.length === 0 || !categories ? (
         <div className="my-auto py-6 text-center text-sm text-muted-foreground">
           No transactions.
         </div>

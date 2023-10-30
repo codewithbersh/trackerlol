@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-
 import { PageHeading } from "@/components/page-heading";
 import { MainWrapper } from "@/components/main-wrapper";
 
@@ -8,13 +6,12 @@ import { Summary } from "./_components/summary";
 import { Overall } from "./_components/overall";
 import { Categories } from "./_components/categories";
 import { Budgets } from "./_components/budgets";
-import { AnalyticsLoading } from "./_components/analytics-loading";
 
 interface AnalyticsPageProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-const AnalyticsPage = async ({ searchParams }: AnalyticsPageProps) => {
+const AnalyticsPage = ({ searchParams }: AnalyticsPageProps) => {
   const range = searchParams.range;
 
   return (
@@ -25,32 +22,10 @@ const AnalyticsPage = async ({ searchParams }: AnalyticsPageProps) => {
 
       <MainWrapper>
         <div className="grid w-full grid-cols-12 gap-4">
-          <Suspense
-            fallback={
-              <AnalyticsLoading
-                className="sm:col-span-6 md:col-span-3"
-                numberOfSpinners={3}
-              />
-            }
-          >
-            <Summary range={range} />
-          </Suspense>
-
-          <Suspense
-            fallback={
-              <AnalyticsLoading className="sm:col-span-6 md:col-span-3" />
-            }
-          >
-            <Overall />
-          </Suspense>
-
-          <Suspense fallback={<AnalyticsLoading className="md:col-span-6" />}>
-            <Categories range={range} />
-          </Suspense>
-
-          <Suspense fallback={<AnalyticsLoading className="md:col-span-6" />}>
-            <Budgets />
-          </Suspense>
+          <Summary range={range} />
+          <Overall />
+          <Categories range={range} />
+          <Budgets />
         </div>
       </MainWrapper>
     </div>

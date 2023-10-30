@@ -1,13 +1,18 @@
-import { getOverallLimit } from "@/actions/get-overall-limit";
+"use client";
+
 import { formatCurrency } from "@/lib/utils";
-import { getUserWithProfile } from "@/actions/get-user-with-profile";
 
 import { Progress } from "@/components/ui/progress";
 import { AddOverallBudget } from "@/components/add-overall-budget";
+import { trpc } from "@/app/_trpc/client";
 
-export const Overall = async () => {
-  const budget = await getOverallLimit();
-  const { profile } = await getUserWithProfile();
+export const Overall = () => {
+  const { data: budget } = trpc.analytics.get.overallLimit.useQuery();
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
+    staleTime: Infinity,
+  });
+
+  if (!budget || !profile) return null;
 
   return (
     <div className="col-span-full h-full w-full rounded-md border p-4 sm:col-span-6 md:col-span-3">

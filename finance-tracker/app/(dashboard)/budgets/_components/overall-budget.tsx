@@ -16,7 +16,9 @@ import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { OverallViewTransactions } from "./overall-view-transactions";
 
 export const OverallBudget = () => {
-  const { data: profile } = trpc.profile.get.useQuery();
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
+    staleTime: Infinity,
+  });
   const { data: overallBudget, isLoading } = trpc.budget.overall.get.useQuery(
     undefined,
     {

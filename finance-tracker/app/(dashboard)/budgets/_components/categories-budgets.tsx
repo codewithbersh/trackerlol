@@ -4,7 +4,9 @@ import { trpc } from "@/app/_trpc/client";
 import { CategoriesItem } from "./categories-item";
 
 export const CategoriesBudgets = () => {
-  const { data: profile } = trpc.profile.get.useQuery();
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
+    staleTime: Infinity,
+  });
   const { data: budgets, isLoading } = trpc.budget.categories.getAll.useQuery(
     undefined,
     {

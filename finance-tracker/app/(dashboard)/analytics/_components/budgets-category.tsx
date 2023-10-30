@@ -1,3 +1,5 @@
+"use client";
+
 import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { cn, formatCurrency, greenToRed } from "@/lib/utils";
@@ -6,23 +8,29 @@ import { CircularProgressBar } from "@/components/ui/circular-progress-bar";
 import { ActionTooltip } from "@/components/ui/action-tooltip";
 import { getBudgetDateRange } from "@/app/(dashboard)/budgets/_components/utils";
 import { getUserWithProfile } from "@/actions/get-user-with-profile";
+import { trpc } from "@/app/_trpc/client";
 
 interface BudgetsCategoryProps {
   budget: CategoryBudgetWithLimitAsNumber;
 }
 
-export const BudgetsCategory = async ({ budget }: BudgetsCategoryProps) => {
+export const BudgetsCategory = ({ budget }: BudgetsCategoryProps) => {
   const { from, to } = getBudgetDateRange({ budget });
-  const { _sum: total } = await getTransactionsTotal({
-    from,
-    to,
-    categoryId: budget.categoryId,
-  });
-  const { profile } = await getUserWithProfile();
+  const { data: total } = trpc.transaction.getTotal.useQuery(
+    {
+      from,
+      to,
+      categoryId: budget.categoryId,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
+  const { data: profile } = trpc.profile.get.useQuery();
 
-  const percentage = (Number(total.amount) / Number(budget.limit)) * 100;
+  const percentage = ((total ?? 0) / Number(budget.limit)) * 100;
 
-  const spendingLimitLeft = Number(budget.limit) - Number(total.amount);
+  const spendingLimitLeft = Number(budget.limit) - (total ?? 0);
   return (
     <ActionTooltip label={budget.category.title}>
       <div className="flex shrink-0 flex-col items-center justify-center gap-4">
