@@ -1,19 +1,15 @@
-import { getUserWithProfile } from "@/actions/get-user-with-profile";
-
 import { PageHeading } from "@/components/page-heading";
-import { FormSettings } from "@/components/forms/form-settings";
 import { MainWrapper } from "@/components/main-wrapper";
+import { Settings } from "./_components/settings";
 
-const SettingsPage = async () => {
-  const { profile } = await getUserWithProfile();
-
+const SettingsPage = () => {
   return (
     <div className="mt-[60px] flex  h-full flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
       <PageHeading title="Settings" />
 
       <MainWrapper>
         <div className="h-full">
-          <FormSettings profile={profile} />
+          <Settings />
         </div>
       </MainWrapper>
     </div>
