@@ -8,7 +8,9 @@ import { BudgetsCategory } from "./budgets-category";
 import { trpc } from "@/app/_trpc/client";
 
 export const Budgets = () => {
-  const { data: budgets } = trpc.budget.categories.getAll.useQuery();
+  const { data: budgets } = trpc.budget.categories.getAll.useQuery(undefined, {
+    staleTime: Infinity,
+  });
 
   if (!budgets) return null;
 

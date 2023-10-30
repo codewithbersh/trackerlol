@@ -15,9 +15,14 @@ interface CategoriesProps {
 }
 
 export const Categories = ({ range }: CategoriesProps) => {
-  const { data: categories } = trpc.analytics.get.topCategories.useQuery({
-    range,
-  });
+  const { data: categories } = trpc.analytics.get.topCategories.useQuery(
+    {
+      range,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
 
   const {
     current: { from, to },

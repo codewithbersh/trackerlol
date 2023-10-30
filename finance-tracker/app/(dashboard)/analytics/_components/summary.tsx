@@ -15,10 +15,17 @@ interface SummaryProps {
 }
 
 export const Summary = ({ range }: SummaryProps) => {
-  const { data } = trpc.analytics.get.netOverall.useQuery({
-    range,
+  const { data } = trpc.analytics.get.netOverall.useQuery(
+    {
+      range,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
+    staleTime: Infinity,
   });
-  const { data: profile } = trpc.profile.get.useQuery();
 
   if (!data || !profile) return null;
 

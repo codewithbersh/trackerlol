@@ -7,7 +7,9 @@ import { AddOverallBudget } from "@/components/add-overall-budget";
 import { trpc } from "@/app/_trpc/client";
 
 export const Overall = () => {
-  const { data: budget } = trpc.analytics.get.overallLimit.useQuery();
+  const { data: budget } = trpc.analytics.get.overallLimit.useQuery(undefined, {
+    staleTime: Infinity,
+  });
   const { data: profile } = trpc.profile.get.useQuery(undefined, {
     staleTime: Infinity,
   });

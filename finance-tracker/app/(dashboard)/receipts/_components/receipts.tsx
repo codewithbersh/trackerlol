@@ -8,7 +8,12 @@ interface ReceiptsProps {
 }
 
 export const Receipts = ({ categoryId }: ReceiptsProps) => {
-  const { data: receipts } = trpc.receipt.get.all.useQuery({ categoryId });
+  const { data: receipts } = trpc.receipt.get.all.useQuery(
+    { categoryId },
+    {
+      staleTime: Infinity,
+    },
+  );
 
   if (receipts?.length === 0 || !receipts) {
     return (

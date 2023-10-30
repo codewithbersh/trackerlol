@@ -11,7 +11,9 @@ interface FiltersProps {
 }
 
 export const Filters = ({ categoryId }: FiltersProps) => {
-  const { data: categories } = trpc.category.get.useQuery();
+  const { data: categories } = trpc.category.get.useQuery(undefined, {
+    staleTime: Infinity,
+  });
 
   if (!categories) return null;
 
