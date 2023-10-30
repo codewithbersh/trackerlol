@@ -8,9 +8,10 @@ import { BudgetsCategory } from "./budgets-category";
 import { trpc } from "@/app/_trpc/client";
 
 export const Budgets = () => {
-  const { data: budgets } = trpc.budget.categories.getAll.useQuery(undefined, {
-    staleTime: Infinity,
-  });
+  const { data: budgets } = trpc.budget.categories.getAll.useQuery(
+    undefined,
+    {},
+  );
 
   if (!budgets) return null;
 
@@ -27,21 +28,10 @@ export const Budgets = () => {
           </Button>
         </Link>
       </div>
-      <div className="my-auto flex flex-wrap justify-between gap-4">
-        {budgets?.length === 0 || !budgets ? (
-          <div className="w-full py-6 text-center text-sm text-muted-foreground">
-            No category budgets.
-          </div>
-        ) : (
-          budgets
-            .splice(0, 5)
-            .map((budget) => (
-              <BudgetsCategory
-                key={budget.id}
-                budget={{ ...budget, limit: Number(budget.limit) }}
-              />
-            ))
-        )}
+      <div className="my-auto flex flex-wrap gap-4">
+        {budgets?.map((budget) => (
+          <BudgetsCategory key={budget.id} budget={budget} />
+        ))}
       </div>
     </div>
   );

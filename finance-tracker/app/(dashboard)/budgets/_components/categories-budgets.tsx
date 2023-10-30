@@ -2,6 +2,7 @@
 
 import { trpc } from "@/app/_trpc/client";
 import { CategoriesItem } from "./categories-item";
+import { Spinner } from "@/components/spinner";
 
 export const CategoriesBudgets = () => {
   const { data: profile } = trpc.profile.get.useQuery(undefined, {
@@ -14,16 +15,13 @@ export const CategoriesBudgets = () => {
     },
   );
 
-  if (budgets?.length === 0 || !budgets) {
-    return (
-      <div className="py-12 text-center text-sm text-muted-foreground">
-        No category budgets.
-      </div>
-    );
+  if (isLoading) {
+    return <Spinner className="py-12 md:py-24" />;
   }
+
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-      {budgets.map((budget) => (
+      {budgets?.map((budget) => (
         <CategoriesItem budget={budget} profile={profile} key={budget.id} />
       ))}
     </div>

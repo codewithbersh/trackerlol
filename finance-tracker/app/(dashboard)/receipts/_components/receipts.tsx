@@ -1,19 +1,26 @@
 "use client";
 
-import { Receipt } from "./receipt";
 import { trpc } from "@/app/_trpc/client";
+
+import { Spinner } from "@/components/spinner";
+
+import { Receipt } from "./receipt";
 
 interface ReceiptsProps {
   categoryId: string | undefined;
 }
 
 export const Receipts = ({ categoryId }: ReceiptsProps) => {
-  const { data: receipts } = trpc.receipt.get.all.useQuery(
+  const { data: receipts, isLoading } = trpc.receipt.get.all.useQuery(
     { categoryId },
     {
       staleTime: Infinity,
     },
   );
+
+  if (isLoading) {
+    return <Spinner className="py-12 md:py-24" variant="large" />;
+  }
 
   if (receipts?.length === 0 || !receipts) {
     return (

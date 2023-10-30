@@ -22,10 +22,7 @@ const TransactionsPage = ({ searchParams }: TransactionsPageProps) => {
       <MainWrapper>
         <div className="space-y-8">
           <Filters searchParams={searchParams} />
-
-          <Suspense fallback={<Spinner variant="large" className="py-8" />}>
-            <Transactions searchParams={searchParams} />
-          </Suspense>
+          <Transactions searchParams={searchParams} />
         </div>
       </MainWrapper>
     </div>

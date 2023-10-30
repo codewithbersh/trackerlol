@@ -1,28 +1,30 @@
+"use client";
+
 import { hasValidFilters, validateSearchParams } from "./utils";
 import { FiltersInMobileAction } from "./filters-in-mobile-action";
 import { FiltersInDesktop } from "./filters-in-desktop";
 
 import { FilterTransactionsSheet } from "@/components/modals/filter-transactions-sheet";
-import prismadb from "@/lib/prismadb";
-import { getCurrentUser } from "@/actions/get-current-user";
-import { redirect } from "next/navigation";
+import { trpc } from "@/app/_trpc/client";
+import { Spinner } from "@/components/spinner";
 
 interface FiltersProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-export const Filters = async ({ searchParams }: FiltersProps) => {
-  const user = await getCurrentUser();
+export const Filters = ({ searchParams }: FiltersProps) => {
+  const { data: categories, isLoading } = trpc.category.get.useQuery(
+    undefined,
+    {
+      staleTime: Infinity,
+    },
+  );
 
-  if (!user) {
-    return redirect("/login");
+  if (isLoading) {
+    return <Spinner className="py-12 md:py-24" />;
   }
 
-  const categories = await prismadb.category.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
+  if (!categories) return null;
 
   const filters = validateSearchParams({ searchParams, categories });
   const showReset = hasValidFilters({ searchParams });

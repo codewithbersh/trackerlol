@@ -1,6 +1,7 @@
 "use client";
 
 import { trpc } from "@/app/_trpc/client";
+import { Spinner } from "@/components/spinner";
 import { cn, formatCurrency } from "@/lib/utils";
 import {
   Package,
@@ -15,7 +16,7 @@ interface SummaryProps {
 }
 
 export const Summary = ({ range }: SummaryProps) => {
-  const { data } = trpc.analytics.get.netOverall.useQuery(
+  const { data, isLoading } = trpc.analytics.get.netOverall.useQuery(
     {
       range,
     },
@@ -27,6 +28,9 @@ export const Summary = ({ range }: SummaryProps) => {
     staleTime: Infinity,
   });
 
+  if (isLoading) {
+    return <Spinner className="col-span-12 py-8" variant="large" />;
+  }
   if (!data || !profile) return null;
 
   const cards = [

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { getTopCategories } from "@/actions/get-top-categories";
 import { format } from "date-fns";
 import { getAnalyticsDateRange } from "@/lib/utils";
 import { Eye } from "lucide-react";

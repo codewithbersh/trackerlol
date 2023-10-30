@@ -4,14 +4,19 @@ import { trpc } from "@/app/_trpc/client";
 import { validateTypeParams } from "../../transactions/_components/utils";
 
 import { Category } from "./category";
+import { Spinner } from "@/components/spinner";
 
 export const Categories = ({ type }: { type: string | undefined }) => {
-  const { data: categories } = trpc.category.getByCount.useQuery(
+  const { data: categories, isLoading } = trpc.category.getByCount.useQuery(
     { type: validateTypeParams(type) },
     {
       staleTime: Infinity,
     },
   );
+
+  if (isLoading) {
+    return <Spinner className="py-12 md:py-24" />;
+  }
 
   if (!categories || categories.length === 0) {
     return (
