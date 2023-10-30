@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { CalendarDays } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { getRangeDefaultValue } from "./utils";
 
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -12,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getRangeDefaultValue } from "./utils";
 
 const filterAnalytics = [
   {

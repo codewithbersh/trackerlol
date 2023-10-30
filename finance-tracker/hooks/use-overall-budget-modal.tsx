@@ -1,12 +1,12 @@
-import { OverallBudgetWithLimitAsNumber } from "@/types/types";
 import { create } from "zustand";
+import { OverallBudget } from "@/app/_trpc/client";
 
 interface UseOverallBudgetStore {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  budget: OverallBudgetWithLimitAsNumber | null;
-  setBudget: (budget: OverallBudgetWithLimitAsNumber | null) => void;
+  budget: NonNullable<OverallBudget>["budget"] | null;
+  setBudget: (budget: NonNullable<OverallBudget>["budget"] | null) => void;
 }
 
 export const useOverallBudget = create<UseOverallBudgetStore>((set) => ({

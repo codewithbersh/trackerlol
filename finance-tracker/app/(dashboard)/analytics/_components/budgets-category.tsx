@@ -1,17 +1,14 @@
 "use client";
 
-import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
-import { getTransactionsTotal } from "@/actions/get-transactions-total";
 import { cn, formatCurrency, greenToRed } from "@/lib/utils";
+import { CategoriesBudgets, trpc } from "@/app/_trpc/client";
+import { getBudgetDateRange } from "@/app/(dashboard)/budgets/_components/utils";
 
 import { CircularProgressBar } from "@/components/ui/circular-progress-bar";
 import { ActionTooltip } from "@/components/ui/action-tooltip";
-import { getBudgetDateRange } from "@/app/(dashboard)/budgets/_components/utils";
-import { getUserWithProfile } from "@/actions/get-user-with-profile";
-import { trpc } from "@/app/_trpc/client";
 
 interface BudgetsCategoryProps {
-  budget: CategoryBudgetWithLimitAsNumber;
+  budget: CategoriesBudgets[number];
 }
 
 export const BudgetsCategory = ({ budget }: BudgetsCategoryProps) => {

@@ -1,8 +1,5 @@
-import { Suspense } from "react";
-
 import { MainWrapper } from "@/components/main-wrapper";
 import { PageHeading } from "@/components/page-heading";
-import { Spinner } from "@/components/spinner";
 
 import { TransactionsAction } from "./_components/tranasctions-action";
 import { Transactions } from "./_components/transactions";

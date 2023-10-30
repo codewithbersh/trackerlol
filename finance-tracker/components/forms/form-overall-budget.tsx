@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useOverallBudget } from "@/hooks/use-overall-budget-modal";
 import { Loader2 } from "lucide-react";
-import useProfileData from "@/hooks/use-profile-data";
+import { trpc } from "@/app/_trpc/client";
 
 import {
   Form,
@@ -23,7 +23,6 @@ import { FieldTimeFrame } from "./field-time-frame";
 import { FieldWeekStartDay } from "./field-week-start-day";
 import { FieldMonthStartDate } from "./field-month-start-date";
 import { FieldYearStartDate } from "./field-year-start-date";
-import { trpc } from "@/app/_trpc/client";
 
 const defaultProps = z.object({
   limit: z.coerce.number(),

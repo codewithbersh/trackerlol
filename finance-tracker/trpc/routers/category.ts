@@ -107,7 +107,11 @@ export const categoryRouter = router({
   update: privateProcedure
     .input(
       z.object({
-        id: z.string(),
+        initialData: z.object({
+          id: z.string(),
+          emoji: z.string(),
+          color: z.string(),
+        }),
         type: z.enum(["EXPENSE", "INCOME"]),
         emoji: z.string(),
         title: z.string(),
@@ -116,28 +120,37 @@ export const categoryRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const { userId } = ctx;
-      const { id, type, emoji, title, color } = input;
+      const {
+        initialData: { id, emoji: oldEmoji, color: oldColor },
+        type,
+        emoji,
+        title,
+        color,
+      } = input;
 
-      const emojiExists = await prismadb.category.findFirst({
-        where: {
-          userId,
-          emoji,
-        },
-      });
-
-      if (emojiExists) {
-        return { code: 401 as const, message: "Emoji already exists." };
+      if (oldEmoji !== emoji) {
+        const emojiExists = await prismadb.category.findFirst({
+          where: {
+            userId,
+            emoji,
+          },
+        });
+        if (emojiExists) {
+          return { code: 401 as const, message: "Emoji already exists." };
+        }
       }
 
-      const colorExists = await prismadb.category.findFirst({
-        where: {
-          userId,
-          color,
-        },
-      });
+      if (oldColor !== color) {
+        const colorExists = await prismadb.category.findFirst({
+          where: {
+            userId,
+            color,
+          },
+        });
 
-      if (colorExists) {
-        return { code: 401 as const, message: "Color already exists." };
+        if (colorExists) {
+          return { code: 401 as const, message: "Color already exists." };
+        }
       }
 
       try {

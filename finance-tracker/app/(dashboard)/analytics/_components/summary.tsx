@@ -1,7 +1,6 @@
 "use client";
 
 import { trpc } from "@/app/_trpc/client";
-import { Spinner } from "@/components/spinner";
 import { cn, formatCurrency } from "@/lib/utils";
 import {
   Package,
@@ -10,6 +9,8 @@ import {
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
+
+import { Spinner } from "@/components/spinner";
 
 interface SummaryProps {
   range: string | undefined;
@@ -31,33 +32,41 @@ export const Summary = ({ range }: SummaryProps) => {
   if (isLoading) {
     return <Spinner className="col-span-12 py-8" variant="large" />;
   }
-  if (!data || !profile) return null;
 
   const cards = [
     {
       isPrimary: true,
-      amount: data.netOverall.amount,
-      percentage: data.netOverall.percentage,
+      amount: data ? data.netOverall.amount : 0,
+      percentage: data ? data.netOverall.percentage : 0,
       title: "Net Overall",
       icon: Package,
-      percentageIcon:
-        data.netOverall.percentage >= 0 ? TrendingUp : TrendingDown,
+      percentageIcon: data
+        ? data.totalIncome.percentage >= 0
+          ? TrendingUp
+          : TrendingDown
+        : TrendingDown,
     },
     {
-      amount: data.totalIncome.amount,
-      percentage: data.totalIncome.percentage,
+      amount: data ? data.totalIncome.amount : 0,
+      percentage: data ? data.totalIncome.percentage : 0,
       title: "Total Income",
       icon: PackagePlus,
-      percentageIcon:
-        data.totalIncome.percentage >= 0 ? TrendingUp : TrendingDown,
+      percentageIcon: data
+        ? data.totalIncome.percentage >= 0
+          ? TrendingUp
+          : TrendingDown
+        : TrendingDown,
     },
     {
-      amount: data.totalExpense.amount,
-      percentage: data.totalExpense.percentage,
+      amount: data ? data.totalExpense.amount : 0,
+      percentage: data ? data.totalExpense.percentage : 0,
       title: "Total Expense",
       icon: PackageMinus,
-      percentageIcon:
-        data.totalExpense.percentage >= 0 ? TrendingUp : TrendingDown,
+      percentageIcon: data
+        ? data.totalExpense.percentage >= 0
+          ? TrendingUp
+          : TrendingDown
+        : TrendingDown,
     },
   ];
   return (

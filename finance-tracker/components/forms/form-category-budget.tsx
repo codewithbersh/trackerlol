@@ -6,11 +6,9 @@ import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import useCategoryData from "@/hooks/use-category-data";
-import useCategoryBudgetsData from "@/hooks/use-category-budget-data";
 import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
 import { Loader2 } from "lucide-react";
-import useProfileData from "@/hooks/use-profile-data";
+import { trpc } from "@/app/_trpc/client";
 
 import {
   Form,
@@ -26,7 +24,6 @@ import { FieldWeekStartDay } from "./field-week-start-day";
 import { FieldMonthStartDate } from "./field-month-start-date";
 import { FieldYearStartDate } from "./field-year-start-date";
 import { FieldCategory } from "./field-category";
-import { trpc } from "@/app/_trpc/client";
 
 const defaultProps = z.object({
   limit: z.coerce.number(),

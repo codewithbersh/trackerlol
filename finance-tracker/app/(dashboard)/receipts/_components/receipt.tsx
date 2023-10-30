@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ReceiptWithTransactionWithCategory } from "@/types/receipts";
 import { CopyMinus } from "lucide-react";
+import { Receipt as ReceiptType } from "@/app/_trpc/client";
 
 import { ReceiptAction } from "./receipt-action";
 
 interface ReceiptProps {
-  receipt: ReceiptWithTransactionWithCategory;
+  receipt: NonNullable<ReceiptType>;
   className?: string;
 }
 

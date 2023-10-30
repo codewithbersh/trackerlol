@@ -1,20 +1,25 @@
 "use client";
 
 import { formatCurrency } from "@/lib/utils";
+import { trpc } from "@/app/_trpc/client";
 
 import { Progress } from "@/components/ui/progress";
 import { AddOverallBudget } from "@/components/add-overall-budget";
-import { trpc } from "@/app/_trpc/client";
 
 export const Overall = () => {
-  const { data: budget } = trpc.analytics.get.overallLimit.useQuery(undefined, {
-    staleTime: Infinity,
-  });
+  const { data: budget, isLoading } = trpc.analytics.get.overallLimit.useQuery(
+    undefined,
+    {
+      staleTime: Infinity,
+    },
+  );
   const { data: profile } = trpc.profile.get.useQuery(undefined, {
     staleTime: Infinity,
   });
 
-  if (!budget || !profile) return null;
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <div className="col-span-full h-full w-full rounded-md border p-4 sm:col-span-6 md:col-span-3">

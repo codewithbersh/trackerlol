@@ -1,4 +1,4 @@
-import { calculatePercentage } from "@/actions/get-net-overall";
+import { calculatePercentage } from "@/lib/utils";
 import { getBudgetDateRange } from "@/app/(dashboard)/budgets/_components/utils";
 import prismadb from "@/lib/prismadb";
 import { getAnalyticsDateRange, toTitleCase } from "@/lib/utils";

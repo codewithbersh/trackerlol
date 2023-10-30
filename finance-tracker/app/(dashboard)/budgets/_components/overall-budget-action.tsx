@@ -2,12 +2,12 @@
 
 import { useOverallBudget } from "@/hooks/use-overall-budget-modal";
 import { Settings2 } from "lucide-react";
-import { OverallBudgetWithLimitAsNumber } from "@/types/types";
+import { OverallBudget } from "@/app/_trpc/client";
 
 import { Button } from "@/components/ui/button";
 
 interface OverallBudgetActionProps {
-  budget: OverallBudgetWithLimitAsNumber;
+  budget: NonNullable<OverallBudget>["budget"];
 }
 
 export const OverallBudgetAction = ({ budget }: OverallBudgetActionProps) => {

@@ -2,23 +2,20 @@
 
 import { getBudgetDateRange } from "./utils";
 import { differenceInCalendarDays } from "date-fns";
-
-import { UserProfile, trpc } from "@/app/_trpc/client";
+import { CategoriesBudgets, UserProfile, trpc } from "@/app/_trpc/client";
 import { cn, formatCurrency, greenToRed, toTitleCase } from "@/lib/utils";
 import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { getStartDate } from "./utils";
+import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
+import { useRouter } from "next/navigation";
 
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { useCategoryBudget } from "@/hooks/use-category-budget-modal";
-import { useRouter } from "next/navigation";
-import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getQueryKey } from "@trpc/react-query";
 
 interface CategoriesItemProps {
-  budget: CategoryBudgetWithLimitAsNumber;
+  budget: CategoriesBudgets[number];
   profile: UserProfile | undefined;
 }
 

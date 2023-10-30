@@ -2,6 +2,7 @@
 
 import { trpc } from "@/app/_trpc/client";
 import { CategoriesItem } from "./categories-item";
+
 import { Spinner } from "@/components/spinner";
 
 export const CategoriesBudgets = () => {
@@ -16,7 +17,15 @@ export const CategoriesBudgets = () => {
   );
 
   if (isLoading) {
-    return <Spinner className="py-12 md:py-24" />;
+    return <Spinner className="py-12 md:py-24" variant="large" />;
+  }
+
+  if (!budgets || budgets.length === 0) {
+    return (
+      <div className="grid place-items-center py-6 text-sm text-muted-foreground md:py-12">
+        <span>No category budgets.</span>
+      </div>
+    );
   }
 
   return (

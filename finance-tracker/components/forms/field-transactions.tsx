@@ -1,4 +1,4 @@
-import { Transaction } from "@prisma/client";
+import { TransactionWithCategory } from "@/app/_trpc/client";
 
 import {
   Select,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 
 interface FieldTransactionsProps {
-  transactions: Transaction[] | undefined;
+  transactions: TransactionWithCategory[] | undefined;
   value: string | undefined | null;
   onChange: (value: string | undefined | null) => void;
 }

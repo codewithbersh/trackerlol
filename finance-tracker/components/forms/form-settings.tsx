@@ -4,9 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Profile } from "@prisma/client";
-import axios from "axios";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { trpc } from "@/app/_trpc/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -36,7 +35,7 @@ interface FormSettingsProps {
 }
 
 export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
-  const router = useRouter();
+  const utils = trpc.useUtils();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: initialData || {
@@ -46,20 +45,22 @@ export const FormSettings = ({ profile: initialData }: FormSettingsProps) => {
     },
   });
 
+  const { mutate } = trpc.profile.add.useMutation();
+
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    try {
-      if (initialData) {
-        await axios.patch(`/api/profile/${initialData.id}`, values);
-      } else {
-        await axios.post("/api/profile", values);
-      }
-    } catch (error) {
-      console.log("[FORM_SETTINGS_ERROR]", error);
-    } finally {
-      toast.success("Settings saved.");
-      form.reset(values);
-      router.refresh();
-    }
+    mutate(
+      { ...values, id: initialData?.id },
+      {
+        onSuccess: ({ code, message }) => {
+          if (code === 200) {
+            utils.profile.get.invalidate();
+            toast.success(message);
+          } else {
+            toast.error(message);
+          }
+        },
+      },
+    );
   };
 
   const { isSubmitting, isLoading, isDirty } = form.formState;

@@ -1,10 +1,9 @@
 import { AppRouter } from "@/trpc";
 import { createTRPCReact } from "@trpc/react-query";
-import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { inferRouterOutputs } from "@trpc/server";
 
 export const trpc = createTRPCReact<AppRouter>({});
 
-type RouterInput = inferRouterInputs<AppRouter>;
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
 export type TransactionWithCategory =
@@ -14,3 +13,4 @@ export type Categories = RouterOutput["category"]["get"];
 export type CategoriesByCount = RouterOutput["category"]["getByCount"];
 export type OverallBudget = RouterOutput["budget"]["overall"]["get"];
 export type CategoriesBudgets = RouterOutput["budget"]["categories"]["getAll"];
+export type Receipt = RouterOutput["receipt"]["get"]["all"][number];

@@ -1,6 +1,6 @@
 import { MONTH_START_DATES, WEEK_START_DAYS } from "@/lib/constants";
 import { toTitleCase } from "@/lib/utils";
-import { Duration, OverallBudget } from "@prisma/client";
+import { Duration } from "@prisma/client";
 import {
   addDays,
   addMonths,
@@ -13,7 +13,6 @@ import {
   subDays,
   subMonths,
 } from "date-fns";
-import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
 
 interface GetStartDateProps {
   duration: Duration;
@@ -44,7 +43,7 @@ export function getStartDate({
 }
 
 interface GetBudgetDateRangeProps {
-  budget: OverallBudget | CategoryBudgetWithLimitAsNumber;
+  budget: any;
 }
 
 export function getBudgetDateRange({ budget }: GetBudgetDateRangeProps) {

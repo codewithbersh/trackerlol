@@ -3,12 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useReceiptModal } from "@/hooks/use-receipt-modal";
 import { useRouter } from "next/navigation";
-import useTransactionsData from "@/hooks/use-transactions-data";
 import { Loader2 } from "lucide-react";
+import { trpc } from "@/app/_trpc/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +27,17 @@ const formSchema = z.object({
 
 export const FormReceipt = () => {
   const { onClose, receipt: initialData, setReceipt } = useReceiptModal();
-  const { data: transactions } = useTransactionsData();
+  const utils = trpc.useUtils();
+
+  const { data: transactions } = trpc.transaction.getAll.useQuery(
+    {},
+    {
+      staleTime: Infinity,
+    },
+  );
+  const { mutate: addReceipt } = trpc.receipt.add.useMutation();
+  const { mutate: updateReceipt } = trpc.receipt.update.useMutation();
+  const { mutate: deleteReceipt } = trpc.receipt.delete.useMutation();
 
   const router = useRouter();
 
@@ -40,39 +49,54 @@ export const FormReceipt = () => {
   });
 
   const isLoading = form.formState.isSubmitting;
-  const toastSuccess = initialData ? "Receipt Updated." : "Receipt Uploaded.";
   const buttonText = initialData ? "Save Changes" : "Add Receipt";
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      if (initialData) {
-        await axios.patch(`/api/receipts/${initialData.id}`, {
-          ...values,
-          oldImageUrl: initialData.imageUrl,
-        });
-        onClose();
-      } else {
-        const res = await axios.post("/api/receipts", values);
-        setReceipt(res.data);
-      }
-
-      toast.success(toastSuccess);
-      router.refresh();
-    } catch (error) {
-      toast.error("An error has occured.");
+    if (initialData) {
+      updateReceipt(
+        { ...values, id: initialData.id },
+        {
+          onSuccess: ({ code, message }) => {
+            if (code === 200) {
+              utils.receipt.get.all.invalidate();
+              onClose();
+              toast.success(message);
+            } else {
+              toast.error(message);
+            }
+          },
+        },
+      );
+    } else {
+      addReceipt(values, {
+        onSuccess: ({ code, message, receipt }) => {
+          if (code === 200) {
+            utils.receipt.get.all.invalidate();
+            toast.success(message);
+            setReceipt(receipt);
+          } else {
+            toast.error(message);
+          }
+        },
+      });
     }
   };
 
   const handleDelete = async (id: string) => {
-    try {
-      await axios.delete(`/api/receipts/${id}`);
-      toast.success("Receipt deleted.");
-      router.refresh();
-      onClose();
-    } catch (error) {
-      console.log("[DELETE_RECEIPT_ERROR]", error);
-      toast.error("An error has occured.");
-    }
+    deleteReceipt(
+      { id },
+      {
+        onSuccess: ({ code, message }) => {
+          if (code === 200) {
+            toast.success(message);
+            utils.receipt.get.all.invalidate();
+            onClose();
+          } else {
+            toast.error(message);
+          }
+        },
+      },
+    );
   };
 
   return (

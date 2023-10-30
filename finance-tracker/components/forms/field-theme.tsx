@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { FieldThemeLoading } from "../field-theme-loading";
+import { FieldThemeLoading } from "@/components/field-theme-loading";
 
 export const FieldTheme = () => {
   const [isMounted, setIsMounted] = useState(false);

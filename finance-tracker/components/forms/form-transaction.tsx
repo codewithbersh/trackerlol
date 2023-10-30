@@ -4,10 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import toast from "react-hot-toast";
-import { TransactionWithAmountAsNumber } from "@/types/types";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 import { Loader2 } from "lucide-react";
-import { trpc } from "@/app/_trpc/client";
+import { TransactionWithCategory, trpc } from "@/app/_trpc/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +21,6 @@ import { FieldCategory } from "./field-category";
 import { FieldType } from "./field-type";
 import { FieldAmount } from "./field-amount";
 import { FieldTransactionDate } from "./field-transaction-date";
-import { getQueryKey } from "@trpc/react-query";
 
 const FormSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME"]),
@@ -37,17 +35,11 @@ const FormSchema = z.object({
 });
 
 interface TransactionFormProps {
-  initialData: TransactionWithAmountAsNumber | null;
+  initialData: TransactionWithCategory | null;
 }
 
 export const FormTransaction = ({ initialData }: TransactionFormProps) => {
   const { onClose } = useTransactionModal();
-  const { refetch: refetchTransactions } = trpc.transaction.getAll.useQuery(
-    {},
-    {
-      staleTime: Infinity,
-    },
-  );
   const { data: categories, isLoading: isLoadingCategories } =
     trpc.category.get.useQuery(undefined, {
       staleTime: Infinity,
@@ -89,11 +81,12 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
         {
           onSuccess: ({ success }) => {
             if (success) {
-              refetchTransactions();
+              utils.transaction.getAll.invalidate();
               utils.transaction.getTotal.invalidate({
                 categoryId: values.categoryId,
               });
               utils.budget.overall.invalidate();
+              utils.analytics.invalidate();
               onClose();
               toast.success("Transaction Updated ");
             } else {
@@ -108,11 +101,12 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
         {
           onSuccess: ({ success }) => {
             if (success) {
-              refetchTransactions();
+              utils.transaction.getAll.invalidate();
               utils.transaction.getTotal.invalidate({
                 categoryId: values.categoryId,
               });
               utils.budget.overall.invalidate();
+              utils.analytics.invalidate();
               toast.success("Transaction Added.");
               onClose();
             } else {
@@ -130,11 +124,12 @@ export const FormTransaction = ({ initialData }: TransactionFormProps) => {
       {
         onSuccess: ({ success }) => {
           if (success) {
-            refetchTransactions();
+            utils.transaction.getAll.invalidate();
             utils.transaction.getTotal.invalidate({
               categoryId,
             });
             utils.budget.overall.invalidate();
+            utils.analytics.invalidate();
             onClose();
             toast.success("Transaction has been deleted.");
           } else {

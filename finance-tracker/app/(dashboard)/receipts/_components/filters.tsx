@@ -1,7 +1,5 @@
 "use client";
 
-import { getCategories } from "@/actions/get-categories";
-import { validateCategoryParams } from "@/app/(dashboard)/transactions/_components/utils";
 import { FilterByCategory } from "@/app/(dashboard)/transactions/_components/filter-by-category";
 import { FilterReset } from "@/app/(dashboard)/transactions/_components/filter-reset";
 import { trpc } from "@/app/_trpc/client";

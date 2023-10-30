@@ -1,9 +1,6 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { signOut } from "next-auth/react";
 
 import {
   Dialog,
@@ -14,6 +11,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { trpc } from "@/app/_trpc/client";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface FieldAccountModal {
   deleteModalOpen: boolean;
@@ -26,15 +26,16 @@ export const FieldAccountModal = ({
   deleteModalOnClose,
   deleteModalOnChange,
 }: FieldAccountModal) => {
+  const router = useRouter();
+  const { mutate: deleteAccount } = trpc.user.delete.useMutation();
+
   const handleDeleteAccount = async () => {
-    try {
-      await axios.delete("/api/users");
-    } catch (error) {
-      console.log("[DELETE_ACCOUNT_ERROR]", error);
-      toast.error("An error has occured.");
-    } finally {
-      signOut();
-    }
+    deleteAccount(undefined, {
+      onSuccess: () => {
+        router.push("/");
+        toast("Account deleted.");
+      },
+    });
   };
 
   return (

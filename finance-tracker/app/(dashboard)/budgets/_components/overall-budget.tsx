@@ -1,18 +1,16 @@
 "use client";
 
-import {
-  OverallBudget as OverallBudgetType,
-  UserProfile,
-  trpc,
-} from "@/app/_trpc/client";
-import { AddOverallBudget } from "@/components/add-overall-budget";
-import { Spinner } from "@/components/spinner";
+import { trpc } from "@/app/_trpc/client";
 import { cn, formatCurrency, greenToRed, toTitleCase } from "@/lib/utils";
 import { differenceInCalendarDays } from "date-fns";
 import { getStartDate } from "./utils";
-import { OverallBudgetAction } from "./overall-budget-action";
-import { Progress } from "@/components/ui/progress";
 import { TriangleUpIcon } from "@radix-ui/react-icons";
+
+import { AddOverallBudget } from "@/components/add-overall-budget";
+import { Spinner } from "@/components/spinner";
+import { Progress } from "@/components/ui/progress";
+
+import { OverallBudgetAction } from "./overall-budget-action";
 import { OverallViewTransactions } from "./overall-view-transactions";
 
 export const OverallBudget = () => {

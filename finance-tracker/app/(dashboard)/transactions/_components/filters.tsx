@@ -1,12 +1,12 @@
 "use client";
 
 import { hasValidFilters, validateSearchParams } from "./utils";
-import { FiltersInMobileAction } from "./filters-in-mobile-action";
-import { FiltersInDesktop } from "./filters-in-desktop";
+import { trpc } from "@/app/_trpc/client";
 
 import { FilterTransactionsSheet } from "@/components/modals/filter-transactions-sheet";
-import { trpc } from "@/app/_trpc/client";
-import { Spinner } from "@/components/spinner";
+
+import { FiltersInMobileAction } from "./filters-in-mobile-action";
+import { FiltersInDesktop } from "./filters-in-desktop";
 
 interface FiltersProps {
   searchParams: { [key: string]: string | undefined };
@@ -19,10 +19,6 @@ export const Filters = ({ searchParams }: FiltersProps) => {
       staleTime: Infinity,
     },
   );
-
-  if (isLoading) {
-    return <Spinner className="py-12 md:py-24" />;
-  }
 
   if (!categories) return null;
 

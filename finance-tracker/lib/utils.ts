@@ -145,3 +145,22 @@ export const formatCurrency = ({
     signDisplay: signDisplay,
   }).format(amount);
 };
+
+export function calculatePercentage(
+  previous: number | undefined,
+  current: number | undefined,
+): number {
+  if (previous === undefined || previous === 0) {
+    if (current === undefined) {
+      return 0;
+    } else {
+      return 0;
+    }
+  }
+
+  if (current === undefined) {
+    return 0;
+  }
+
+  return ((current - previous) / previous) * 100;
+}

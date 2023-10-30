@@ -15,7 +15,7 @@ interface CategoryProps {
 export const Category = ({ category, count }: CategoryProps) => {
   const { setCategory, onOpen } = useCategoryModal();
   return (
-    <div className="col-span-full rounded-md border p-4 sm:col-span-6 md:col-span-4">
+    <div className="col-span-full rounded-md border p-2 sm:col-span-6 md:col-span-4 lg:p-4">
       <div className="flex items-center gap-4">
         <div
           className="grid h-10 w-10 shrink-0 place-items-center rounded-md"
@@ -32,7 +32,7 @@ export const Category = ({ category, count }: CategoryProps) => {
             className="h-fit p-0 pr-2 font-normal text-muted-foreground underline hover:text-primary"
           >
             <Link
-              className=" line-clamp-1 text-muted-foreground"
+              className="text-sm tracking-tight text-muted-foreground"
               href={`/transactions?categoryId=${category.id}`}
             >
               ({count}) transaction{count !== 1 && "s"}
@@ -41,7 +41,8 @@ export const Category = ({ category, count }: CategoryProps) => {
         </div>
         <Button
           variant="ghost"
-          className="ml-auto"
+          className="ml-auto p-0"
+          size="icon"
           onClick={() => {
             setCategory(category);
             onOpen();

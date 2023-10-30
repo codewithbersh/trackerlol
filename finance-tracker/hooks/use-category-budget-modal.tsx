@@ -1,12 +1,12 @@
-import { CategoryBudgetWithLimitAsNumber } from "@/types/types";
+import { CategoriesBudgets } from "@/app/_trpc/client";
 import { create } from "zustand";
 
 interface UseCategoryBudgetStore {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  budget: CategoryBudgetWithLimitAsNumber | null;
-  setBudget: (budget: CategoryBudgetWithLimitAsNumber | null) => void;
+  budget: CategoriesBudgets[number] | null;
+  setBudget: (budget: CategoriesBudgets[number] | null) => void;
 }
 
 export const useCategoryBudget = create<UseCategoryBudgetStore>((set) => ({

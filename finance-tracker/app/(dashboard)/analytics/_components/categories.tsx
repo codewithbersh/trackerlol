@@ -4,10 +4,10 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { getAnalyticsDateRange } from "@/lib/utils";
 import { Eye } from "lucide-react";
+import { trpc } from "@/app/_trpc/client";
 
 import { Button } from "@/components/ui/button";
 import { CategoriesChart } from "./categories-chart";
-import { trpc } from "@/app/_trpc/client";
 
 interface CategoriesProps {
   range: string | undefined;

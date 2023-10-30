@@ -1,8 +1,8 @@
 import { getCurrentUser } from "@/actions/get-current-user";
+import { redirect } from "next/navigation";
 
 import { UserAuthForm } from "@/components/auth/user-auth-form";
 import { Logo } from "@/components/logo";
-import { redirect } from "next/navigation";
 
 const LoginPage = async () => {
   const user = await getCurrentUser();

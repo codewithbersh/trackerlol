@@ -35,13 +35,6 @@ export const FormCategory = () => {
   const { data: categories, refetch } = trpc.category.get.useQuery(undefined, {
     staleTime: Infinity,
   });
-  const { refetch: refetchGetCategoriesByCount } =
-    trpc.category.getByCount.useQuery(
-      {},
-      {
-        staleTime: Infinity,
-      },
-    );
   const { mutate: addCategory, isLoading: isAdding } =
     trpc.category.add.useMutation();
   const { mutate: updateCategory, isLoading: isUpdating } =
@@ -68,15 +61,15 @@ export const FormCategory = () => {
   const onSubmit = async (values: z.infer<typeof CategoryFormSchema>) => {
     if (initialData) {
       updateCategory(
-        { ...values, id: initialData.id },
+        { ...values, initialData: initialData },
         {
           onSuccess: ({ code, message }) => {
             if (code === 200) {
               toast.success(message);
               utils.category.get.invalidate();
               utils.category.getByCount.invalidate();
+              utils.category.getByCount.invalidate();
               refetch();
-              refetchGetCategoriesByCount();
               onClose();
             } else {
               toast.error(message);
@@ -91,8 +84,8 @@ export const FormCategory = () => {
             toast.success(message);
             utils.category.get.invalidate();
             utils.category.getByCount.invalidate();
+            utils.category.getByCount.invalidate();
             refetch();
-            refetchGetCategoriesByCount();
             onClose();
           } else {
             toast.error(message);
@@ -109,11 +102,10 @@ export const FormCategory = () => {
         onSuccess: ({ code, message }) => {
           if (code === 200) {
             toast.success(message);
-            onClose();
             utils.category.get.invalidate();
             utils.category.getByCount.invalidate();
             refetch();
-            refetchGetCategoriesByCount();
+            onClose();
           } else {
             toast.error(message);
           }

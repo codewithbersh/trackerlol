@@ -1,9 +1,11 @@
 "use client";
 
-import { TransactionWithCategory, UserProfile, trpc } from "@/app/_trpc/client";
+import { trpc } from "@/app/_trpc/client";
 import { formatCurrency } from "@/lib/utils";
 import { groupTransactionsByDate } from "./utils";
 import { format } from "date-fns";
+
+import { Spinner } from "@/components/spinner";
 
 import { Transaction } from "./transaction";
 
@@ -18,24 +20,26 @@ export const Transactions = ({ searchParams }: TransactionsClientProps) => {
     staleTime: Infinity,
   });
 
-  const { data: transactions } = trpc.transaction.getAll.useQuery(
+  const { data: transactions, isLoading } = trpc.transaction.getAll.useQuery(
     { from, to, type, categoryId },
     {
       staleTime: Infinity,
     },
   );
 
-  if (!transactions || !profile) return null;
+  if (isLoading) {
+    return <Spinner className="w-full py-12 md:py-24" variant="large" />;
+  }
 
-  const groupedTransactions = groupTransactionsByDate(transactions);
-
-  if (transactions.length === 0) {
+  if (!transactions || !profile || transactions.length === 0) {
     return (
       <div className="py-12 text-center text-sm text-muted-foreground">
         No transactions.
       </div>
     );
   }
+
+  const groupedTransactions = groupTransactionsByDate(transactions);
 
   return (
     <div className="space-y-16">

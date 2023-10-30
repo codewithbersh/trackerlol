@@ -1,10 +1,10 @@
 import { ValidateSearchParamsType } from "./utils";
+import { Categories } from "@/app/_trpc/client";
 
 import { FilterByType } from "./filter-by-type";
 import { FilterByCategory } from "./filter-by-category";
 import { FilterByDate } from "./filter-by-date";
 import { FilterReset } from "./filter-reset";
-import { Categories } from "@/app/_trpc/client";
 
 interface FiltersInDesktopProps {
   filters: ValidateSearchParamsType;
