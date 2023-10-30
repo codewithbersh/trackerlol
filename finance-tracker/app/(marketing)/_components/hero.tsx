@@ -26,7 +26,7 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="space-y-4">
         <div
-          className="animate-fade-up relative mx-auto w-fit opacity-0"
+          className="relative mx-auto w-fit animate-fade-up opacity-0"
           style={{ animationDelay: "0.05s", animationFillMode: "forwards" }}
         >
           <div className="relative z-50 mx-auto w-fit rounded-full border-t bg-gradient-to-t from-background to-primary-foreground/50 p-2">
@@ -42,20 +42,18 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
 
         <div className="space-y-4">
           <h1
-            className=" animate-fade-up  text-center text-3xl font-medium leading-[1.2] text-primary/95 opacity-0 sm:text-5xl"
+            className=" animate-fade-up  text-center text-3xl font-medium  text-primary/95 opacity-0 sm:text-5xl"
             style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           >
-            {/* The Personal Finance <br className="hidden min-[374px]:block" /> for
-            the Web */}
             <Balancer>
-              Join the waitlist for the{" "}
+              Supercharge your finances with{" "}
               <span className="bg-gradient-to-r from-pink-400 via-indigo-400 to-indigo-600 bg-clip-text text-transparent">
-                personal finance of the web
+                Tracker - the Personal Finance for the Web
               </span>
             </Balancer>
           </h1>
           <p
-            className="animate-fade-up mx-auto max-w-[467px] text-center  font-medium text-indigo-300/75 opacity-0 md:max-w-[550px] md:text-lg"
+            className="mx-auto max-w-[467px] animate-fade-up text-center  font-medium text-indigo-300/75 opacity-0 md:max-w-[550px] md:text-lg"
             style={{ animationDelay: "0.25s", animationFillMode: "forwards" }}
           >
             A simplified finance tracker built for everyone. Navigate your
@@ -64,8 +62,8 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
         </div>
       </div>
 
-      {/* <Button
-        className="animate-fade-up mt-4 opacity-0"
+      <Button
+        className="mt-4 animate-fade-up opacity-0"
         variant="brand"
         asChild
         style={{ animationDelay: "0.45s", animationFillMode: "forwards" }}
@@ -81,18 +79,18 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         )}
-      </Button> */}
-      <div
-        className="animate-fade-up mt-4 w-full max-w-[250px] opacity-0"
+      </Button>
+      {/* <div
+        className="mt-4 w-full max-w-[250px] animate-fade-up opacity-0"
         style={{ animationDelay: "0.45s", animationFillMode: "forwards" }}
       >
         <JoinWaitlist />
-      </div>
+      </div> */}
 
       <div className="mt-16 grid grid-cols-1 gap-8 md:mt-24 md:grid-cols-2">
         <div
           style={{ animationDelay: "0.55s", animationFillMode: "forwards" }}
-          className=" animate-fade-up group col-span-1 rounded-sm bg-accent/25 pb-4 opacity-0 dark:border-t md:pb-8"
+          className=" group col-span-1 animate-fade-up rounded-sm bg-accent/25 pb-4 opacity-0 dark:border-t md:pb-8"
         >
           <div className="p-4 md:p-8">
             <FeaturesHeading
@@ -139,7 +137,7 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
         </div>
         <div
           style={{ animationDelay: "0.65s", animationFillMode: "forwards" }}
-          className="animate-fade-up col-span-1 row-span-2 aspect-square h-full max-h-[574px] w-full overflow-hidden rounded-sm bg-accent/25 p-4 opacity-0  dark:border-t md:aspect-auto md:p-8"
+          className="col-span-1 row-span-2 aspect-square h-full max-h-[574px] w-full animate-fade-up overflow-hidden rounded-sm bg-accent/25 p-4 opacity-0  dark:border-t md:aspect-auto md:p-8"
         >
           <FeaturesHeading
             title="Track Anytime, Anywhere"
@@ -165,7 +163,7 @@ export const Hero = ({ isAuthenticated }: HeroProps) => {
         </div>
         <div
           style={{ animationDelay: "0.75s", animationFillMode: "forwards" }}
-          className="animate-fade-up col-span-1 overflow-hidden rounded-sm bg-accent/25 p-4 opacity-0 dark:border-t md:p-8"
+          className="col-span-1 animate-fade-up overflow-hidden rounded-sm bg-accent/25 p-4 opacity-0 dark:border-t md:p-8"
         >
           <FeaturesHeading
             title="Filter Transactions"
