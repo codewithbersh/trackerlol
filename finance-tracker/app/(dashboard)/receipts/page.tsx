@@ -1,8 +1,4 @@
-import { Suspense } from "react";
-
 import { PageHeading } from "@/components/page-heading";
-import { Spinner } from "@/components/spinner";
-import { Skeleton } from "@/components/ui/skeleton";
 import { MainWrapper } from "@/components/main-wrapper";
 
 import { ReceiptsAction } from "./_components/receipts-action";
@@ -13,7 +9,8 @@ interface ReceiptsPageProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-const ReceiptsPage = async ({ searchParams }: ReceiptsPageProps) => {
+const ReceiptsPage = ({ searchParams }: ReceiptsPageProps) => {
+  const categoryId = searchParams.categoryId;
   return (
     <div className="mt-[60px] flex  flex-col py-8 pt-0 sm:mt-16 lg:mt-4">
       <PageHeading title="Receipts">
@@ -22,13 +19,8 @@ const ReceiptsPage = async ({ searchParams }: ReceiptsPageProps) => {
 
       <MainWrapper>
         <div className="flex flex-col gap-8">
-          <Suspense fallback={<Skeleton className="h-[38px] w-[135px]" />}>
-            <Filters searchParams={searchParams} />
-          </Suspense>
-
-          <Suspense fallback={<Spinner className="py-8" variant="large" />}>
-            <Receipts searchParams={searchParams} />
-          </Suspense>
+          <Filters categoryId={categoryId} />
+          <Receipts categoryId={categoryId} />
         </div>
       </MainWrapper>
     </div>

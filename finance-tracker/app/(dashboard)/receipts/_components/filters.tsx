@@ -1,22 +1,28 @@
+"use client";
+
 import { getCategories } from "@/actions/get-categories";
 import { validateCategoryParams } from "@/app/(dashboard)/transactions/_components/utils";
 import { FilterByCategory } from "@/app/(dashboard)/transactions/_components/filter-by-category";
 import { FilterReset } from "@/app/(dashboard)/transactions/_components/filter-reset";
+import { trpc } from "@/app/_trpc/client";
 
 interface FiltersProps {
-  searchParams: { [key: string]: string | undefined };
+  categoryId: string | undefined;
 }
 
-export const Filters = async ({ searchParams }: FiltersProps) => {
-  const { categories, income, expense } = await getCategories();
-  const category = validateCategoryParams({
-    categories,
-    params: searchParams.category,
-  });
+export const Filters = ({ categoryId }: FiltersProps) => {
+  const { data: categories } = trpc.category.get.useQuery();
+
+  if (!categories) return null;
+
+  const category = categories?.find((category) => category.id === categoryId);
+  const income = categories?.filter((category) => category.type === "INCOME");
+  const expense = categories?.filter((category) => category.type === "EXPENSE");
+
   return (
     <div className="flex w-fit gap-4">
       <FilterByCategory category={category} income={income} expense={expense} />
-      {searchParams.category && <FilterReset href="/receipts" />}
+      {categoryId && <FilterReset href="/receipts" />}
     </div>
   );
 };

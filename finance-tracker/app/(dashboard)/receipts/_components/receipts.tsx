@@ -1,15 +1,16 @@
-import { getReceipts } from "@/actions/get-receipts";
+"use client";
 
 import { Receipt } from "./receipt";
+import { trpc } from "@/app/_trpc/client";
 
 interface ReceiptsProps {
-  searchParams: { [key: string]: string | undefined };
+  categoryId: string | undefined;
 }
 
-export const Receipts = async ({ searchParams }: ReceiptsProps) => {
-  const receipts = await getReceipts({ category: searchParams.category });
+export const Receipts = ({ categoryId }: ReceiptsProps) => {
+  const { data: receipts } = trpc.receipt.get.all.useQuery({ categoryId });
 
-  if (receipts.length === 0) {
+  if (receipts?.length === 0 || !receipts) {
     return (
       <div className=" w-full py-12 text-center text-sm text-muted-foreground">
         No receipts.
