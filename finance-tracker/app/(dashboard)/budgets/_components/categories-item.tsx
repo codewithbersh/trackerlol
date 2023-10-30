@@ -19,7 +19,7 @@ import { getQueryKey } from "@trpc/react-query";
 
 interface CategoriesItemProps {
   budget: CategoryBudgetWithLimitAsNumber;
-  profile: UserProfile;
+  profile: UserProfile | undefined;
 }
 
 export const CategoriesItem = ({ budget, profile }: CategoriesItemProps) => {

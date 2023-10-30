@@ -15,17 +15,12 @@ import { Progress } from "@/components/ui/progress";
 import { TriangleUpIcon } from "@radix-ui/react-icons";
 import { OverallViewTransactions } from "./overall-view-transactions";
 
-interface OverallBudgetProps {
-  initialData: OverallBudgetType;
-  profile: UserProfile;
-}
-
-export const OverallBudget = ({ profile, initialData }: OverallBudgetProps) => {
+export const OverallBudget = () => {
+  const { data: profile } = trpc.profile.get.useQuery();
   const { data: overallBudget, isLoading } = trpc.budget.overall.get.useQuery(
     undefined,
     {
       staleTime: Infinity,
-      initialData,
     },
   );
 
