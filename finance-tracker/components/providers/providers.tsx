@@ -12,8 +12,7 @@ export function Providers({ children }: PropsWithChildren) {
     trpc.createClient({
       links: [
         httpBatchLink({
-          // url: "http://localhost:3000/api/trpc",
-          url: "https://www.tracker.lol/api/trpc",
+          url: "/api/trpc",
         }),
       ],
       transformer: superjson,

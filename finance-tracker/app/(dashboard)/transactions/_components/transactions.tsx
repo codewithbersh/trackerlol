@@ -47,9 +47,10 @@ export const Transactions = ({ searchParams }: TransactionsClientProps) => {
         const transactions = groupedTransactions[date];
         const sum = transactions.reduce(
           (acc, transaction) =>
-            acc + transaction.type === "INCOME"
+            acc +
+            (transaction.type === "INCOME"
               ? Number(transaction.amount)
-              : -Number(transaction.amount),
+              : -Number(transaction.amount)),
           0,
         );
 
