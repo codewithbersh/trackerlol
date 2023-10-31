@@ -99,6 +99,7 @@ export const FormOverallBudget = () => {
         onSuccess: (response) => {
           if (response.ok) {
             utils.budget.overall.get.invalidate();
+            utils.analytics.get.overallLimit.invalidate();
             toast.success(response.message);
             onClose();
           } else {
@@ -116,6 +117,7 @@ export const FormOverallBudget = () => {
         onSuccess: (response) => {
           if (response.ok) {
             utils.budget.overall.get.invalidate();
+            utils.analytics.get.overallLimit.invalidate();
             toast.success(response.message);
             onClose();
           } else {

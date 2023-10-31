@@ -1,6 +1,6 @@
 "use client";
 
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, greenToRed } from "@/lib/utils";
 import { trpc } from "@/app/_trpc/client";
 
 import { Progress } from "@/components/ui/progress";
@@ -39,6 +39,9 @@ export const Overall = () => {
               <Progress
                 className="h-3"
                 value={budget.percentage > 100 ? 100 : budget.percentage}
+                indicatorBgColor={greenToRed(
+                  budget.percentage > 100 ? 100 : budget.percentage,
+                )}
               />
               <div>
                 Target: {formatCurrency({ profile, amount: budget.limit })}
