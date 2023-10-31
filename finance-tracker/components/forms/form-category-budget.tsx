@@ -90,6 +90,8 @@ export const FormCategoryBudget = () => {
     trpc.budget.categories.add.useMutation();
   const { mutate: updateCategoryBudget } =
     trpc.budget.categories.update.useMutation();
+  const { mutate: deleteCategoryBudget } =
+    trpc.budget.categories.delete.useMutation();
 
   const router = useRouter();
 
@@ -149,16 +151,19 @@ export const FormCategoryBudget = () => {
   };
 
   const handleDelete = async (id: string) => {
-    try {
-      await axios.delete(`/api/category-budgets/${id}`);
-      toast.success("Budget has been deleted.");
-      refetchCategoryBudgets();
-      router.refresh();
-      onClose();
-    } catch (error) {
-      toast.error("An error has occured.");
-      console.log("[DELETE_BUDGET_ERROR]", error);
-    }
+    deleteCategoryBudget(
+      { id },
+      {
+        onSuccess: (response) => {
+          if (response.ok) {
+            toast.success(response.message);
+            utils.budget.categories.getAll.invalidate();
+          } else {
+            toast.error(response.message);
+          }
+        },
+      },
+    );
   };
   return (
     <Form {...form}>

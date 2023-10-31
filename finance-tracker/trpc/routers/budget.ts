@@ -43,6 +43,7 @@ export const budgetRouter = router({
     add: privateProcedure
       .input(
         z.object({
+          id: z.string().optional(),
           limit: z.number(),
           duration: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
           weekStartDay: z
@@ -62,24 +63,75 @@ export const budgetRouter = router({
       )
       .mutation(async ({ ctx, input }) => {
         const { userId } = ctx;
-        const { limit, duration, weekStartDay, monthStartDate, yearStartDate } =
-          input;
+        const {
+          id,
+          limit,
+          duration,
+          weekStartDay,
+          monthStartDate,
+          yearStartDate,
+        } = input;
 
         try {
-          await prismadb.overallBudget.create({
-            data: {
+          let message;
+          if (id) {
+            await prismadb.overallBudget.update({
+              where: {
+                id,
+                userId,
+              },
+              data: {
+                limit,
+                duration,
+                weekStartDay,
+                monthStartDate: Number(monthStartDate),
+                yearStartDate,
+              },
+            });
+            message = "Budget updated.";
+          } else {
+            await prismadb.overallBudget.create({
+              data: {
+                userId,
+                limit,
+                duration,
+                weekStartDay,
+                monthStartDate: Number(monthStartDate),
+                yearStartDate,
+              },
+            });
+            message = "Budget created.";
+          }
+
+          return { ok: true, code: 200 as const, message };
+        } catch (error) {
+          return {
+            ok: false,
+            code: 500 as const,
+            message: "Internal Server Error.",
+          };
+        }
+      }),
+    delete: privateProcedure
+      .input(
+        z.object({
+          id: z.string(),
+        }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        const { userId } = ctx;
+        const { id } = input;
+
+        try {
+          await prismadb.overallBudget.delete({
+            where: {
+              id,
               userId,
-              limit,
-              duration,
-              weekStartDay,
-              monthStartDate: Number(monthStartDate),
-              yearStartDate,
             },
           });
-
-          return { code: 200 as const, message: "Budget Created." };
+          return { ok: true, message: "Budget deleted." };
         } catch (error) {
-          return { code: 500 as const, message: "Internal Server Error." };
+          return { ok: false, message: "Internal server error." };
         }
       }),
   }),
@@ -208,6 +260,29 @@ export const budgetRouter = router({
           return { code: 200 as const, message: "Budget Updated." };
         } catch (error) {
           return { code: 500 as const, message: "Internal Server Error." };
+        }
+      }),
+    delete: privateProcedure
+      .input(
+        z.object({
+          id: z.string(),
+        }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        const { userId } = ctx;
+        const { id } = input;
+
+        try {
+          await prismadb.categoryBudget.delete({
+            where: {
+              id,
+              userId,
+            },
+          });
+
+          return { ok: true, message: "Budget deleted." };
+        } catch (error) {
+          return { ok: false, message: "Internal Server Error." };
         }
       }),
   }),

@@ -72,7 +72,8 @@ export const FormOverallBudget = () => {
   const utils = trpc.useUtils();
   const { data: profile } = trpc.profile.get.useQuery();
   const { mutate: addOverallBudget } = trpc.budget.overall.add.useMutation();
-  const { refetch, isFetching } = trpc.budget.overall.get.useQuery();
+  const { mutate: deleteOverallBudget } =
+    trpc.budget.overall.delete.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,49 +91,39 @@ export const FormOverallBudget = () => {
   const isLoading = form.formState.isSubmitting;
   const selectedDuration = form.watch("duration");
   const buttonText = initialData ? "Save Changes" : "Add Budget";
-  const toastSuccess = initialData ? "Budget updated." : "Budget created.";
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (initialData) {
-    } else {
-      addOverallBudget(values, {
-        onSuccess: ({ code, message }) => {
-          if (code === 200) {
-            refetch();
+    addOverallBudget(
+      { ...values, id: initialData?.id },
+      {
+        onSuccess: (response) => {
+          if (response.ok) {
             utils.budget.overall.get.invalidate();
-            toast.success(message);
+            toast.success(response.message);
             onClose();
           } else {
-            toast.error(message);
+            toast.error(response.message);
           }
         },
-      });
-    }
-    // try {
-    //   if (initialData) {
-    //     await axios.patch(`/api/overall-budget/${initialData.id}`, values);
-    //   } else {
-    //     await axios.post("/api/overall-budget", values);
-    //   }
-    //   router.refresh();
-    //   onClose();
-    //   toast.success(toastSuccess);
-    // } catch (error) {
-    //   console.log("[CREATE_OVERALLBUDGET_ERROR]", error);
-    //   toast.error("An error has occured.");
-    // }
+      },
+    );
   };
 
   const handleDelete = async (id: string) => {
-    try {
-      await axios.delete(`/api/overall-budget/${id}`);
-      toast.success("Budget has been deleted.");
-      router.refresh();
-      onClose();
-    } catch (error) {
-      toast.error("An error has occured.");
-      console.log("[DELETE_BUDGET_ERROR]", error);
-    }
+    deleteOverallBudget(
+      { id },
+      {
+        onSuccess: (response) => {
+          if (response.ok) {
+            utils.budget.overall.get.invalidate();
+            toast.success(response.message);
+            onClose();
+          } else {
+            toast.error(response.message);
+          }
+        },
+      },
+    );
   };
   return (
     <Form {...form}>
