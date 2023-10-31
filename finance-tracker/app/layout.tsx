@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "sonner";
 import "@/styles/globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -64,7 +64,13 @@ export default function RootLayout({
             storageKey="my-theme"
           >
             {children}
-            <Toaster />
+            <Toaster
+              position="top-center"
+              richColors
+              theme="system"
+              offset={16}
+              duration={1500}
+            />
           </ThemeProvider>
         </Providers>
         <Analytics />

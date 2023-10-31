@@ -4,7 +4,7 @@ import { UploadDropzone } from "@/lib/uploadthing";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { BaseSyntheticEvent } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 

@@ -6,7 +6,7 @@ import { Footer } from "./_components/footer";
 import { Hero } from "./_components/hero";
 
 export const metadata: Metadata = {
-  title: "Waitlist",
+  title: "Home",
 };
 
 const HomePage = async () => {

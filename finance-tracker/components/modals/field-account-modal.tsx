@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { trpc } from "@/app/_trpc/client";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { signOut } from "next-auth/react";
 
 import {

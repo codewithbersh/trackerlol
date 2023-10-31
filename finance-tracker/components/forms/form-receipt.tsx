@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useReceiptModal } from "@/hooks/use-receipt-modal";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useTransactionModal } from "@/hooks/use-transaction-modal";
 import { Loader2 } from "lucide-react";
 import { TransactionWithCategory, trpc } from "@/app/_trpc/client";

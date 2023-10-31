@@ -17,7 +17,7 @@ const TransactionsPage = ({ searchParams }: TransactionsPageProps) => {
       </PageHeading>
 
       <MainWrapper>
-        <div className="space-y-8">
+        <div className="space-y-8 pb-8">
           <Filters searchParams={searchParams} />
           <Transactions searchParams={searchParams} />
         </div>
