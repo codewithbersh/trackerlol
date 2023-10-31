@@ -31,7 +31,7 @@ export const Transactions = ({ searchParams }: TransactionsClientProps) => {
     return <Spinner className="w-full py-12 md:py-24" variant="large" />;
   }
 
-  if (!transactions || !profile || transactions.length === 0) {
+  if (!transactions || transactions.length === 0) {
     return (
       <div className="py-12 text-center text-sm text-muted-foreground">
         No transactions.

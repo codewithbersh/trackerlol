@@ -5,7 +5,7 @@ import { useTransactionModal } from "@/hooks/use-transaction-modal";
 
 interface TransactionProps {
   transaction: TransactionWithCategory;
-  profile: UserProfile;
+  profile: UserProfile | undefined;
 }
 
 export const Transaction = ({ transaction, profile }: TransactionProps) => {
