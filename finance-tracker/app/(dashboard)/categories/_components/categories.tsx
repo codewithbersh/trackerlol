@@ -1,10 +1,10 @@
 "use client";
 
 import { trpc } from "@/app/_trpc/client";
-import { validateTypeParams } from "../../transactions/_components/utils";
+import { validateTypeParams } from "@/app/(dashboard)/transactions/_components/utils";
 
-import { Category } from "./category";
 import { Spinner } from "@/components/spinner";
+import { Category } from "./category";
 
 export const Categories = ({ type }: { type: string | undefined }) => {
   const { data: categories, isLoading } = trpc.category.getByCount.useQuery(

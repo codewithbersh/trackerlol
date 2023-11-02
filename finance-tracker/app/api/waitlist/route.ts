@@ -1,7 +1,8 @@
-import { WaitlistTemplate } from "@/components/email/waitlist-template";
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+
+import { WaitlistTemplate } from "@/components/email/waitlist-template";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

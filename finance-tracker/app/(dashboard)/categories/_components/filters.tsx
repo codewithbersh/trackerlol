@@ -1,6 +1,6 @@
 import { FilterByType } from "@/app/(dashboard)/transactions/_components/filter-by-type";
 import { FilterReset } from "@/app/(dashboard)/transactions/_components/filter-reset";
-import { validateTypeParams } from "../../transactions/_components/utils";
+import { validateTypeParams } from "@/app/(dashboard)/transactions/_components/utils";
 
 export const Filters = ({ type }: { type: string | string[] | undefined }) => {
   return (

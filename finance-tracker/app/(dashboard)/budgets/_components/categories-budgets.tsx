@@ -1,9 +1,9 @@
 "use client";
 
 import { trpc } from "@/app/_trpc/client";
-import { CategoriesItem } from "./categories-item";
 
 import { Spinner } from "@/components/spinner";
+import { CategoriesItem } from "./categories-item";
 
 export const CategoriesBudgets = () => {
   const { data: profile } = trpc.profile.get.useQuery(undefined, {
